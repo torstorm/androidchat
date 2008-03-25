@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">androidChat</string>
+
+    <string name="btn_connect">Connect</string>
+    <string name="btn_disconnect">Disconnect</string>
+    
+    <string name="irc_started">Chat Service Started</string>
+    <string name="irc_connecting">Chat Service Connecting</string>
+    <string name="irc_connected">Chat Service Connected</string>
+    <string name="irc_error">Chat Service Error</string>
+    <string name="irc_disconnected">Chat Service Disconnected</string>
+    <string name="irc_stopped">Chat Service Stopped</string>
+</resources>

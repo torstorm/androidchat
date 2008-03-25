@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="3dip"
+        >
+    <Button id="@+id/ircsend"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text=">"
+            >
+    </Button>
+    <EditText id="@+id/ircedit"
+              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:layout_toRight="@+id/ircsend"
+
+              android:text="">
+        <requestFocus/>
+
+    </EditText>
+
+
+    <TextView id="@+id/ircdisp"
+              android:layout_below="@+id/ircedit"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:text="Channel Text Here"
+              android:scrollbars="vertical"
+              android:autoLink="web"
+              android:gravity="bottom"
+
+            />
+
+</RelativeLayout>
