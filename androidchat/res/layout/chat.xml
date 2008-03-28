@@ -4,12 +4,24 @@
                 android:layout_height="fill_parent"
                 android:padding="3dip"
         >
-    <Button id="@+id/ircsend"
+        <Button android:id="@+id/ircback"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text=">"
+            android:text="Back"
+            android:layout_toRight="@+id/ircsend"
+            android:layout_alignTop="@+id/ircsend" 
+            
+            
             >
     </Button>
-    <EditText id="@+id/ircedit"
+    <Button android:id="@+id/ircsend"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text=">"
+            android:layout_toRight="@+id/ircback"
+            
+            >
+    </Button>
+
+    <EditText android:id="@+id/ircedit"
               android:layout_height="wrap_content"
               android:layout_width="fill_parent"
               android:layout_toRight="@+id/ircsend"
@@ -20,7 +32,7 @@
     </EditText>
 
 
-    <TextView id="@+id/ircdisp"
+    <TextView android:id="@+id/ircdisp"
               android:layout_below="@+id/ircedit"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
