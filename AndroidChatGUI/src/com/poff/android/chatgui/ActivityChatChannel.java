@@ -60,8 +60,8 @@ public class ActivityChatChannel extends Activity {
 
         // Watch for button clicks.
         Button button = (Button) findViewById(R.id.ircsend);
-        Button button2 = (Button) findViewById(R.id.ircback);
-
+        ImageButton button2 = (ImageButton) findViewById(R.id.ircback);
+        button2.setOnClickListener(mBackListener);
         button.setOnClickListener(mSendListener);
         te = (EditText) findViewById(R.id.ircedit);
         te.setOnKeyListener(mKeyListener);
@@ -77,6 +77,15 @@ public class ActivityChatChannel extends Activity {
             // do the same as the below function
        //     ServiceIRCService.SendToChan(chan, te.getText().toString());
             te.setText("");
+        }
+    };
+    
+    private OnClickListener mBackListener = new OnClickListener() {
+        public void onClick(View v)
+        {
+            // do the same as the below function
+       //     ServiceIRCService.SendToChan(chan, te.getText().toString());
+            finish();
         }
     };
 
