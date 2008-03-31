@@ -4,6 +4,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.Context;
+
 import android.os.*;
 
 import android.os.Binder;
@@ -14,6 +16,7 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class ServiceIRCService extends Service {
+	private Context context;
 	private static Thread connection;
 
 	private static Socket socket;
@@ -133,10 +136,10 @@ public class ServiceIRCService extends Service {
 	@Override
 	protected void onCreate()
 	{
-		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+		mNM = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
 		// This is who should be launched if the user selects our persistent
 		// notification.
+		context = this;
 		Intent intent = new Intent();
 		intent.setClass(this, ActivityAndroidChatMain.class);
 
@@ -145,11 +148,11 @@ public class ServiceIRCService extends Service {
 		// Display a notification about us starting.  We use both a transient
 		// notification and a persistent notification in the status bar.
 		mNM.notify(R.string.irc_started,
-				new Notification(this,
+				new Notification( context,
 						R.drawable.icon,
 						getText(R.string.irc_started),
-						null,
-						getText(R.string.irc_started),
+						 System.currentTimeMillis(),
+						"AndroidChat - Notification",
 						getText(R.string.irc_started),
 						intent,
 						R.drawable.icon,
@@ -159,10 +162,18 @@ public class ServiceIRCService extends Service {
 		connection = new Thread(new ThreadConnThread(server, nick, socket));
 		connection.start();
 
-		mNM.notifyWithText(R.string.irc_connected,
-				getText(R.string.irc_connected),
-				NotificationManager.LENGTH_SHORT,
-				null);
+		mNM.notify(R.string.irc_started,
+				new Notification( context,
+						R.drawable.icon,
+						getText(R.string.irc_connected),
+						 System.currentTimeMillis(),
+						"AndroidChat - Notification",
+						getText(R.string.irc_connected),
+						null,
+						R.drawable.icon,
+						"Android Chat",
+						null));
+
 
 	}
 
@@ -176,12 +187,23 @@ public class ServiceIRCService extends Service {
 		state = 0;
 
 		// Tell the user we stopped.
-		mNM.notifyWithText(R.string.irc_stopped,
-				getText(R.string.irc_stopped),
-				NotificationManager.LENGTH_SHORT,
-				null);
+		mNM.notify(R.string.irc_started,
+				new Notification( context,
+						R.drawable.icon,
+						getText(R.string.irc_stopped),
+						 System.currentTimeMillis(),
+						"AndroidChat - Notification",
+						getText(R.string.irc_stopped),
+						null,
+						R.drawable.icon,
+						"Android Chat",
+						null));
 	}
 
+	public IBinder onBind(Intent intent) {
+		return getBinder();
+	
+	}
 	
 	public IBinder getBinder()
 	{
