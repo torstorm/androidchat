@@ -38,7 +38,7 @@ public class ActivityAndroidChatMain extends Activity {
         {
             // Make sure the service is started.  It will continue running
             // until someone calls stopService().
-            startActivity(new Intent(ActivityAndroidChatMain.this, ActivityChatChannel.class));
+            //startActivity(new Intent(ActivityAndroidChatMain.this, ActivityChatChannel.class));
         }
     };
     private OnClickListener mConnectListener = new OnClickListener() {

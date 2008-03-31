@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.*;
 
+import android.os.Binder;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -143,15 +144,17 @@ public class ServiceIRCService extends Service {
 
 		// Display a notification about us starting.  We use both a transient
 		// notification and a persistent notification in the status bar.
-		mNM.notifyWithText(R.string.irc_started,
-				getText(R.string.irc_started),
-				NotificationManager.LENGTH_SHORT,
-				new Notification(
+		mNM.notify(R.string.irc_started,
+				new Notification(this,
 						R.drawable.icon,
 						getText(R.string.irc_started),
-						intent,
 						null,
-						null));
+						getText(R.string.irc_started),
+						getText(R.string.irc_started),
+						intent,
+						R.drawable.icon,
+						"Android Chat",
+						intent));
 
 		connection = new Thread(new ThreadConnThread(server, nick, socket));
 		connection.start();
@@ -179,7 +182,7 @@ public class ServiceIRCService extends Service {
 				null);
 	}
 
-	@Override
+	
 	public IBinder getBinder()
 	{
 		return mBinder;
@@ -187,7 +190,7 @@ public class ServiceIRCService extends Service {
 
 	// This is the object that receives interactions from clients.  See
 	// RemoteService for a more complete example.
-	private final IBinder mBinder = new BinderNative() {
+	private final IBinder mBinder = new Binder() {
 		@Override
 		protected boolean onTransact(int code, Parcel data, Parcel reply, int flags)
 		{
