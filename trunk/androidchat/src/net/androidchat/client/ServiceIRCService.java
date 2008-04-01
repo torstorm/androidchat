@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class ServiceIRCService extends Service {
 	private Context context;
 	private static Thread connection;
+	private static Thread updates;
 
 	private static Socket socket;
 	public static BufferedWriter writer;
@@ -109,6 +110,22 @@ public class ServiceIRCService extends Service {
 
 	}
 
+	// send a location to the server. 
+	public static void UpdateLocation(double lat, double lng)
+	{
+	// SLOC lat lng
+		try {
+			String temp = "sloc " + lat + " " + lng + "\n";
+			writer.write(temp);
+			writer.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException npe) {
+			npe.printStackTrace();
+		}	
+	}
+	
 	public static void SendToChan(String chan, String what)
 	{
 		if (what.trim().equals("")) return;
@@ -161,6 +178,9 @@ public class ServiceIRCService extends Service {
 
 		connection = new Thread(new ThreadConnThread(server, nick, socket));
 		connection.start();
+		
+		updates = new Thread(new ThreadUpdateLocThread(context));
+		updates.start();
 
 		mNM.notify(R.string.irc_started,
 				new Notification( context,
