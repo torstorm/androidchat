@@ -3,13 +3,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:padding="3dip"
+                android:orientation="vertical"
         >
-        <Button android:id="@+id/ircback"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Back"
+        <ImageButton android:id="@+id/ircback"
+            android:layout_width="32px" android:layout_height="32px"
+			android:text="B"            
             android:layout_toRight="@+id/ircsend"
-            android:layout_alignTop="@+id/ircsend" 
             
+            
+            >
+            </ImageButton>
+
+    <Button android:id="@+id/ircchannel"
+            android:layout_width="32px" android:layout_height="32px"
+            android:text="C"
+            android:layout_alignLeft="@+id/ircback"
+            android:layout_below="@+id/ircback"
             
             >
     </Button>

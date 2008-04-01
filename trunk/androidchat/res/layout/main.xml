@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:orientation="vertical"
         >
 
-    <ImageView id="@+id/img_AndroidChatLogo"
+    <ImageView android:id="@+id/img_AndroidChatLogo"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:src="@drawable/icon"
@@ -18,13 +18,13 @@
             
             android:text="Welcome to Android Chat."/>
     
-    <Button id="@+id/btn_ShowOpts"
+    <Button android:id="@+id/btn_ShowOpts"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Options"
                           android:layout_gravity="center_horizontal"
             />
 
-    <Button id="@+id/btn_Connect"
+    <Button android:id="@+id/btn_Connect"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="@string/btn_connect"
                           android:layout_gravity="center_horizontal"
@@ -32,7 +32,7 @@
         <requestFocus/>
     </Button>
 
-    <Button id="@+id/btn_ShowChan"
+    <Button android:id="@+id/btn_ShowChan"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Show Channel View"
                           android:layout_gravity="center_horizontal"
