@@ -39,7 +39,7 @@ void updateChanLocation(Channel* channel) {
 	float clat, clng;
 	clat = 0;
 	clng = 0;
-	signed int size = 0;
+	signed int size = 1;
 	std::string* lat;
 	std::string* lng;
 
@@ -109,7 +109,7 @@ void updateChanLocation(Channel* channel) {
 			"-Adjusting channel location. Params: (%f, %f), factor of 1/%i (%f)",
 			clat, clng, size, mul);
 
-	if (size<1) {
+	if (size<0) {
 		mlocservinst->Logs->Log("M_LOCATION", DEBUG,
 				"-Not adjusting channel location (no valid users)");
 		return;
