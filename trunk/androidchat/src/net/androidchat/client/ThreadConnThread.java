@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 
 public class ThreadConnThread implements Runnable {
 
-    private String defchan = "#android";
+    private String defchan = "#hi";
 
     private Socket socket;
     private String server;
