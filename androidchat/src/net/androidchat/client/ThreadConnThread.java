@@ -32,6 +32,11 @@ public class ThreadConnThread implements Runnable {
             ServiceIRCService.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException npe)
+        {
+      	  npe.printStackTrace();
+      	  
+      	  // socket was null. that's odd. 
         }
         try {
             ServiceIRCService.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

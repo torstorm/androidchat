@@ -15,26 +15,28 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class ServiceIRCService extends Service {
-	private Context context;
-	private static Thread connection;
-	private static Thread updates;
+public class ServiceIRCService
+		extends Service
+{
+	private Context													context;
+	private static Thread											connection;
+	private static Thread											updates;
 
-	private static Socket socket;
-	public static BufferedWriter writer;
-	public static BufferedReader reader;
-	public static int state;
-	private static String server = "38.100.42.254";
-	private static String nick = "AndroidChat";
+	private static Socket											socket;
+	public static BufferedWriter									writer;
+	public static BufferedReader									reader;
+	public static int													state;
+	private static String											server			= "38.100.42.254";
+	private static String											nick				= "AndroidChat";
 
-	public static final int MSG_UPDATECHAN = 0;
-	public static final int MSG_UPDATEPM = 1;
-	public static final int MSG_CHANGECHAN = 2;
-	public static final int MSG_DISCONNECT = 3;
+	public static final int											MSG_UPDATECHAN	= 0;
+	public static final int											MSG_UPDATEPM	= 1;
+	public static final int											MSG_CHANGECHAN	= 2;
+	public static final int											MSG_DISCONNECT	= 3;
 
-	public static HashMap<String, ClassChannelContainer> channels;
+	public static HashMap<String, ClassChannelContainer>	channels;
 
-	public static Handler ChannelViewHandler;
+	public static Handler											ChannelViewHandler;
 
 	// this is epic irc parsing.
 	public static void GetLine(String line)
@@ -43,7 +45,7 @@ public class ServiceIRCService extends Service {
 		// [:prefix] command|numeric [arg1, arg2...] :extargs
 
 		String args, prefix, command;
-		args = prefix = command = "";    	
+		args = prefix = command = "";
 
 		// pull off extended arguments first
 		if (line.indexOf(":", 2) != -1)
@@ -59,46 +61,62 @@ public class ServiceIRCService extends Service {
 		{
 			prefix = toks[0].substring(1);
 			command = toks[1];
-		} else {
+		} else
+		{
 			prefix = null;
 			command = toks[0];
-		}    
+		}
 
-		if(command.equals("331") || command.equals("332"))
-		// :servername 331 yournick #channel :no topic
-		// :servername 332 yournick #channel :topic here
-		{       	
+		if (command.equals("641"))
+		// :servername 641 yournick #channel lat long
+		{
 			ClassChannelContainer temp;
 			String chan = toks[3].toLowerCase();
 			if (channels.containsKey(chan))
 			{
-				temp = channels.get(chan);      		 
+				temp = channels.get(chan);
+				temp.addLine("*** Channel Location Updated"); // should probably
+																				// restrict this to
+																				// debug
+				temp.loc_lat = Float.parseFloat(toks[4]);
+				temp.loc_lng = Float.parseFloat(toks[5]);
+			}
+		} else if (command.equals("331") || command.equals("332"))
+		// :servername 331 yournick #channel :no topic
+		// :servername 332 yournick #channel :topic here
+		{
+			ClassChannelContainer temp;
+			String chan = toks[3].toLowerCase();
+			if (channels.containsKey(chan))
+			{
+				temp = channels.get(chan);
 				temp.addLine("Topic for " + toks[3] + " is: " + args);
 				temp.chantopic = args;
 				if (ChannelViewHandler != null)
 					Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();
 			} // ignore topics for channels we aren't in
-		} else
-		if (command.equals("JOIN"))
+		} else if (command.equals("JOIN"))
 		// User must have joined a channel
 		{
 			ClassChannelContainer temp;
 			if (channels.containsKey(args.toLowerCase())) // existing channel?
 			{
 				temp = channels.get(args);
-			} else {
+			} else
+			{
 				temp = new ClassChannelContainer();
 				temp.channame = args;
 				temp.addLine("Now talking on " + args + "...");
 				channels.put(args.toLowerCase(), temp);
+				if (ChannelViewHandler != null)
+					Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, args.toLowerCase()).sendToTarget();
 			}
-		} else
-		if (command.equals("PRIVMSG"))  
-		// to a channel? 
+		} else if (command.equals("PRIVMSG"))
+		// to a channel?
 		{
 			ClassChannelContainer temp;
 			String chan = toks[2].toLowerCase();
-			
+
 			if (channels.containsKey(chan)) // existing channel?
 			{
 				temp = channels.get(chan);
@@ -110,46 +128,54 @@ public class ServiceIRCService extends Service {
 
 	}
 
-	// send a location to the server. 
+	// send a location to the server.
 	public static void UpdateLocation(double lat, double lng)
 	{
-	// SLOC lat lng
-		try {
+		// SLOC lat lng
+		try
+		{
 			String temp = "sloc " + lat + " " + lng + "\n";
 			writer.write(temp);
 			writer.flush();
 
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
-		} catch (NullPointerException npe) {
+		} catch (NullPointerException npe)
+		{
 			npe.printStackTrace();
-		}	
+		}
 	}
-	
+
 	public static void QuitServer()
 	{
-		try {
+		try
+		{
 			String temp = "QUIT :Android Client has quit";
 			writer.write(temp);
 			writer.flush();
 
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
-		} catch (NullPointerException npe) {
+		} catch (NullPointerException npe)
+		{
 			npe.printStackTrace();
-		}	
+		}
 	}
-	
+
 	public static void SendToChan(String chan, String what)
 	{
-		if (what.trim().equals("")) return;
-		if (chan == null) 
+		if (what.trim().equals(""))
+			return;
+		if (chan == null)
 		{
 			// error about not being on a channel here
 			return;
 		}
 		// PRIVMSG <target> :<message>
-		try {
+		try
+		{
 			String temp = "PRIVMSG " + chan + " :" + what + "\n";
 			GetLine(":" + nick + "! " + temp);
 			writer.write(temp);
@@ -157,9 +183,11 @@ public class ServiceIRCService extends Service {
 			if (ChannelViewHandler != null)
 				Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();
 
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
-		} catch (NullPointerException npe) {
+		} catch (NullPointerException npe)
+		{
 			npe.printStackTrace();
 		}
 	}
@@ -176,38 +204,21 @@ public class ServiceIRCService extends Service {
 
 		channels = new HashMap<String, ClassChannelContainer>();
 
-		// Display a notification about us starting.  We use both a transient
+		// Display a notification about us starting. We use both a transient
 		// notification and a persistent notification in the status bar.
-		mNM.notify(R.string.irc_started,
-				new Notification( context,
-						R.drawable.mini_icon,
-						getText(R.string.irc_started),
-						 System.currentTimeMillis(),
-						"AndroidChat - Notification",
-						getText(R.string.irc_started),
-						intent,
-						R.drawable.mini_icon,
-						"Android Chat",
-						intent));
+		mNM.notify(R.string.irc_started, new Notification(context, R.drawable.mini_icon, getText(R.string.irc_started), System
+				.currentTimeMillis(), "AndroidChat - Notification", getText(R.string.irc_started), intent, R.drawable.mini_icon,
+				"Android Chat", intent));
 
 		connection = new Thread(new ThreadConnThread(server, nick, socket));
 		connection.start();
-		
+
 		updates = new Thread(new ThreadUpdateLocThread(context));
 		updates.start();
 
-		mNM.notify(R.string.irc_started,
-				new Notification( context,
-						R.drawable.mini_icon,
-						getText(R.string.irc_connected),
-						 System.currentTimeMillis(),
-						"AndroidChat - Notification",
-						getText(R.string.irc_connected),
-						null,
-						R.drawable.mini_icon,
-						"Android Chat",
-						null));
-
+		mNM.notify(R.string.irc_started, new Notification(context, R.drawable.mini_icon, getText(R.string.irc_connected), System
+				.currentTimeMillis(), "AndroidChat - Notification", getText(R.string.irc_connected), null, R.drawable.mini_icon,
+				"Android Chat", null));
 
 	}
 
@@ -222,38 +233,32 @@ public class ServiceIRCService extends Service {
 		state = 0;
 
 		// Tell the user we stopped.
-		mNM.notify(R.string.irc_started,
-				new Notification( context,
-						R.drawable.mini_icon,
-						getText(R.string.irc_stopped),
-						 System.currentTimeMillis(),
-						"AndroidChat - Notification",
-						getText(R.string.irc_stopped),
-						null,
-						R.drawable.mini_icon,
-						"Android Chat",
-						null));
+		mNM.notify(R.string.irc_started, new Notification(context, R.drawable.mini_icon, getText(R.string.irc_stopped), System
+				.currentTimeMillis(), "AndroidChat - Notification", getText(R.string.irc_stopped), null, R.drawable.mini_icon, "Android Chat",
+				null));
 	}
 
-	public IBinder onBind(Intent intent) {
+	public IBinder onBind(Intent intent)
+	{
 		return getBinder();
-	
+
 	}
-	
+
 	public IBinder getBinder()
 	{
 		return mBinder;
 	}
 
-	// This is the object that receives interactions from clients.  See
+	// This is the object that receives interactions from clients. See
 	// RemoteService for a more complete example.
-	private final IBinder mBinder = new Binder() {
-		@Override
-		protected boolean onTransact(int code, Parcel data, Parcel reply, int flags)
-		{
-			return super.onTransact(code, data, reply, flags);
-		}
-	};
+	private final IBinder			mBinder	= new Binder()
+														{
+															@Override
+															protected boolean onTransact(int code, Parcel data, Parcel reply, int flags)
+															{
+																return super.onTransact(code, data, reply, flags);
+															}
+														};
 
-	private NotificationManager mNM;
+	private NotificationManager	mNM;
 }

@@ -8,7 +8,9 @@ public class ClassChannelContainer {
     public String chantopic;
     public ArrayList<String> whatsinchan;
     public ArrayList<String> chanusers;
-
+    public double loc_lat;
+    public double loc_lng;
+    
     public ClassChannelContainer()
     {
         whatsinchan = new ArrayList<String>();
