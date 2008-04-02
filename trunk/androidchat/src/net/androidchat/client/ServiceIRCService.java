@@ -126,6 +126,20 @@ public class ServiceIRCService extends Service {
 		}	
 	}
 	
+	public static void QuitServer()
+	{
+		try {
+			String temp = "QUIT :Android Client has quit";
+			writer.write(temp);
+			writer.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException npe) {
+			npe.printStackTrace();
+		}	
+	}
+	
 	public static void SendToChan(String chan, String what)
 	{
 		if (what.trim().equals("")) return;
@@ -166,13 +180,13 @@ public class ServiceIRCService extends Service {
 		// notification and a persistent notification in the status bar.
 		mNM.notify(R.string.irc_started,
 				new Notification( context,
-						R.drawable.icon,
+						R.drawable.mini_icon,
 						getText(R.string.irc_started),
 						 System.currentTimeMillis(),
 						"AndroidChat - Notification",
 						getText(R.string.irc_started),
 						intent,
-						R.drawable.icon,
+						R.drawable.mini_icon,
 						"Android Chat",
 						intent));
 
@@ -184,13 +198,13 @@ public class ServiceIRCService extends Service {
 
 		mNM.notify(R.string.irc_started,
 				new Notification( context,
-						R.drawable.icon,
+						R.drawable.mini_icon,
 						getText(R.string.irc_connected),
 						 System.currentTimeMillis(),
 						"AndroidChat - Notification",
 						getText(R.string.irc_connected),
 						null,
-						R.drawable.icon,
+						R.drawable.mini_icon,
 						"Android Chat",
 						null));
 
@@ -201,21 +215,22 @@ public class ServiceIRCService extends Service {
 	protected void onDestroy()
 	{
 		// Cancel the persistent notification.
-		mNM.cancel(R.string.irc_started);
+		QuitServer();
 
+		mNM.cancel(R.string.irc_started);
 		connection.interrupt();
 		state = 0;
 
 		// Tell the user we stopped.
 		mNM.notify(R.string.irc_started,
 				new Notification( context,
-						R.drawable.icon,
+						R.drawable.mini_icon,
 						getText(R.string.irc_stopped),
 						 System.currentTimeMillis(),
 						"AndroidChat - Notification",
 						getText(R.string.irc_stopped),
 						null,
-						R.drawable.icon,
+						R.drawable.mini_icon,
 						"Android Chat",
 						null));
 	}
