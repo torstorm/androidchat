@@ -8,7 +8,6 @@
         <ImageButton android:id="@+id/ircback"
             android:layout_width="32px" android:layout_height="32px"
 			android:text="B"            
-            android:layout_toRight="@+id/ircsend"
             
             
             >
