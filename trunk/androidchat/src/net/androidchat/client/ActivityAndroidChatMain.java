@@ -63,8 +63,7 @@ public class ActivityAndroidChatMain
 																	} else
 																	{
 																		// if started
-																		myConnectivtyIntent = new Intent(ActivityAndroidChatMain.this,
-																				ServiceIRCService.class);
+																		//myConnectivtyIntent = new Intent(ActivityAndroidChatMain.this,		ServiceIRCService.class);
 																		stopService(myConnectivtyIntent);
 																		Button button = (Button) findViewById(R.id.btn_Connect);
 																		button.setText(R.string.btn_connect);
