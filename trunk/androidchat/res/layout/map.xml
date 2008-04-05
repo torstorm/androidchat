@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+        >
+    
+         <view class="com.google.android.maps.MapView" 
+            android:id="@+id/mapv" 
+          android:layout_width="fill_parent" 
+          android:layout_height="fill_parent"/>
+   
+    <TextView android:id="@+id/maptv"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    />
+
+</RelativeLayout>
