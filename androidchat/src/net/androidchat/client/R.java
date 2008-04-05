@@ -11,8 +11,9 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int icon=0x7f020000;
-        public static final int mini_icon=0x7f020001;
+        public static final int arrow=0x7f020000;
+        public static final int icon=0x7f020001;
+        public static final int mini_icon=0x7f020002;
     }
     public static final class id {
         public static final int androidchat=0x7f040000;
@@ -25,6 +26,8 @@ public final class R {
         public static final int ircdisp=0x7f040005;
         public static final int ircedit=0x7f040004;
         public static final int ircsend=0x7f040003;
+        public static final int maptv=0x7f04000d;
+        public static final int mapv=0x7f04000c;
         public static final int start=0x7f040006;
         public static final int stop=0x7f040007;
     }
@@ -32,6 +35,7 @@ public final class R {
         public static final int chat=0x7f030000;
         public static final int irc_control=0x7f030001;
         public static final int main=0x7f030002;
+        public static final int map=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
