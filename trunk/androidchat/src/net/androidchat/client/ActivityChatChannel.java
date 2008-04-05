@@ -1,6 +1,7 @@
 package net.androidchat.client;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -63,6 +64,9 @@ public class ActivityChatChannel extends Activity {
         ImageButton button2 = (ImageButton) findViewById(R.id.ircback);
         button2.setOnClickListener(mBackListener);
         
+        Button button3 = (Button) findViewById(R.id.ircchannel);
+        button3.setOnClickListener(mMapListener);
+        
         te = (EditText) findViewById(R.id.ircedit);
         te.setOnKeyListener(mKeyListener);
         tv = (TextView) findViewById(R.id.ircdisp);
@@ -100,6 +104,17 @@ public class ActivityChatChannel extends Activity {
             // do the same as the below function
        //     ServiceIRCService.SendToChan(chan, te.getText().toString());
             finish();
+        }
+    };
+    
+    private OnClickListener mMapListener = new OnClickListener() {
+        public void onClick(View v)
+        {
+        	
+			startActivity(new Intent(ActivityChatChannel.this, AndroidChatMap.class));
+
+            // do the same as the below function
+       //     ServiceIRCService.SendToChan(chan, te.getText().toString());
         }
     };
 }
