@@ -77,6 +77,8 @@ public class ThreadConnThread implements Runnable {
         try {
             ServiceIRCService.writer.write("JOIN " + defchan + "\r\n");
             ServiceIRCService.writer.flush();
+            ServiceIRCService.writer.write("LIST\r\n"); // get list while we're at it
+            ServiceIRCService.writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,7 +96,7 @@ public class ThreadConnThread implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } 
     }
 
 }
