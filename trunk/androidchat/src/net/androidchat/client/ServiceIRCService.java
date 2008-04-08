@@ -241,6 +241,27 @@ public class ServiceIRCService
 			// error about not being on a channel here
 			return;
 		}
+		
+		if (what.startsWith("/"))
+		{
+			// this is a raw command. 
+			// parse here for intelligent commands, otherwise send it along raw
+			try
+			{
+				String temp = what.toUpperCase().substring(1) + "\n";
+				writer.write(temp);
+				writer.flush();				
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			} catch (NullPointerException npe)
+			{
+				npe.printStackTrace();
+			}
+			return;
+			
+		}
+		
 		// PRIVMSG <target> :<message>
 		try
 		{
