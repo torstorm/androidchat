@@ -34,6 +34,8 @@ public class ServiceIRCService
 	public static final int											MSG_CHANGECHAN	= 2;
 	public static final int											MSG_DISCONNECT	= 3;
 	
+	public static final String										AC_VERSION = "0.01A";
+	
 	private static boolean											is_first_list;
 	
 	public static HashMap<String, ClassChannelContainer>	channels;
@@ -294,6 +296,14 @@ public class ServiceIRCService
 		channel_list = new HashMap<String, ClassChannelDescriptor>();
 		
 		is_first_list = true;
+		
+		ClassChannelContainer debug = new ClassChannelContainer();
+		debug.channame = "Status/Debug Window";
+		debug.addLine("AndroidChat v" + AC_VERSION + " started.");
+		channels.put("status", debug);
+
+		if (ChannelViewHandler != null)
+			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "status").sendToTarget();
 		
 		// Display a notification about us starting. We use both a transient
 		// notification and a persistent notification in the status bar.

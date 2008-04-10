@@ -6,7 +6,7 @@
                 android:orientation="vertical"
         >
         <ImageButton android:id="@+id/ircback"
-            android:layout_width="32px" android:layout_height="32px"
+            android:layout_width="16dip" android:layout_height="16dip"
 			android:text="B"            
             
             
@@ -14,7 +14,7 @@
             </ImageButton>
 
     <Button android:id="@+id/ircchannel"
-            android:layout_width="32px" android:layout_height="32px"
+            android:layout_width="16dip" android:layout_height="16dip"
             android:text="C"
             android:layout_alignLeft="@+id/ircback"
             android:layout_below="@+id/ircback"
@@ -33,7 +33,6 @@
               android:layout_height="wrap_content"
               android:layout_width="fill_parent"
               android:layout_toRight="@+id/ircsend"
-
               android:text="">
         <requestFocus/>
 
@@ -44,11 +43,10 @@
               android:layout_below="@+id/ircedit"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:text="Channel Text Here"
+              android:text="Please connect to the network!"
               android:scrollbars="vertical"
               android:autoLink="web"
               android:gravity="bottom"
-
             />
 
 </RelativeLayout>
