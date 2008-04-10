@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-//import net.androidchat.client.ServiceIRCService;
-
 public class ActivityChatChannel extends Activity {
 
     private TextView tv;

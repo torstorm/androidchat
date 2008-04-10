@@ -19,7 +19,7 @@ public class ClassChannelContainer {
 
     public void addLine(String line)
     {
-
+   	  if(line != "");
         whatsinchan.add(line);
         if (whatsinchan.size() > 30) // scrollback size
         {
