@@ -41,7 +41,11 @@ public class ActivityChatChannel extends Activity {
         StringBuilder temp = new StringBuilder();
         ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(channel);
 
-        //if (ctemp == null) return;
+        if (ctemp == null)
+      	  {
+      	  tv.setText("\n\n\n*** You are not in this channel");
+      	  return;
+      	  }
 
         for (int i = 0; i < ctemp.whatsinchan.size(); i++) {
             temp.append(ctemp.whatsinchan.get(i) + "\n");

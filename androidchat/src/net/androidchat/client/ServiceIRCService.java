@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class ServiceIRCService
 		extends Service
@@ -132,7 +133,7 @@ public class ServiceIRCService
 			if (channels.containsKey(chan))
 			{
 				temp = channels.get(chan);
-				temp.addLine("Topic for " + toks[3] + " is: " + args);
+				temp.addLine("*** Topic for " + toks[3] + " is: " + args);
 				temp.chantopic = args;
 				flagupdate = true;
 				updatechan = chan;
@@ -140,7 +141,8 @@ public class ServiceIRCService
 			
 		} else if (command.equals("353"))
 		{
-			// :dexter.chatspike.net 353 yournick = #funfactory :chattie dizz @+takshaka
+			// :dexter.chatspike.net 353 yournick = #funfactory :chattie dizz
+			// @+takshaka
 			// poshgal @LDI Aldebaran Sweet2 James54
 			if (channels.containsKey(toks[4].toLowerCase()))
 			{
@@ -165,51 +167,131 @@ public class ServiceIRCService
 			if (channels.containsKey(chan))
 			{
 				channels.get(chan).NAMES_END = true;
+				
+				StringBuilder sb = new StringBuilder();
+				
+				sb.append("*** Users on ").append(toks[3]).append(": ");
+				for (String s : channels.get(chan).chanusers)
+				{
+					sb.append(s).append(" ");
+				}
+				
+				channels.get(chan).addLine(sb.toString().trim());
+				
+				flagupdate = true;
+				updatechan = chan;
+			}
+		} else if (command.equals("NICK"))
+		{
+			// :nick!mask@mask NICK newnick
+			// :Testing!AndroidChat@71.61.229.105 NICK Poop
 			
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append("*** Users on ").append(toks[3]).append(": ");
-			for(String s : channels.get(chan).chanusers)
+			String oldnick = toks[0].substring(1, toks[0].indexOf("!"));
+			if (nick.toLowerCase().equals(oldnick.toLowerCase())) // we changed
+																					// /our/ nickname
 			{
-				sb.append(s).append(" ");
+				nick = toks[2];
 			}
 			
-			channels.get(chan).addLine(sb.toString().trim());
-			
-			flagupdate = true;
-			updatechan = chan;
+			for (ClassChannelContainer c : channels.values())
+			{
+				for (String s : c.chanusers)
+				{
+					if (s.toLowerCase().equals(oldnick.toLowerCase()))
+					{
+						c.chanusers.remove(s);
+						c.chanusers.add(toks[2]);
+						c.addLine("*** " + oldnick + " is now known as " + toks[2]);
+						if (ChannelViewHandler != null)
+							Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, c.channame.toLowerCase()).sendToTarget();
+						break;
+					}
+				}
 			}
-		
+			// todo: notify of nick renames here
+		} else if (command.equals("QUIT"))
+		{
+			// :Jeff!Kuja@71.61.229.105 QUIT :
+			String whoquit = toks[0].substring(1, toks[0].indexOf("!"));
+			
+			for (ClassChannelContainer c : channels.values())
+			{
+				for (String s : c.chanusers)
+				{
+					if (s.toLowerCase().equals(whoquit.toLowerCase()))
+					{
+						c.chanusers.remove(s);
+						c.addLine("*** " + whoquit + " has disconnected (" + args + ")");
+						if (ChannelViewHandler != null)
+							Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, c.channame.toLowerCase()).sendToTarget();
+						break;
+					}
+				}
+			}
+			
 		} else if (command.equals("KICK"))
 		{
 			// :prefix kick #chan who :why
 			if (channels.containsKey(toks[2].toLowerCase()))
 			{
 				ClassChannelContainer c = channels.get(toks[2].toLowerCase());
-				if(c.chanusers.contains(toks[3]))
-						c.chanusers.remove(toks[3]);
+				if (c.chanusers.contains(toks[3]))
+					c.chanusers.remove(toks[3]);
 				c.addLine("*** " + toks[3] + " was kicked (" + args + ")");
 				flagupdate = true;
 				updatechan = toks[2];
 			}
-			
+		} else if (command.equals("PART"))
+		// User must have left a channel
+		{
+			// :Kraln!Kraln@71.61.229.105 PART #hi
+			String who = toks[0].substring(1, toks[0].indexOf("!"));
+			ClassChannelContainer temp;
+			if (who.equals(nick)) // if we joined a channel
+			{
+				
+				if (channels.containsKey(toks[2].toLowerCase())) // existing channel?
+				{
+					temp = channels.get(toks[2].toLowerCase());
+					temp.addLine("*** You have left this channel.");
+					if (ChannelViewHandler != null)
+						Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, temp.channame.toLowerCase()).sendToTarget();
+					channels.remove(temp); // will this work?
+				}
+			} else
+			{
+				temp = channels.get(toks[2].toLowerCase());
+				temp.chanusers.remove(who);
+				temp.addLine("*** " + who + " has left the channel.");
+			}
+			flagupdate = true;
+			updatechan = toks[2].toLowerCase();
 		} else if (command.equals("JOIN"))
 		// User must have joined a channel
 		{
+			String who = toks[0].substring(1, toks[0].indexOf("!"));
 			ClassChannelContainer temp;
-			if (channels.containsKey(args.toLowerCase())) // existing channel?
+			if (who.equals(nick)) // if we joined a channel
 			{
-				temp = channels.get(args);
+				
+				if (channels.containsKey(args.toLowerCase())) // existing channel?
+				{
+					temp = channels.get(args.toLowerCase());
+				} else
+				{
+					temp = new ClassChannelContainer();
+					temp.channame = args.toLowerCase();
+					temp.addLine("*** Now talking on " + args + "...");
+					channels.put(args.toLowerCase(), temp);
+				}
 			} else
 			{
-				temp = new ClassChannelContainer();
-				temp.channame = args;
-				temp.addLine("Now talking on " + args + "..."); // top buffer...
-				channels.put(args.toLowerCase(), temp);
+				temp = channels.get(args.toLowerCase());
+				temp.chanusers.add(who);
+				temp.addLine("*** " + who + " has joined the channel.");
 			}
 			flagupdate = true;
-			updatechan = args;
-			
+			updatechan = args.toLowerCase();
 			
 		} else if (command.equals("PRIVMSG"))
 		// to a channel?
@@ -220,20 +302,19 @@ public class ServiceIRCService
 			if (channels.containsKey(chan)) // existing channel?
 			{
 				temp = channels.get(chan);
-				if(args.trim().startsWith("ACTION"))
+				if (args.trim().startsWith("ACTION"))
 				{
 					temp.addLine("* " + toks[0].substring(1, toks[0].indexOf("!")) + " " + args.substring(7));
-
+					
 				} else
 					temp.addLine("<" + toks[0].substring(1, toks[0].indexOf("!")) + "> " + args);
-			
-			
-			flagupdate = true;
-			updatechan = chan;
+				
+				flagupdate = true;
+				updatechan = chan;
 			}
 		}
 		
-		if(flagupdate)
+		if (flagupdate)
 		{
 			if (ChannelViewHandler != null)
 				Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, updatechan.toLowerCase()).sendToTarget();
@@ -322,16 +403,16 @@ public class ServiceIRCService
 			// this is a raw command.
 			// parse here for intelligent commands, otherwise send it along raw
 			
-			if (what.startsWith("/me")) //special case...
+			if (what.startsWith("/me ")) // special case...
 			{
 				try
 				{
-				String temp = "PRIVMSG " + chan + " :" + '\001' + "ACTION " + what.substring(3) + '\001' + "\n";
-
-				writer.write(temp);
-				writer.flush();
-				GetLine(":" + nick + "! " + temp);
-
+					String temp = "PRIVMSG " + chan + " :" + '\001' + "ACTION " + what.substring(4) + '\001' + "\n";
+					
+					writer.write(temp);
+					writer.flush();
+					GetLine(":" + nick + "! " + temp);
+					
 				} catch (IOException e)
 				{
 					e.printStackTrace();
@@ -346,7 +427,7 @@ public class ServiceIRCService
 			
 			try
 			{
-				String temp = what.toUpperCase().substring(1) + "\n";
+				String temp = what.substring(1) + "\n";
 				writer.write(temp);
 				writer.flush();
 			} catch (IOException e)
