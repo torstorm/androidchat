@@ -27,7 +27,7 @@ public class ServiceIRCService
 	public static BufferedReader									reader;
 	public static int													state;
 	private static String											server			= "38.100.42.254";
-	private static String											nick				= "AndroidChat";
+	private static String											nick				= "AndroidChat2";
 	
 	public static final int											MSG_UPDATECHAN	= 0;
 	public static final int											MSG_UPDATEPM	= 1;
