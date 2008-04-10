@@ -33,7 +33,8 @@
               android:layout_height="wrap_content"
               android:layout_width="fill_parent"
               android:layout_toRight="@+id/ircsend"
-              android:text="">
+              android:text=""
+              android:hint="">
         <requestFocus/>
 
     </EditText>
@@ -45,8 +46,10 @@
               android:layout_height="fill_parent"
               android:text="Please connect to the network!"
               android:scrollbars="vertical"
+              android:maxLines="8"
               android:autoLink="web"
               android:gravity="bottom"
+              android:background="#313EBEBE"
             />
 
 </RelativeLayout>

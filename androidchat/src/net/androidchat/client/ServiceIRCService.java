@@ -79,8 +79,6 @@ public class ServiceIRCService
 			if (channels.containsKey(chan))
 			{
 				temp = channels.get(chan);
-				temp.addLine("*** Channel Location Updated");
-				// should probably restrict this to debug
 				temp.loc_lat = Float.parseFloat(toks[4]);
 				temp.loc_lng = Float.parseFloat(toks[5]);
 			}

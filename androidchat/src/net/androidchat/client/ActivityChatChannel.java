@@ -42,10 +42,17 @@ public class ActivityChatChannel extends Activity {
         if (ctemp == null) return;
 
         for (int i = 0; i < ctemp.whatsinchan.size(); i++) {
-            temp.append(ctemp.whatsinchan.get(i) + "\n");
+            temp.append(">" + ctemp.whatsinchan.get(i) + "<\n");
+            
+            
         }
         
-        tv.setText(temp);
+        tv.setGravity(0x50);
+        tv.setLines(8);
+        tv.setSelectAllOnFocus(true);
+        tv.setText(temp.toString().trim());
+        te.setHint(new String("lines: " + tv.getLineCount()));
+        
         this.setTitle(R.string.app_name);
         this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + channel + " - " + ctemp.chantopic);
     }
