@@ -16,20 +16,18 @@ public final class R {
     }
     public static final class id {
         public static final int androidchat=0x7f040000;
-        public static final int btn_Connect=0x7f04000a;
-        public static final int btn_ShowChan=0x7f04000b;
+        public static final int btn_Connect=0x7f040007;
+        public static final int btn_ShowChan=0x7f040008;
         public static final int btn_ShowOpts=0x7f040009;
-        public static final int chanspinner=0x7f04000e;
-        public static final int img_AndroidChatLogo=0x7f040008;
-        public static final int ircback=0x7f040001;
-        public static final int ircchannel=0x7f040002;
-        public static final int ircdisp=0x7f040005;
-        public static final int ircedit=0x7f040004;
-        public static final int ircsend=0x7f040003;
-        public static final int maptv=0x7f04000d;
-        public static final int mapv=0x7f04000c;
-        public static final int start=0x7f040006;
-        public static final int stop=0x7f040007;
+        public static final int chanspinner=0x7f04000c;
+        public static final int img_AndroidChatLogo=0x7f040006;
+        public static final int ircdisp=0x7f040003;
+        public static final int ircedit=0x7f040001;
+        public static final int ircscroll=0x7f040002;
+        public static final int maptv=0x7f04000b;
+        public static final int mapv=0x7f04000a;
+        public static final int start=0x7f040004;
+        public static final int stop=0x7f040005;
     }
     public static final class layout {
         public static final int chat=0x7f030000;
