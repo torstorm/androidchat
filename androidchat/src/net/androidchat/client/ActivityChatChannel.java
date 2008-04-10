@@ -114,8 +114,9 @@ public class ActivityChatChannel extends Activity {
     private OnClickListener mMapListener = new OnClickListener() {
         public void onClick(View v)
         {
-        	
-			startActivity(new Intent(ActivityChatChannel.this, AndroidChatMap.class));
+        	Intent i = new Intent(ActivityChatChannel.this, AndroidChatMap.class);
+        //	i.putExtra("channel_list", ServiceIRCService.channel_list);
+			startActivity(i);
 
             // do the same as the below function
        //     ServiceIRCService.SendToChan(chan, te.getText().toString());
