@@ -11,10 +11,13 @@ public class ClassChannelContainer {
     public double loc_lat;
     public double loc_lng;
     
+    public boolean NAMES_END;
+    
     public ClassChannelContainer()
     {
         whatsinchan = new ArrayList<String>();
         chanusers = new ArrayList<String>();
+        NAMES_END = true;
     }
 
     public void addLine(String line)

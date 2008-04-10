@@ -5,7 +5,7 @@
 	android:baselineAligned="false">
 
 	<EditText android:id="@+id/ircedit"
-		android:layout_height="28sp"
+		android:layout_height="wrap_content"
 		android:layout_width="fill_parent" android:text="" android:hint=""
 		android:layout_weight="0"
 		android:textSize="14sp">

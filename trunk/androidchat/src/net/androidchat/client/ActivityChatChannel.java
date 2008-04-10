@@ -41,16 +41,16 @@ public class ActivityChatChannel extends Activity {
         StringBuilder temp = new StringBuilder();
         ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(channel);
 
-        if (ctemp == null) return;
+        //if (ctemp == null) return;
 
         for (int i = 0; i < ctemp.whatsinchan.size(); i++) {
             temp.append(ctemp.whatsinchan.get(i) + "\n");
         }
         
         tv.setGravity(0x50);
-        tv.setText(temp.toString().trim());
-        te.setHint(new String("lines: " + tv.getLineCount()));
-        
+        tv.setText("\n\n\n" + temp.toString().trim());
+       // te.setHint(new String("lines: " + tv.getLineCount()));
+        sv.fullScroll(ScrollView.FOCUS_DOWN);
         sv.smoothScrollBy(0, tv.getLineHeight());
         this.setTitle(R.string.app_name);
         this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + channel + " - " + ctemp.chantopic);
@@ -75,6 +75,9 @@ public class ActivityChatChannel extends Activity {
         te.setOnKeyListener(mKeyListener);
         te.setSingleLine();
         tv = (TextView) findViewById(R.id.ircdisp);
+        
+        sv.fullScroll(ScrollView.FOCUS_DOWN);
+
 
        ServiceIRCService.ChannelViewHandler = mHandler;
     }
