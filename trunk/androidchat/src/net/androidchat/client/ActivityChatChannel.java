@@ -13,12 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ScrollView;
 
 public class ActivityChatChannel extends Activity {
 
     private TextView tv;
     private EditText te;
     private String chan;
+    private ScrollView sv;
 
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg)
@@ -42,17 +44,14 @@ public class ActivityChatChannel extends Activity {
         if (ctemp == null) return;
 
         for (int i = 0; i < ctemp.whatsinchan.size(); i++) {
-            temp.append(">" + ctemp.whatsinchan.get(i) + "<\n");
-            
-            
+            temp.append(ctemp.whatsinchan.get(i) + "\n");
         }
         
         tv.setGravity(0x50);
-        tv.setLines(8);
-        tv.setSelectAllOnFocus(true);
         tv.setText(temp.toString().trim());
         te.setHint(new String("lines: " + tv.getLineCount()));
         
+        sv.smoothScrollBy(0, tv.getLineHeight());
         this.setTitle(R.string.app_name);
         this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + channel + " - " + ctemp.chantopic);
     }
@@ -64,20 +63,20 @@ public class ActivityChatChannel extends Activity {
         setContentView(R.layout.chat);
 
         // Watch for button clicks.
-        Button button = (Button) findViewById(R.id.ircsend);
-        button.setOnClickListener(mSendListener);
-        ImageButton button2 = (ImageButton) findViewById(R.id.ircback);
-        button2.setOnClickListener(mBackListener);
+        //Button button = (Button) findViewById(R.id.ircsend);
+        //button.setOnClickListener(mSendListener);
+        //ImageButton button2 = (ImageButton) findViewById(R.id.ircback);
+        //button2.setOnClickListener(mBackListener);
         
-        Button button3 = (Button) findViewById(R.id.ircchannel);
-        button3.setOnClickListener(mMapListener);
-        
+        //Button button3 = (Button) findViewById(R.id.ircchannel);
+        //button3.setOnClickListener(mMapListener);
+        sv = (ScrollView) findViewById(R.id.ircscroll);
         te = (EditText) findViewById(R.id.ircedit);
         te.setOnKeyListener(mKeyListener);
+        te.setSingleLine();
         tv = (TextView) findViewById(R.id.ircdisp);
 
        ServiceIRCService.ChannelViewHandler = mHandler;
-
     }
 
     private OnClickListener mSendListener = new OnClickListener() {
