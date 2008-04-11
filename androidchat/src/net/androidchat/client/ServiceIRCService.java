@@ -450,12 +450,7 @@ public class ServiceIRCService
 	public static void SendToChan(String chan, String what) {
 		if (what.trim().equals(""))
 			return;
-		if (chan == null)
-		{
-			// error about not being on a channel here
-			return;
-		}
-		
+
 		if (what.startsWith("/"))
 		{
 			// this is a raw command.
@@ -466,6 +461,33 @@ public class ServiceIRCService
 				try
 				{
 					String temp = "PRIVMSG " + chan + " :" + '\001' + "ACTION " + what.substring(4) + '\001' + "\n";
+					
+					writer.write(temp);
+					writer.flush();
+					GetLine(":" + nick + "! " + temp);
+					
+				} catch (IOException e)
+				{
+					e.printStackTrace();
+				} catch (NullPointerException npe)
+				{
+					npe.printStackTrace();
+				}
+				if (ChannelViewHandler != null)
+					Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();
+				return;
+			}
+	
+			if (what.startsWith("/msg ")) // special case...
+			{
+				try
+				{
+					String blah = what.substring(5);
+					String towho = blah.substring(0,blah.indexOf(" ")).trim();
+					String args = blah.substring(blah.indexOf(" ")).trim();
+					
+					
+					String temp = "PRIVMSG " + towho + " :" + args + "\n";
 					
 					writer.write(temp);
 					writer.flush();
@@ -497,6 +519,13 @@ public class ServiceIRCService
 			}
 			return;
 			
+		}
+		
+		
+		if (chan == null)
+		{
+			// error about not being on a channel here
+			return;
 		}
 		
 		// PRIVMSG <target> :<message>

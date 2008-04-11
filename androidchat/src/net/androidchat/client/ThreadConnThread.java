@@ -75,7 +75,9 @@ public class ThreadConnThread implements Runnable {
 
         ServiceIRCService.state = 3;// autojoin
         try {
-            ServiceIRCService.writer.write("JOIN " + defchan + "\r\n");
+      	   String[] autojoin = defchan.split(" ");
+      	   for (String s : autojoin)
+      	   	ServiceIRCService.writer.write("JOIN " + s + "\n");
             ServiceIRCService.writer.flush();
             ServiceIRCService.writer.write("LIST\r\n"); // get list while we're at it
             ServiceIRCService.writer.flush();

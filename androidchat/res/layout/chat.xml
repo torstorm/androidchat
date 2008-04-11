@@ -20,7 +20,7 @@
 			android:layout_height="fill_parent"
 			android:text="Please connect to the network!"
 			android:scrollbars="vertical" android:autoLink="web"
-			android:layout_weight="1" android:background="#313EBEBE"
+			android:layout_weight="1" 
 			android:layout_gravity="bottom" />
 	</ScrollView>
 
