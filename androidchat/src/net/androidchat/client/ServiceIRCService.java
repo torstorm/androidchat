@@ -322,6 +322,22 @@ public class ServiceIRCService
 		
 	}
 	
+	public static void JoinChan(String channel)
+	{
+		try
+		{
+			String temp = "JOIN " + channel + "\n";
+			writer.write(temp);
+			writer.flush();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		} catch (NullPointerException npe)
+		{
+			npe.printStackTrace();
+		}
+	}
+	
 	public static void AskForChannelList() {
 		
 		try
