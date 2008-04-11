@@ -10,22 +10,29 @@ import com.google.android.maps.OverlayController;
 import com.google.android.maps.Point;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+
 import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+
 import android.widget.Spinner;
 import net.androidchat.client.AndroidChatOverlay;
 
 import android.util.Log;
 
-public class AndroidChatMap extends MapActivity {
+public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSelectedListener{
 	private static HashMap<String, ClassChannelDescriptor>	channel_list;
 	private MapView mapView;
 	private MapController mc;
 	private OverlayController oc;
 	
 	private LocationManager lm;
+	private Spinner s1;
 
 	@Override 
     public void onCreate(Bundle icicle) { 
@@ -37,9 +44,10 @@ public class AndroidChatMap extends MapActivity {
 
         
         setContentView(R.layout.map); 
-        Spinner s1 = (Spinner) findViewById(R.id.chanspinner);
+       s1 = (Spinner) findViewById(R.id.chanspinner);
        
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        adapter.addObject("Current Location");
         for(int i = 0; i < chanNames.size(); i++) {
             adapter.addObject((String)chanNames.toArray()[i]);
             Log.v("Object test", (String)chanNames.toArray()[i]);
@@ -67,4 +75,33 @@ public class AndroidChatMap extends MapActivity {
         mc.zoomTo(9); 
     } 
 	
+	public void onItemSelected(AdapterView parent, View v, int position, long id) {
+    	Set<String> chanNames = channel_list.keySet();
+
+		if(position == 0) {
+        	 
+            Location loc = lm.getCurrentLocation("gps");
+    	    int lat = (int) (loc.getLatitude() * 1000000);
+            int lng = (int) (loc.getLongitude() * 1000000); 
+            Point p = new Point(lat,lng);
+            mc.animateTo(p); 
+		} else {
+			ClassChannelDescriptor tChan = channel_list.get((String)chanNames.toArray()[position-1]);
+			int lat = (int) (tChan.loc_lat * 1000000);
+			int lng = (int) (tChan.loc_lng * 1000000);
+            Point p = new Point(lat,lng);
+            mc.animateTo(p); 
+
+		}
+	}
+	
+    public void onNothingSelected(AdapterView parent) {
+    }
+    
+    private OnClickListener mJoinListener = new OnClickListener() {
+        public void onClick(View v)
+        {
+        	String chan = (String) s1.getSelectedItem();
+        }
+    };
 }
