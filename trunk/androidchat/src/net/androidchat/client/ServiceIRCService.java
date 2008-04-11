@@ -20,7 +20,7 @@ import android.util.Log;
 public class ServiceIRCService
 		extends Service
 {
-	private static Context													context;
+	private static Context											context;
 	private static Thread											connection;
 	private static Thread											updates;
 	
@@ -28,16 +28,16 @@ public class ServiceIRCService
 	public static BufferedWriter									writer;
 	public static BufferedReader									reader;
 	public static int													state;
-	private static String											server			= "38.100.42.254";
-	private static String											nick				= "AndroidChat2";
+	private static String											server				= "38.100.42.254";
+	private static String											nick					= "AndroidChat2";
 	
-	public static final int											MSG_UPDATECHAN	= 0;
-	public static final int											MSG_UPDATEPM	= 1;
-	public static final int											MSG_CHANGECHAN	= 2;
-	public static final int											MSG_DISCONNECT	= 3;
-	public static final int											MSG_CHANGEWINDOW = 4;
+	public static final int											MSG_UPDATECHAN		= 0;
+	public static final int											MSG_UPDATEPM		= 1;
+	public static final int											MSG_CHANGECHAN		= 2;
+	public static final int											MSG_DISCONNECT		= 3;
+	public static final int											MSG_CHANGEWINDOW	= 4;
 	
-	public static final String										AC_VERSION		= "0.02A";
+	public static final String										AC_VERSION			= "0.02A";
 	
 	private static boolean											is_first_list;
 	
@@ -51,7 +51,7 @@ public class ServiceIRCService
 		// rfc 2812
 		// [:prefix] command|numeric [arg1, arg2...] :extargs
 		
-		Log.d("ServiceIRCService","raw line: " + line);
+		Log.d("ServiceIRCService", "raw line: " + line);
 		
 		String args, prefix, command;
 		args = prefix = command = "";
@@ -199,7 +199,7 @@ public class ServiceIRCService
 			
 			String oldnick = toks[0].substring(1, toks[0].indexOf("!"));
 			if (nick.toLowerCase().equals(oldnick.toLowerCase())) // we changed
-																					// /our/ nickname
+			// /our/ nickname
 			{
 				nick = toks[2];
 			}
@@ -261,7 +261,8 @@ public class ServiceIRCService
 			if (who.equals(nick)) // if we joined a channel
 			{
 				
-				if (channels.containsKey(toks[2].toLowerCase())) // existing channel?
+				if (channels.containsKey(toks[2].toLowerCase())) // existing
+																					// channel?
 				{
 					temp = channels.get(toks[2].toLowerCase());
 					temp.addLine("*** You have left this channel.");
@@ -296,15 +297,16 @@ public class ServiceIRCService
 					channels.put(args.toLowerCase(), temp);
 					if (ChannelViewHandler != null)
 						Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, args.toLowerCase()).sendToTarget();
-
+					
 				}
 			} else
 			{
-				if(args.equals(""))
+				if (args.equals(""))
 				{
 					temp = channels.get(toks[2].toLowerCase());
-				} else {
-				temp = channels.get(args.toLowerCase());
+				} else
+				{
+					temp = channels.get(args.toLowerCase());
 				}
 				temp.chanusers.add(who);
 				temp.addLine("*** " + who + " has joined the channel.");
@@ -330,9 +332,10 @@ public class ServiceIRCService
 				
 				flagupdate = true;
 				updatechan = chan;
-			} else if (chan.equals(nick.toLowerCase())) // crap, it's a private message
-			{	// :Kraln!Kuja@71.61.229.105 PRIVMSG AndroidChat2 :Hello
-				
+			} else if (chan.equals(nick.toLowerCase())) // crap, it's a private
+																		// message
+			{ // :Kraln!Kuja@71.61.229.105 PRIVMSG AndroidChat2 :Hello
+			
 				String who = toks[0].substring(1, toks[0].indexOf("!"));
 				if (channels.containsKey(who.toLowerCase())) // existing pm
 				{
@@ -364,8 +367,7 @@ public class ServiceIRCService
 		
 	}
 	
-	public static void JoinChan(String channel)
-	{
+	public static void JoinChan(String channel) {
 		try
 		{
 			String temp = "JOIN " + channel + "\n";
@@ -455,7 +457,7 @@ public class ServiceIRCService
 	public static void SendToChan(String chan, String what) {
 		if (what.trim().equals(""))
 			return;
-
+		
 		if (what.startsWith("/"))
 		{
 			// this is a raw command.
@@ -482,15 +484,14 @@ public class ServiceIRCService
 					Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();
 				return;
 			}
-	
+			
 			if (what.startsWith("/msg ")) // special case...
 			{
 				try
 				{
 					String blah = what.substring(5);
-					String towho = blah.substring(0,blah.indexOf(" ")).trim();
+					String towho = blah.substring(0, blah.indexOf(" ")).trim();
 					String args = blah.substring(blah.indexOf(" ")).trim();
-					
 					
 					String temp = "PRIVMSG " + towho + " :" + args + "\n";
 					
@@ -525,7 +526,6 @@ public class ServiceIRCService
 			return;
 			
 		}
-		
 		
 		if (chan == null)
 		{
@@ -609,7 +609,7 @@ public class ServiceIRCService
 			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, "~status").sendToTarget();
 			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
 		}
-
+		
 		// Tell the user we stopped.
 		mNM.notify(R.string.irc_started, new Notification(context, R.drawable.mini_icon, getText(R.string.irc_stopped), System
 				.currentTimeMillis(), "AndroidChat - Notification", getText(R.string.irc_stopped), null, R.drawable.mini_icon, "Android Chat",
@@ -627,13 +627,13 @@ public class ServiceIRCService
 	
 	// This is the object that receives interactions from clients. See
 	// RemoteService for a more complete example.
-	private final IBinder			mBinder	= new Binder()
-														{
-															@Override
-															protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) {
-																return super.onTransact(code, data, reply, flags);
-															}
-														};
+	private final IBinder					mBinder	= new Binder()
+																{
+																	@Override
+																	protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) {
+																		return super.onTransact(code, data, reply, flags);
+																	}
+																};
 	
 	private static NotificationManager	mNM;
 }
