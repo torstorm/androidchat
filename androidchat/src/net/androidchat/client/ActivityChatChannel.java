@@ -1,6 +1,7 @@
 package net.androidchat.client;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,6 +56,10 @@ public class ActivityChatChannel extends Activity {
       	  return;
       	  }
         if(!Window.equals(CurWindow)) {
+      	  
+      	  ServiceIRCService.mNM.notify(R.string.irc_started, new Notification(ServiceIRCService.context, R.drawable.mini_icon, ServiceIRCService.context.getText(R.string.ui_newmsg) + " " + Window, System
+						.currentTimeMillis(), "AndroidChat - Notification", ServiceIRCService.context.getText(R.string.ui_newmsg) + " " + Window, null, R.drawable.mini_icon,
+						"Android Chat", null));
       	  return;
         }
 
@@ -122,8 +127,12 @@ public class ActivityChatChannel extends Activity {
         // group -- Not used here.
         // id -- Used only when you want to handle and identify the click yourself.
         // title
-        menu.add(0, 0, "Map");
-        menu.add(0, 1, "Current Channels");
+        menu.add(0, 0, "Channel Map"); // todo: these should pull from a resource
+        menu.add(0, 1, "Open Windows");
+        
+        menu.get(0).setIcon(R.drawable.map);
+        menu.get(1).setIcon(R.drawable.channels);
+
         return true;
     }
 
@@ -135,6 +144,7 @@ public class ActivityChatChannel extends Activity {
     public boolean onOptionsItemSelected(Menu.Item item){
         switch (item.getId()) {
         case 0:
+          	ServiceIRCService.AskForChannelList(); // update channel list
         	Intent i = new Intent(ActivityChatChannel.this, AndroidChatMap.class);
             //	i.putExtra("channel_list", ServiceIRCService.channel_list);
     			startActivity(i);

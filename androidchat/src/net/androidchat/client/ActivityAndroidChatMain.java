@@ -31,8 +31,8 @@ public class ActivityAndroidChatMain
 			button.setText(R.string.btn_connect);
 		else
 			button.setText(R.string.btn_disconnect);
-		button = (Button) findViewById(R.id.btn_ShowChan);
-		button.setOnClickListener(mChanListener);
+		//button = (Button) findViewById(R.id.btn_ShowChan);
+		//button.setOnClickListener(mChanListener);
 	}
 	
 	private OnClickListener	mChanListener		= new OnClickListener()
@@ -59,11 +59,12 @@ public class ActivityAndroidChatMain
 																		assert (myConnectivtyService != null);
 																		Button button = (Button) findViewById(R.id.btn_Connect);
 																		button.setText(R.string.btn_disconnect);
-																		
+																		startActivity(new Intent(ActivityAndroidChatMain.this, ActivityChatChannel.class));
 																	} else
 																	{
 																		// if started
 																		//myConnectivtyIntent = new Intent(ActivityAndroidChatMain.this,		ServiceIRCService.class);
+																		ServiceIRCService.QuitServer();
 																		stopService(myConnectivtyIntent);
 																		Button button = (Button) findViewById(R.id.btn_Connect);
 																		button.setText(R.string.btn_connect);

@@ -18,7 +18,7 @@
 		<TextView android:id="@+id/ircdisp"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:text="Please connect to the network!"
+			android:text="Waiting for network connection..."
 			android:scrollbars="vertical" android:autoLink="web"
 			android:layout_weight="1" 
 			android:layout_gravity="bottom" />
