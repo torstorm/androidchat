@@ -106,6 +106,9 @@ public class ActivityChatChannel extends Activity {
 
 
        ServiceIRCService.ChannelViewHandler = mHandler;
+       CurWindow = "~status";
+       
+       
        
 
     }

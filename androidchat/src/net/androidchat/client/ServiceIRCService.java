@@ -300,7 +300,12 @@ public class ServiceIRCService
 				}
 			} else
 			{
+				if(args.equals(""))
+				{
+					temp = channels.get(toks[2].toLowerCase());
+				} else {
 				temp = channels.get(args.toLowerCase());
+				}
 				temp.chanusers.add(who);
 				temp.addLine("*** " + who + " has joined the channel.");
 			}
