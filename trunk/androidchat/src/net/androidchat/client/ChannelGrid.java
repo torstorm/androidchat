@@ -38,7 +38,7 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
         chanGrid = (GridView) findViewById(R.id.cGrid);
 
         
-        chanGrid.setAdapter(new ChanAdapter(this, chanNames));
+        chanGrid.setAdapter(new ChanAdapter(this));
         chanGrid.setOnItemClickListener(this);
         //			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
 
@@ -50,8 +50,9 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
     	//ServiceIRCService.MSG_CHANGEWINDOW
     	Log.v("View change", chan);
     	Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, chan).sendToTarget();
-
     	Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();
+    	finish();
+    	
 	}
 	
 	

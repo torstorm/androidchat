@@ -42,9 +42,6 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         channel_list = ServiceIRCService.channel_list;
     	Set<String> chanNames = channel_list.keySet();
         
-        
-
-        
         setContentView(R.layout.map);
         
     	ImageButton button = (ImageButton) findViewById(R.id.join_chatbut);
@@ -113,6 +110,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         	String chan = (String) s1.getSelectedItem();
         	if(!chan.equals("Current Location")) {
         		ServiceIRCService.JoinChan(chan);
+        		finish();
         	}
         }
     };

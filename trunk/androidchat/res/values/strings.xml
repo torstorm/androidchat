@@ -2,11 +2,15 @@
 <resources>
     <string name="app_name">androidChat</string>
 
-    <string name="btn_connect">Connect</string>
+    <string name="btn_connect">Start Chatting!</string>
     <string name="btn_disconnect">Disconnect</string>
+    <string name="btn_options">Options</string>
     
+    <string name="welcome">Welcome to AndroidChat!</string>
+   
     <string name="ui_getstarted">Type here and press enter to start chatting!</string>
     <string name="ui_newpm">You have a new message!</string>
+    <string name="ui_newmsg">There is a new message in channel </string>
     
     
     

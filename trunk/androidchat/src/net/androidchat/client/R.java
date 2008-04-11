@@ -11,23 +11,24 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int icon=0x7f020000;
-        public static final int join_channel=0x7f020001;
-        public static final int mini_icon=0x7f020002;
+        public static final int channels=0x7f020000;
+        public static final int icon=0x7f020001;
+        public static final int join_channel=0x7f020002;
+        public static final int map=0x7f020003;
+        public static final int mini_icon=0x7f020004;
     }
     public static final class id {
         public static final int androidchat=0x7f040000;
         public static final int btn_Connect=0x7f040008;
-        public static final int btn_ShowChan=0x7f040009;
-        public static final int btn_ShowOpts=0x7f04000a;
+        public static final int btn_ShowOpts=0x7f040009;
         public static final int cGrid=0x7f040001;
-        public static final int chanspinner=0x7f04000c;
+        public static final int chanspinner=0x7f04000b;
         public static final int img_AndroidChatLogo=0x7f040007;
         public static final int ircdisp=0x7f040004;
         public static final int ircedit=0x7f040002;
         public static final int ircscroll=0x7f040003;
-        public static final int join_chatbut=0x7f04000d;
-        public static final int mapv=0x7f04000b;
+        public static final int join_chatbut=0x7f04000c;
+        public static final int mapv=0x7f04000a;
         public static final int start=0x7f040005;
         public static final int stop=0x7f040006;
     }
@@ -42,13 +43,16 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int btn_connect=0x7f050001;
         public static final int btn_disconnect=0x7f050002;
-        public static final int irc_connected=0x7f050007;
-        public static final int irc_connecting=0x7f050006;
-        public static final int irc_disconnected=0x7f050009;
-        public static final int irc_error=0x7f050008;
-        public static final int irc_started=0x7f050005;
-        public static final int irc_stopped=0x7f05000a;
-        public static final int ui_getstarted=0x7f050003;
-        public static final int ui_newpm=0x7f050004;
+        public static final int btn_options=0x7f050003;
+        public static final int irc_connected=0x7f05000a;
+        public static final int irc_connecting=0x7f050009;
+        public static final int irc_disconnected=0x7f05000c;
+        public static final int irc_error=0x7f05000b;
+        public static final int irc_started=0x7f050008;
+        public static final int irc_stopped=0x7f05000d;
+        public static final int ui_getstarted=0x7f050005;
+        public static final int ui_newmsg=0x7f050007;
+        public static final int ui_newpm=0x7f050006;
+        public static final int welcome=0x7f050004;
     }
 }

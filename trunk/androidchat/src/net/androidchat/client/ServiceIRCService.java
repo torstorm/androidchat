@@ -20,7 +20,7 @@ import android.util.Log;
 public class ServiceIRCService
 		extends Service
 {
-	private static Context											context;
+	public static Context											context;
 	private static Thread											connection;
 	private static Thread											updates;
 	
@@ -441,9 +441,15 @@ public class ServiceIRCService
 	public static void QuitServer() {
 		try
 		{
-			String temp = "QUIT :Android Client has quit";
+			String temp = "QUIT :AndroidChat client has quit\n";
 			writer.write(temp);
 			writer.flush();
+			ServiceIRCService.state = -1;
+			ServiceIRCService.reader.close();
+			ServiceIRCService.connection.interrupt();
+			
+
+
 			
 		} catch (IOException e)
 		{
@@ -452,6 +458,9 @@ public class ServiceIRCService
 		{
 			npe.printStackTrace();
 		}
+		
+		
+		
 	}
 	
 	public static void SendToChan(String chan, String what) {
@@ -599,9 +608,7 @@ public class ServiceIRCService
 	protected void onDestroy() {
 		// Cancel the persistent notification.
 		QuitServer();
-		
 		mNM.cancel(R.string.irc_started);
-		connection.interrupt();
 		state = 0;
 		if (ChannelViewHandler != null)
 		{
@@ -635,5 +642,5 @@ public class ServiceIRCService
 																	}
 																};
 	
-	private static NotificationManager	mNM;
+	public static NotificationManager	mNM;
 }
