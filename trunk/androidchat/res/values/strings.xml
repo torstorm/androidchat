@@ -5,6 +5,11 @@
     <string name="btn_connect">Connect</string>
     <string name="btn_disconnect">Disconnect</string>
     
+    <string name="ui_getstarted">Type here and press enter to start chatting!</string>
+    <string name="ui_newpm">You have a new message!</string>
+    
+    
+    
     <string name="irc_started">Chat Service Started</string>
     <string name="irc_connecting">Chat Service Connecting</string>
     <string name="irc_connected">Chat Service Connected</string>

@@ -31,7 +31,6 @@ public class ActivityChatChannel extends Activity {
             switch (msg.what) {
             
                 case ServiceIRCService.MSG_UPDATECHAN:
-                    chan = (String) msg.obj;
                     updateView((String) msg.obj);
                     break;
                     
@@ -65,13 +64,23 @@ public class ActivityChatChannel extends Activity {
         
         tv.setGravity(0x50);
         tv.setText("\n\n\n" + temp.toString().trim());
-        te.setHint(new String("Type here and press enter to start chatting!"));
+        te.setHint(new String(""));
         sv.fullScroll(ScrollView.FOCUS_DOWN);
         sv.smoothScrollBy(0, tv.getLineHeight());
         this.setTitle(R.string.app_name);
-        this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + Window + " - " + ctemp.chantopic);
+        if (ctemp.IS_PM)
+        {
+           this.setTitle(this.getTitle() + " - Private Message with " + ctemp.channame);
+
+        } else if (ctemp.IS_STATUS)
+        {
+           this.setTitle(this.getTitle() + " - Status Window");
+
+        } else {
+           this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + Window + " - " + ctemp.chantopic);
         }
-    }
+        }
+    
 
     @Override
     protected void onCreate(Bundle icicle)

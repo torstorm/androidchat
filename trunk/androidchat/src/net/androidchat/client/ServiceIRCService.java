@@ -15,11 +15,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.ArrayList;
+import android.util.Log;
 
 public class ServiceIRCService
 		extends Service
 {
-	private Context													context;
+	private static Context													context;
 	private static Thread											connection;
 	private static Thread											updates;
 	
@@ -49,6 +50,8 @@ public class ServiceIRCService
 	public static void GetLine(String line) {
 		// rfc 2812
 		// [:prefix] command|numeric [arg1, arg2...] :extargs
+		
+		Log.d("ServiceIRCService","raw line: " + line);
 		
 		String args, prefix, command;
 		args = prefix = command = "";
@@ -140,6 +143,13 @@ public class ServiceIRCService
 				updatechan = chan;
 			} // ignore topics for channels we aren't in
 			
+		} else if (command.equals("372"))
+		{
+			if (ChannelViewHandler != null)
+			{
+				channels.get("~status").addLine(args);
+				Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+			}
 		} else if (command.equals("353"))
 		{
 			// :dexter.chatspike.net 353 yournick = #funfactory :chattie dizz
@@ -315,6 +325,29 @@ public class ServiceIRCService
 				
 				flagupdate = true;
 				updatechan = chan;
+			} else if (chan.equals(nick.toLowerCase())) // crap, it's a private message
+			{	// :Kraln!Kuja@71.61.229.105 PRIVMSG AndroidChat2 :Hello
+				
+				String who = toks[0].substring(1, toks[0].indexOf("!"));
+				if (channels.containsKey(who.toLowerCase())) // existing pm
+				{
+					temp = channels.get(who.toLowerCase());
+				} else
+				{
+					temp = new ClassChannelContainer();
+					temp.channame = who;
+					temp.addLine("*** Now talking with " + who + "...");
+					temp.IS_PM = true;
+					channels.put(who.toLowerCase(), temp);
+					if (ChannelViewHandler != null)
+						Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, who.toLowerCase()).sendToTarget();
+				}
+				temp.addLine("<" + who + "> " + args);
+				mNM.notify(R.string.irc_started, new Notification(context, R.drawable.mini_icon, context.getText(R.string.ui_newpm), System
+						.currentTimeMillis(), "AndroidChat - Notification", context.getText(R.string.ui_newpm), null, R.drawable.mini_icon,
+						"Android Chat", null));
+				flagupdate = true;
+				updatechan = who.toLowerCase();
 			}
 		}
 		
@@ -390,6 +423,11 @@ public class ServiceIRCService
 		} catch (NullPointerException npe)
 		{
 			npe.printStackTrace();
+		}
+		if (ChannelViewHandler != null)
+		{
+			channels.get("~status").addLine("*** Sent updated location");
+			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
 		}
 	}
 	
@@ -497,10 +535,13 @@ public class ServiceIRCService
 		ClassChannelContainer debug = new ClassChannelContainer();
 		debug.channame = "Status/Debug Window";
 		debug.addLine("AndroidChat v" + AC_VERSION + " started.");
-		channels.put("status", debug);
+		channels.put("~status", debug);
 		
 		if (ChannelViewHandler != null)
-			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "status").sendToTarget();
+		{
+			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, "~status").sendToTarget();
+			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+		}
 		
 		// Display a notification about us starting. We use both a transient
 		// notification and a persistent notification in the status bar.
@@ -528,7 +569,13 @@ public class ServiceIRCService
 		mNM.cancel(R.string.irc_started);
 		connection.interrupt();
 		state = 0;
-		
+		if (ChannelViewHandler != null)
+		{
+			channels.get("~status").addLine("*** Disconnected");
+			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, "~status").sendToTarget();
+			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+		}
+
 		// Tell the user we stopped.
 		mNM.notify(R.string.irc_started, new Notification(context, R.drawable.mini_icon, getText(R.string.irc_stopped), System
 				.currentTimeMillis(), "AndroidChat - Notification", getText(R.string.irc_stopped), null, R.drawable.mini_icon, "Android Chat",
@@ -554,5 +601,5 @@ public class ServiceIRCService
 															}
 														};
 	
-	private NotificationManager	mNM;
+	private static NotificationManager	mNM;
 }
