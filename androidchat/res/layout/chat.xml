@@ -6,9 +6,10 @@
 
 	<EditText android:id="@+id/ircedit"
 		android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:text="" android:hint=""
+		android:layout_width="fill_parent" android:text=""
 		android:layout_weight="0"
-		android:textSize="14sp">
+		android:textSize="14sp"
+		android:hint="@string/ui_getstarted">
 		<requestFocus />
 	</EditText>
 	<ScrollView android:id="@+id/ircscroll"

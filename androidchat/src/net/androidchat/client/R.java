@@ -42,11 +42,13 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int btn_connect=0x7f050001;
         public static final int btn_disconnect=0x7f050002;
-        public static final int irc_connected=0x7f050005;
-        public static final int irc_connecting=0x7f050004;
-        public static final int irc_disconnected=0x7f050007;
-        public static final int irc_error=0x7f050006;
-        public static final int irc_started=0x7f050003;
-        public static final int irc_stopped=0x7f050008;
+        public static final int irc_connected=0x7f050007;
+        public static final int irc_connecting=0x7f050006;
+        public static final int irc_disconnected=0x7f050009;
+        public static final int irc_error=0x7f050008;
+        public static final int irc_started=0x7f050005;
+        public static final int irc_stopped=0x7f05000a;
+        public static final int ui_getstarted=0x7f050003;
+        public static final int ui_newpm=0x7f050004;
     }
 }
