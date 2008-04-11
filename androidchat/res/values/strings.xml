@@ -30,6 +30,6 @@
     <string name="opt_opt5">PopUp new PMs</string>
     
     <string name="opt_cancel">Cancel</string>
-    <string name="opt_save">Save Preferences and Return</string>
+    <string name="opt_save">Save Preferences</string>
     
 </resources>
