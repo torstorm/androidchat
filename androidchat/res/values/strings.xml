@@ -11,8 +11,7 @@
     <string name="ui_getstarted">Type here and press enter to start chatting!</string>
     <string name="ui_newpm">You have a new message!</string>
     <string name="ui_newmsg">There is a new message in channel </string>
-    
-    
+    <string name="ui_waiting">Waiting for network connection...</string>
     
     <string name="irc_started">Chat Service Started</string>
     <string name="irc_connecting">Chat Service Connecting</string>
@@ -20,4 +19,17 @@
     <string name="irc_error">Chat Service Error</string>
     <string name="irc_disconnected">Chat Service Disconnected</string>
     <string name="irc_stopped">Chat Service Stopped</string>
+    
+    <string name="opt_hint1">The nickname with which you connect</string>   
+    <string name="opt_hint2">Channels to automatically join after connecting, separated by spaces</string>
+    <string name="opt_hint3">Show the list of channels after first connecting</string>
+    <string name="opt_hint4">Send location updates for this client. (Highly Recommended)</string>
+    <string name="opt_hint5">Open Private Messages as they arrive</string>
+    <string name="opt_opt3">Channels On Connect</string>
+    <string name="opt_opt4">Send Location Updates</string>
+    <string name="opt_opt5">PopUp new PMs</string>
+    
+    <string name="opt_cancel">Cancel</string>
+    <string name="opt_save">Save Preferences and Return</string>
+    
 </resources>
