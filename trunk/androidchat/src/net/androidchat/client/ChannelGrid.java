@@ -40,6 +40,7 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
         
         chanGrid.setAdapter(new ChanAdapter(this));
         chanGrid.setOnItemClickListener(this);
+        this.setTitle("Choose which window to swap to:");
         //			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
 
 
@@ -74,11 +75,14 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
             i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
             Random rand = new Random();
-           int red = rand.nextInt(255+1);
-           int green = rand.nextInt(255+1);
-           int blue = rand.nextInt(255+1);
+           int red = rand.nextInt(127+1) + 128;
+           int green = rand.nextInt(127+1) + 128;
+           int blue = rand.nextInt(127+1) + 128;
 
             i.setTextColor(Color.rgb(red,green,blue));
+            i.setBackgroundColor(0x33FFFFFF);
+            i.setPadding(3, 3, 3, 3);
+            
          //   ResolveInfo info = mApps.get(position);
 
         //    i.setImageDrawable(info.activityInfo.loadIcon(getPackageManager()));
