@@ -17,8 +17,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import android.widget.ImageButton;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 
 import android.widget.Spinner;
 import net.androidchat.client.AndroidChatOverlay;
@@ -43,7 +45,10 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         
 
         
-        setContentView(R.layout.map); 
+        setContentView(R.layout.map);
+        
+    	ImageButton button = (ImageButton) findViewById(R.id.join_chatbut);
+		button.setOnClickListener(mJoinListener);
        s1 = (Spinner) findViewById(R.id.chanspinner);
        
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
@@ -55,6 +60,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s1.setAdapter(adapter);
+        s1.setOnItemSelectedListener(this);
 
 		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
@@ -78,6 +84,8 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
     	Set<String> chanNames = channel_list.keySet();
 
+    	
+
 		if(position == 0) {
         	 
             Location loc = lm.getCurrentLocation("gps");
@@ -91,6 +99,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 			int lng = (int) (tChan.loc_lng * 1000000);
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
+            Log.v("Selected", (String)chanNames.toArray()[position-1]);
 
 		}
 	}
@@ -102,6 +111,9 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         public void onClick(View v)
         {
         	String chan = (String) s1.getSelectedItem();
+        	if(!chan.equals("Current Location")) {
+        		ServiceIRCService.JoinChan(chan);
+        	}
         }
     };
 }
