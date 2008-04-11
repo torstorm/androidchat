@@ -18,6 +18,8 @@
         <activity android:name=".ActivityChatChannel"></activity>      
         <activity android:name=".AndroidChatMap"></activity>
         
+        <activity android:name=".ChannelGrid"></activity>
+        
         <service android:name=".ServiceIRCService" android:label="IRC Connectivity Service">
 
         </service>
