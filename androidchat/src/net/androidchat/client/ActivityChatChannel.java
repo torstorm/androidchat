@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ScrollView;
+import android.view.Menu;
+import android.util.Log;
+
 
 public class ActivityChatChannel extends Activity {
 
@@ -22,13 +25,15 @@ public class ActivityChatChannel extends Activity {
     private String chan;
     private ScrollView sv;
 
+
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg)
         {
             switch (msg.what) {
             
                 case ServiceIRCService.MSG_UPDATECHAN:
-                    chan = (String) msg.obj;
+                  //  chan = (String) msg.obj;
+                	Log.v("Channel MSG", (String) msg.obj);
                     updateView((String) msg.obj);
                     break;
                     
@@ -36,6 +41,15 @@ public class ActivityChatChannel extends Activity {
         }
     };
 
+    private void setCurrentChan(String channel) {
+        ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(channel);
+
+    		Log.v("New chan", channel);
+    		chan = channel;
+    		//not working :\
+      }
+    
+    
     private void updateView(String channel)
     {
         StringBuilder temp = new StringBuilder();
@@ -46,6 +60,9 @@ public class ActivityChatChannel extends Activity {
       	  tv.setText("\n\n\n*** You are not in this channel");
       	  return;
       	  }
+        if(channel != chan) {
+        	return;
+        }
 
         for (int i = 0; i < ctemp.whatsinchan.size(); i++) {
             temp.append(ctemp.whatsinchan.get(i) + "\n");
@@ -84,8 +101,47 @@ public class ActivityChatChannel extends Activity {
 
 
        ServiceIRCService.ChannelViewHandler = mHandler;
+       
+       //setCurrentChan("#hi"); //not working so we have to do it by hand, I guess
+       chan = "#hi";
     }
 
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        
+        // Parameters for menu.add are:
+        // group -- Not used here.
+        // id -- Used only when you want to handle and identify the click yourself.
+        // title
+        menu.add(0, 0, "Map");
+        menu.add(0, 1, "Current Channels");
+        return true;
+    }
+
+    // Activity callback that lets your handle the selection in the class.
+    // Return true to indicate that you've got it, false to indicate
+    // that it should be handled by a declared handler object for that
+    // item (handler objects are discouraged for reasons of efficiency).
+    @Override
+    public boolean onOptionsItemSelected(Menu.Item item){
+        switch (item.getId()) {
+        case 0:
+        	Intent i = new Intent(ActivityChatChannel.this, AndroidChatMap.class);
+            //	i.putExtra("channel_list", ServiceIRCService.channel_list);
+    			startActivity(i);
+          //  showAlert("Menu Item Clicked", "Zoom", "ok", null, false, null);
+            return true;
+        case 1:
+           // showAlert("Menu Item Clicked", "Settings", "ok", null, false, null);
+            return true;
+        case 2:
+           // showAlert("Menu Item Clicked", "Other", "ok", null, false, null);
+            return true;
+        }
+        return false;
+    }
     private OnClickListener mSendListener = new OnClickListener() {
         public void onClick(View v)
         {
@@ -129,4 +185,6 @@ public class ActivityChatChannel extends Activity {
        //     ServiceIRCService.SendToChan(chan, te.getText().toString());
         }
     };
+    
+    
 }
