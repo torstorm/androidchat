@@ -4,22 +4,27 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
         >
-    
-         <view class="com.google.android.maps.MapView" 
-            android:id="@+id/mapv" 
-          android:layout_width="fill_parent" 
-          android:layout_height="fill_parent"/>
-   
-    <TextView android:id="@+id/maptv"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    />
+        
+        <view class="com.google.android.maps.MapView" 
+        android:id="@+id/mapv"
+android:layout_width="fill_parent" 
+android:layout_height="fill_parent"/> 
     
         <Spinner android:id="@+id/chanspinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:drawSelectorOnTop="true"
     />
+    
+    	
+	<ImageButton android:id="@+id/join_chatbut"
+  android:src="@drawable/join_channel"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true" 
+  
+  android:layout_below="@+id/chanspinner"
+  />
     
 
 </RelativeLayout>
