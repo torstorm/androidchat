@@ -3,20 +3,26 @@ package net.androidchat.client;
 import java.util.Set;
 import java.util.Random;
 
+import com.google.android.maps.Point;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
 import android.widget.Gallery.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
-public class ChannelGrid extends Activity {
+public class ChannelGrid extends Activity implements AdapterView.OnItemClickListener{
     GridView chanGrid;
 	Set<String> chanNames;
 
@@ -26,14 +32,32 @@ public class ChannelGrid extends Activity {
 		super.onCreate(icicle);
 		
 		setContentView(R.layout.chan_grid);
+		
+        chanNames = ServiceIRCService.channels.keySet();
+
         chanGrid = (GridView) findViewById(R.id.cGrid);
-        ChanAdapter ca = new ChanAdapter(this);
-        chanNames = ServiceIRCService.channel_list.keySet();
-        chanGrid.setAdapter(ca);
+
         
+        chanGrid.setAdapter(new ChanAdapter(this, chanNames));
+        chanGrid.setOnItemClickListener(this);
+        //			Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+
+
 	}
 	
+	public void onItemClick(AdapterView parent, View v, int position, long id) {
+    	String chan = (String)chanGrid.obtainItem(position);
+    	//ServiceIRCService.MSG_CHANGEWINDOW
+    	Log.v("View change", chan);
+    	Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, chan).sendToTarget();
+
+    	Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();
+	}
+	
+	
+	
 	public class ChanAdapter extends BaseAdapter {
+
 		private Context mContext;
 		public ChanAdapter(Context context) {
 			mContext = context;
@@ -41,8 +65,10 @@ public class ChannelGrid extends Activity {
 		
 		
         public View getView(int position, View convertView, ViewGroup parent) {
+
       	  
       	  TextView i = new TextView(ChannelGrid.this);
+
             i.setText((String)chanNames.toArray()[position]);
             i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
