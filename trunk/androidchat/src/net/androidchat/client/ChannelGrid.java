@@ -27,18 +27,22 @@ public class ChannelGrid extends Activity {
 		
 		setContentView(R.layout.chan_grid);
         chanGrid = (GridView) findViewById(R.id.cGrid);
-        chanGrid.setAdapter(new ChanAdapter(this));
-        
+        ChanAdapter ca = new ChanAdapter(this);
         chanNames = ServiceIRCService.channel_list.keySet();
+        chanGrid.setAdapter(ca);
+        
 	}
 	
 	public class ChanAdapter extends BaseAdapter {
+		private Context mContext;
 		public ChanAdapter(Context context) {
+			mContext = context;
 		}
 		
 		
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView i = new TextView(ChannelGrid.this);
+      	  
+      	  TextView i = new TextView(ChannelGrid.this);
             i.setText((String)chanNames.toArray()[position]);
             i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
