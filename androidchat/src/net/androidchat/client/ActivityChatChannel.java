@@ -141,6 +141,9 @@ public class ActivityChatChannel extends Activity {
           //  showAlert("Menu Item Clicked", "Zoom", "ok", null, false, null);
             return true;
         case 1:
+        	Intent p = new Intent(ActivityChatChannel.this, ChannelGrid.class);
+            //	i.putExtra("channel_list", ServiceIRCService.channel_list);
+    			startActivity(p);
            // showAlert("Menu Item Clicked", "Settings", "ok", null, false, null);
             return true;
         case 2:

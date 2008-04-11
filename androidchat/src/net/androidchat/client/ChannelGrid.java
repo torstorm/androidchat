@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Gallery;
+import android.widget.Gallery.LayoutParams;
 import android.widget.GridView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -38,6 +40,7 @@ public class ChannelGrid extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView i = new TextView(ChannelGrid.this);
             i.setText((String)chanNames.toArray()[position]);
+            i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
             Random rand = new Random();
            int red = rand.nextInt(255+1);
