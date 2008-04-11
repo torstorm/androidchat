@@ -38,8 +38,8 @@ public class AndroidChatOverlay extends Overlay {
 			Log.v("Test lat", test.toString());
 			Log.v("Test lng", test2.toString());
 
-			 int lat = (int) temp.loc_lat * 1000000; 
-		     int lng = (int)temp.loc_lng * 1000000; 
+			 int lat = (int) (temp.loc_lat * 1000000); 
+		     int lng = (int)(temp.loc_lng * 1000000); 
 		     Point point = new Point(lat,lng);
 		     pixelCalculator.getPointXY(point, screenCoords);
 		     canvas.drawCircle(screenCoords[0], screenCoords[1], 9, paint1);

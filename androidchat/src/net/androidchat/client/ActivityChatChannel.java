@@ -15,8 +15,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ScrollView;
 import android.view.Menu;
-import android.util.Log;
-
 
 public class ActivityChatChannel extends Activity {
 
@@ -26,14 +24,14 @@ public class ActivityChatChannel extends Activity {
     private String CurWindow;
 
 
+
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg)
         {
             switch (msg.what) {
             
                 case ServiceIRCService.MSG_UPDATECHAN:
-                  //  chan = (String) msg.obj;
-                	Log.v("Channel MSG", (String) msg.obj);
+                    chan = (String) msg.obj;
                     updateView((String) msg.obj);
                     break;
                     
@@ -45,6 +43,7 @@ public class ActivityChatChannel extends Activity {
             }
         }
     };
+
     
     private void updateView(String Window)
     {
@@ -56,7 +55,6 @@ public class ActivityChatChannel extends Activity {
       	  tv.setText("\n\n\n*** You are not in this channel");
       	  return;
       	  }
-        
         if(!Window.equals(CurWindow)) {
       	  return;
         }
@@ -72,6 +70,7 @@ public class ActivityChatChannel extends Activity {
         sv.smoothScrollBy(0, tv.getLineHeight());
         this.setTitle(R.string.app_name);
         this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + Window + " - " + ctemp.chantopic);
+        }
     }
 
     @Override
@@ -99,6 +98,7 @@ public class ActivityChatChannel extends Activity {
 
        ServiceIRCService.ChannelViewHandler = mHandler;
        
+
     }
 
     
