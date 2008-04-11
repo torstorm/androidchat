@@ -34,8 +34,9 @@ public class ServiceIRCService
 	public static final int											MSG_UPDATEPM	= 1;
 	public static final int											MSG_CHANGECHAN	= 2;
 	public static final int											MSG_DISCONNECT	= 3;
+	public static final int											MSG_CHANGEWINDOW = 4;
 	
-	public static final String										AC_VERSION		= "0.01A";
+	public static final String										AC_VERSION		= "0.02A";
 	
 	private static boolean											is_first_list;
 	
@@ -283,6 +284,9 @@ public class ServiceIRCService
 					temp.channame = args.toLowerCase();
 					temp.addLine("*** Now talking on " + args + "...");
 					channels.put(args.toLowerCase(), temp);
+					if (ChannelViewHandler != null)
+						Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, args.toLowerCase()).sendToTarget();
+
 				}
 			} else
 			{

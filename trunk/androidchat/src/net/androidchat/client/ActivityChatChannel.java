@@ -22,8 +22,8 @@ public class ActivityChatChannel extends Activity {
 
     private TextView tv;
     private EditText te;
-    private String chan;
     private ScrollView sv;
+    private String CurWindow;
 
 
     public Handler mHandler = new Handler() {
@@ -37,31 +37,28 @@ public class ActivityChatChannel extends Activity {
                     updateView((String) msg.obj);
                     break;
                     
+                case ServiceIRCService.MSG_CHANGEWINDOW:
+               	 CurWindow = (String) msg.obj; 
+               	 break;
+               	 
+                    
             }
         }
     };
-
-    private void setCurrentChan(String channel) {
-        ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(channel);
-
-    		Log.v("New chan", channel);
-    		chan = channel;
-    		//not working :\
-      }
     
-    
-    private void updateView(String channel)
+    private void updateView(String Window)
     {
         StringBuilder temp = new StringBuilder();
-        ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(channel);
+        ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(Window);
 
         if (ctemp == null)
       	  {
       	  tv.setText("\n\n\n*** You are not in this channel");
       	  return;
       	  }
-        if(channel != chan) {
-        	return;
+        
+        if(!Window.equals(CurWindow)) {
+      	  return;
         }
 
         for (int i = 0; i < ctemp.whatsinchan.size(); i++) {
@@ -70,11 +67,11 @@ public class ActivityChatChannel extends Activity {
         
         tv.setGravity(0x50);
         tv.setText("\n\n\n" + temp.toString().trim());
-       // te.setHint(new String("lines: " + tv.getLineCount()));
+        te.setHint(new String("Type here and press enter to start chatting!"));
         sv.fullScroll(ScrollView.FOCUS_DOWN);
         sv.smoothScrollBy(0, tv.getLineHeight());
         this.setTitle(R.string.app_name);
-        this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + channel + " - " + ctemp.chantopic);
+        this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + Window + " - " + ctemp.chantopic);
     }
 
     @Override
@@ -102,8 +99,6 @@ public class ActivityChatChannel extends Activity {
 
        ServiceIRCService.ChannelViewHandler = mHandler;
        
-       //setCurrentChan("#hi"); //not working so we have to do it by hand, I guess
-       chan = "#hi";
     }
 
     
@@ -146,7 +141,7 @@ public class ActivityChatChannel extends Activity {
         public void onClick(View v)
         {
             // do the same as the below function
-           ServiceIRCService.SendToChan(chan, te.getText().toString());
+           ServiceIRCService.SendToChan(CurWindow, te.getText().toString());
             te.setText("");
         }
     };
@@ -156,7 +151,7 @@ public class ActivityChatChannel extends Activity {
         {
             // listen for enter, clear box, send etc
             if (k.getKeyCode() == KeyEvent.KEYCODE_NEWLINE) {
-                ServiceIRCService.SendToChan(chan, te.getText().toString());
+                ServiceIRCService.SendToChan(CurWindow, te.getText().toString());
                 te.setText("");
                 return true;
             }
@@ -186,5 +181,4 @@ public class ActivityChatChannel extends Activity {
         }
     };
     
-    
-}
+   }

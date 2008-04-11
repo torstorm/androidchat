@@ -12,12 +12,16 @@ public class ClassChannelContainer {
     public double loc_lng;
     
     public boolean NAMES_END;
+    public boolean IS_STATUS;
+    public boolean IS_PM;
     
     public ClassChannelContainer()
     {
         whatsinchan = new ArrayList<String>();
         chanusers = new ArrayList<String>();
         NAMES_END = true;
+        IS_STATUS = false;
+        IS_PM = false;
     }
 
     public void addLine(String line)
