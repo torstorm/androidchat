@@ -20,12 +20,7 @@
 			android:layout_gravity="center_horizontal">
 			<requestFocus />
 		</Button>
-<!--   
-		<Button android:id="@+id/btn_ShowChan"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="Show Channel View" android:layout_weight="1"
-			 />
-			 -->
+
 		<Button android:id="@+id/btn_ShowOpts"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:text="@string/btn_options"
