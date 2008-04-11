@@ -31,9 +31,19 @@ public class ActivityAndroidChatMain
 			button.setText(R.string.btn_connect);
 		else
 			button.setText(R.string.btn_disconnect);
+		
+		Button opButton = (Button) findViewById(R.id.btn_ShowOpts);
+		opButton.setOnClickListener(mOptionListener);
 		//button = (Button) findViewById(R.id.btn_ShowChan);
 		//button.setOnClickListener(mChanListener);
 	}
+	
+	private OnClickListener mOptionListener = new OnClickListener() {
+		public void onClick(View v) {
+			startActivity(new Intent(ActivityAndroidChatMain.this, ActivityOptions.class));
+
+		}
+	};
 	
 	private OnClickListener	mChanListener		= new OnClickListener()
 															{
@@ -46,6 +56,11 @@ public class ActivityAndroidChatMain
 																	startActivity(new Intent(ActivityAndroidChatMain.this, ActivityChatChannel.class));
 																}
 															};
+															
+															
+															
+															
+															
 	private OnClickListener	mConnectListener	= new OnClickListener()
 															{
 																public void onClick(View v) {
