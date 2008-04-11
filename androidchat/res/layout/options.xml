@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <Button android:id="@+id/optSave"
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+        
+                    <EditText android:id="@+id/optNick"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+		android:hint="Nickname">
+        </EditText>
+        
+            <CheckBox android:id="@+id/optSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Location?" />
+         
+        <CheckBox android:id="@+id/optPMAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Window on new PM?" />
+        
+
+        
+</LinearLayout>
+        
