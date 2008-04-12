@@ -39,7 +39,6 @@ void updateChanLocation(Channel* channel) {
 	float clat, clng;
 	clat = 0;
 	clng = 0;
-	signed int size = 0;
 	std::string* lat;
 	std::string* lng;
 	std::vector<float> lats;
@@ -88,7 +87,7 @@ void updateChanLocation(Channel* channel) {
    for(ii=0; ii < lats.size(); ii++)
    {
       clat += lats[ii];
-	  cln += lngs[ii];
+	  clng += lngs[ii];
    }
 
    clat /= lats.size();
