@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import android.os.*;
 
@@ -49,7 +50,10 @@ public class ServiceIRCService extends Service {
 
 	public static String lastwindow = "~status";
 	public static String curwindow = "~status";
+	
 
+	public static Boolean shownChanListConnect = false;
+	
 	
 	public static void SetViewHandler(Handler what)
 	{
@@ -618,6 +622,7 @@ public class ServiceIRCService extends Service {
 	@Override
 	protected void onCreate() {
 		mNM = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+
 		// This is who should be launched if the user selects our persistent
 		// notification.
 		context = this;
@@ -636,6 +641,8 @@ public class ServiceIRCService extends Service {
 		debug.IS_STATUS = true;
 		channels.put("~status", debug);
 
+
+		
 		if (ChannelViewHandler != null) {
 			Message.obtain(ChannelViewHandler,
 					ServiceIRCService.MSG_CHANGEWINDOW, "~status")

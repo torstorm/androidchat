@@ -3,6 +3,7 @@ package net.androidchat.client;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,7 +25,8 @@ public class ActivityChatChannel extends Activity {
     private ScrollView sv;
     private String CurWindow;
 
-
+	private final String PREFS_NAME = "androidChatPrefs";
+	SharedPreferences settings; 
 
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg)
@@ -52,9 +54,25 @@ public class ActivityChatChannel extends Activity {
     
     private void updateView(String Window)
     {
+    	
+    	if(ServiceIRCService.state == 10) {
+    		if(!ServiceIRCService.shownChanListConnect) {
+    			if(settings.getBoolean("showList", false))
+    			{
+                	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
+        			startActivity(i);    		
+        		}
+    			ServiceIRCService.shownChanListConnect = true;
+
+    		}
+    	}
+    	
         StringBuilder temp = new StringBuilder();
         ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(Window);
-
+        if(ServiceIRCService.state >= 10) {
+        	
+        }
+        
         if (ctemp == null)
       	  {
       	  tv.setText("\n\n\n*** You are not in this channel");
@@ -104,6 +122,7 @@ public class ActivityChatChannel extends Activity {
     {
         super.onCreate(icicle);
         setContentView(R.layout.chat);
+		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, 0);
 
         // Watch for button clicks.
         //Button button = (Button) findViewById(R.id.ircsend);
@@ -125,6 +144,9 @@ public class ActivityChatChannel extends Activity {
        ServiceIRCService.SetViewHandler(mHandler);
        CurWindow = "~status";    
 
+
+		
+       
     }
 
     
