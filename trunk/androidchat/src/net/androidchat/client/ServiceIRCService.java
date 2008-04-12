@@ -626,6 +626,7 @@ public class ServiceIRCService extends Service {
 
 		channels = new HashMap<String, ClassChannelContainer>();
 		channel_list = new HashMap<String, ClassChannelDescriptor>();
+		temp_user_locs = new HashMap<String, Location>();
 
 		is_first_list = true;
 
