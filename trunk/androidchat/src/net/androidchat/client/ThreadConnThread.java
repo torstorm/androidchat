@@ -142,13 +142,7 @@ ServiceIRCService.writer.flush();
 		
 		ServiceIRCService.state = 10; // connected and handling
 		
-		if(settings.getBoolean("showList", false))
-		{
-			Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
-            //	i.putExtra("channel_list", ServiceIRCService.channel_list);
-    			ServiceIRCService.context.startActivity(i);
-		}
-		
+
 		
 		try
 		{
