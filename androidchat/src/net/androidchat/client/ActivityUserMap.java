@@ -73,21 +73,19 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 		ServiceIRCService.temp_user_locs.clear();
 		for(String s : userList)
 			ServiceIRCService.RequestUserLocation(s);
-
-		//ProgressDialog pg = ProgressDialog.show(ActivityChatChannel.this, ServiceIRCService.context.getText(R.string.app_name), ServiceIRCService.context.getText(R.string.ui_progress));
-		
+	
 		setProgressBarVisibility(true);
 		while (ServiceIRCService.temp_user_locs.size() != userList.size())
 		{
 			setProgress((int)(((float)(ServiceIRCService.temp_user_locs.size()) / (float)userList.size()) * 10000));
-//			try {
-//			Thread.sleep(100);
-//			} catch (InterruptedException IE)
-//			{	
-//			}
+			try {
+			Thread.sleep(100);
+			} catch (InterruptedException IE)
+			{	
+			}
 		}
 		setProgressBarVisibility(false);
-//		pg.dismiss();
+
         
         userMapOverlay locOverlay = new userMapOverlay(chanName);
         oc.add(locOverlay, true);
@@ -102,10 +100,6 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 	}
 
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
-    	//Set<String> chanNames = channel_list.keySet();
-
-    	
-
 		if(position == 0) {
         	 
             Location loc = lm.getCurrentLocation("gps");
@@ -114,20 +108,22 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
 		} else {
-		//	ClassChannelDescriptor tChan = channel_list.get((String)chanNames.toArray()[position-1]);
-			ServiceIRCService.RequestUserLocation((String)parent.obtainItem(position-1));
-
-			ServiceIRCService.temp_user_locs.clear();
-			while(!ServiceIRCService.temp_user_locs.containsKey((String)parent.obtainItem(position-1))) {
-				//Thread.sleep(100);
-			}
-			Location tUser = ServiceIRCService.temp_user_locs.get((String)parent.obtainItem(position-1));
+			
+//			ServiceIRCService.RequestUserLocation((String)parent.obtainItem(position-1));
+//
+//			ServiceIRCService.temp_user_locs.clear();
+//			while(!ServiceIRCService.temp_user_locs.containsKey((String)parent.obtainItem(position-1))) {
+//				//Thread.sleep(100);
+//			}
+			if (ServiceIRCService.temp_user_locs.containsKey((String)parent.obtainItem(position-1)))
+			{
+				Location tUser = ServiceIRCService.temp_user_locs.get((String)parent.obtainItem(position-1));
 			
 			int lat = (int) (tUser.getLatitude() * 1000000);
 			int lng = (int) (tUser.getLongitude() * 1000000);
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
-
+			}
 		}
 	}
 	

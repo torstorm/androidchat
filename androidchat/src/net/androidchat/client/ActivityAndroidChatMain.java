@@ -61,10 +61,7 @@ public class ActivityAndroidChatMain extends Activity {
 					{
 					startActivity(new Intent(ActivityAndroidChatMain.this,
 							ActivityChatChannel.class));
-
-
 					}
-
 		}
 	};
 
@@ -90,7 +87,7 @@ public class ActivityAndroidChatMain extends Activity {
 				// Intent(ActivityAndroidChatMain.this,
 				// ServiceIRCService.class);
 				ServiceIRCService.QuitServer();
-				stopService(myConnectivtyIntent);
+				//stopService(myConnectivtyIntent);
 				Button button = (Button) findViewById(R.id.btn_Connect);
 				button.setText(R.string.btn_connect);
 				opButton.setText(R.string.btn_options);
