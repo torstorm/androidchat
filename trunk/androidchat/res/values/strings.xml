@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">androidChat</string>
+    <string name="app_name">AndroidChat</string>
 
     <string name="btn_connect">Start Chatting!</string>
     <string name="btn_disconnect">Disconnect</string>
@@ -14,6 +14,8 @@
     <string name="ui_newmsg">There is a new message in channel </string>
     <string name="ui_waiting">Waiting for network connection...</string>
     
+    <string name="ui_progress">Updating users' locations...</string>
+        
     <string name="irc_started">Chat Service Started</string>
     <string name="irc_connecting">Chat Service Connecting</string>
     <string name="irc_connected">Chat Service Connected</string>
