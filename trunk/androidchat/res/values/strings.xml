@@ -5,6 +5,7 @@
     <string name="btn_connect">Start Chatting!</string>
     <string name="btn_disconnect">Disconnect</string>
     <string name="btn_options">Options</string>
+    <string name="btn_showwind">Show Window</string>
     
     <string name="welcome">Welcome to AndroidChat!</string>
    

@@ -36,8 +36,9 @@ public class ActivityChatChannel extends Activity {
                     break;
                     
                 case ServiceIRCService.MSG_CHANGEWINDOW:
-               	 ServiceIRCService.lastwindow = CurWindow;
+               	 	ServiceIRCService.lastwindow = CurWindow;
                 	CurWindow = (String) msg.obj; 
+                	ServiceIRCService.curwindow = CurWindow;
                	 break;
                	 
   
@@ -93,6 +94,12 @@ public class ActivityChatChannel extends Activity {
     
 
     @Override
+    protected void onDestroy()
+    {
+    super.onDestroy();
+    ServiceIRCService.ChannelViewHandler = null;
+    }
+    @Override
     protected void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
@@ -115,11 +122,8 @@ public class ActivityChatChannel extends Activity {
         sv.fullScroll(ScrollView.FOCUS_DOWN);
 
 
-       ServiceIRCService.ChannelViewHandler = mHandler;
-       CurWindow = "~status";
-       
-       
-       
+       ServiceIRCService.SetViewHandler(mHandler);
+       CurWindow = "~status";    
 
     }
 

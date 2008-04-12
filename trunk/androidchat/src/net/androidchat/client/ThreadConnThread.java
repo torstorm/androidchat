@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Message;
 
 public class ThreadConnThread implements Runnable {
 
@@ -89,9 +90,21 @@ public class ThreadConnThread implements Runnable {
 					break;
 				} else if (line.indexOf("433") >= 0)
 				{
-					ServiceIRCService.state = -1;// nick in use
-					ServiceIRCService.writer.write("NICK " + nick + "-\r\n");
+					ServiceIRCService.state = 1;// nick in use
+					nick = nick + "-";
+					ServiceIRCService.channels.get("~status").addLine("*** Nickname in use, attempting alternate (" + nick + ")");
+					ServiceIRCService.writer.write("NICK " + nick + "\n"); // should prompt
+					if(ServiceIRCService.ChannelViewHandler != null)
+						Message.obtain(ServiceIRCService.ChannelViewHandler,ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
 					break;
+				} else if (line.indexOf("432") >= 0)
+				{
+					ServiceIRCService.state = -1;// bad nickname
+					ServiceIRCService.channels.get("~status").addLine("*** Erroneous Nickname!");
+					ServiceIRCService.channels.get("~status").addLine("*** You MUST fix your nickname in Options!");
+					if(ServiceIRCService.ChannelViewHandler != null)
+						Message.obtain(ServiceIRCService.ChannelViewHandler,ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+					return;
 				} else if (line.startsWith("PING "))
 				{
 					ServiceIRCService.writer.write("PONG " + line.substring(5) + "\r\n");
@@ -102,7 +115,7 @@ public class ThreadConnThread implements Runnable {
 		{
 			e.printStackTrace();
 		}
-		
+		ServiceIRCService.nick = nick;
 		ServiceIRCService.state = 3;// autojoin
 		try
 		{
