@@ -142,7 +142,7 @@ public class ActivityChatChannel extends Activity {
         menu.get(1).setIcon(R.drawable.channels);
 
         
-        if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))      	
+        if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))      	
         {
         	menu.add(0, 2, "User Map");
         	menu.get(2).setIcon(R.drawable.dude);
