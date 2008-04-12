@@ -39,7 +39,7 @@ void updateChanLocation(Channel* channel) {
 	float clat, clng;
 	clat = 0;
 	clng = 0;
-	signed int size = 1;
+	signed int size = 0;
 	std::string* lat;
 	std::string* lng;
 
@@ -52,6 +52,10 @@ void updateChanLocation(Channel* channel) {
 		CUList* ulist = channel->GetUsers();
 		mlocservinst->Logs->Log("M_LOCATION", DEBUG,
 				"-Recalculating channel location");
+				
+		std::vector<float> lats;
+		std::vector<float> lngs;
+		
 		for (CUListIter i = ulist->begin(); i != ulist->end(); i++) {
 			User* what = i->first;
 
@@ -61,62 +65,40 @@ void updateChanLocation(Channel* channel) {
 			what->GetExt("location_lat", lat);
 			what->GetExt("location_lng", lng);
 
-			if (lng) {
-				if (lat) {
-					sscanf(lat->c_str(), "%f", &flat);
-					sscanf(lng->c_str(), "%f", &flng);
+			if (lng && lat) {
+				sscanf(lat->c_str(), "%f", &flat);
+				sscanf(lng->c_str(), "%f", &flng);
 
-					mlocservinst->Logs->Log(
-							"M_LOCATION",
-							DEBUG,
-							"---User has location (%f, %f), based on sscanf of (%s, %s)!",
-							flat, flng, lat->c_str(), lng->c_str());
-
-					if (flat == 0.0f) {
-						if (flng == 0.0f) // sorry to users off of the west coast of africa
-						{
-							mlocservinst->Logs->Log("M_LOCATION", DEBUG,
-									"---User location invalid, removing from count...");
-							size--; // take this one out
-							continue;
-						}
-					} else {
-						mlocservinst->Logs->Log("M_LOCATION", DEBUG,
-								"---User added to count...");
-						size++; // add this one in
-						clat += flat;
-						clng += flng;
-
-					}
-				}
-			} else {
-				size--;
 				mlocservinst->Logs->Log(
 						"M_LOCATION",
 						DEBUG,
-						"---User has no location, removing from count... (new count: %d)",
-						size);
-
-				continue;
-			}
+						"---User has location (%f, %f), based on sscanf of (%s, %s)!",
+						flat, flng, lat->c_str(), lng->c_str());
+					
+				if((flat != -0.0f) && (flng != -0.0f))
+				{
+					lats.push_back(flat);
+					lngs.push_back(lngs);
+				}
+			} 
 		}
 	}
+	
+	int ii;
+   for(ii=0; ii < lats.size(); ii++)
+   {
+      clat += lats[ii];
+	  cln += lngs[ii];
+   }
 
-	float mul = (1.0f)/(float)size;
-	mlocservinst->Logs->Log(
-			"M_LOCATION",
-			DEBUG,
-			"-Adjusting channel location. Params: (%f, %f), factor of 1/%i (%f)",
-			clat, clng, size, mul);
-
-	if (size<0) {
+   clat /= lats.size();
+   clng /= lats.size();
+  
+	if (lats.size()==0) {
 		mlocservinst->Logs->Log("M_LOCATION", DEBUG,
 				"-Not adjusting channel location (no valid users)");
 		return;
 	}
-
-	clat *= mul;
-	clng *= mul;
 
 	channel->GetExt("location_lat", lat);
 	channel->GetExt("location_lng", lng);
