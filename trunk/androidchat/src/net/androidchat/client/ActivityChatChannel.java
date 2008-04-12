@@ -138,11 +138,15 @@ public class ActivityChatChannel extends Activity {
         // title
         menu.add(0, 0, "Channels Map"); // todo: these should pull from a resource
         menu.add(0, 1, "Open Windows");
-        menu.add(0,2, "User Map");
-        
         menu.get(0).setIcon(R.drawable.map);
         menu.get(1).setIcon(R.drawable.channels);
 
+        
+        if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))      	
+        {
+        	menu.add(0, 2, "User Map");
+        	menu.get(2).setIcon(R.drawable.dude);
+        }
         return true;
     }
 
@@ -155,22 +159,16 @@ public class ActivityChatChannel extends Activity {
         switch (item.getId()) {
         case 0:
           	ServiceIRCService.AskForChannelList(); // update channel list
-        	Intent i = new Intent(ActivityChatChannel.this, AndroidChatMap.class);
-            //	i.putExtra("channel_list", ServiceIRCService.channel_list);
+        	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
     			startActivity(i);
-          //  showAlert("Menu Item Clicked", "Zoom", "ok", null, false, null);
             return true;
         case 1:
-        	Intent p = new Intent(ActivityChatChannel.this, ChannelGrid.class);
-            //	i.putExtra("channel_list", ServiceIRCService.channel_list);
+        	Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
     			startActivity(p);
-           // showAlert("Menu Item Clicked", "Settings", "ok", null, false, null);
             return true;
         case 2:
-        	Intent u = new Intent(ActivityChatChannel.this, ActivityUserMap.class);
-        	u.putExtra("name", CurWindow);
+        	Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
         	startActivity(u);
-           // showAlert("Menu Item Clicked", "Other", "ok", null, false, null);
             return true;
         }
         return false;
