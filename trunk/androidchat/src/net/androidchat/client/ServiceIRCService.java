@@ -162,7 +162,17 @@ public class ServiceIRCService extends Service {
 
 			RequestChanLocation(toks[3]);
 			// }
-
+		} else if (command.equals("TOPIC")) {
+			//> :Kuja!Kuja@AFCBE3.FDA6AD.34D090.09AED6 TOPIC #hi :Welcome to AndroidChat!!!
+			ClassChannelContainer temp;
+			String chan = toks[2].toLowerCase();
+			if (channels.containsKey(chan)) {
+				temp = channels.get(chan);
+				temp.addLine("*** Topic for " + toks[2] + " is now: " + args);
+				temp.chantopic = args;
+				flagupdate = true;
+				updatechan = chan;
+			} // ignore topics for channels we aren't in
 		} else if (command.equals("331") || command.equals("332")) // topic
 		// numeric
 		// :servername 331 yournick #channel :no topic
@@ -484,6 +494,7 @@ public class ServiceIRCService extends Service {
 			ServiceIRCService.state = -1;
 			ServiceIRCService.reader.close();
 			ServiceIRCService.connection.interrupt();
+			((Service)context).stopSelf();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -597,10 +608,12 @@ public class ServiceIRCService extends Service {
 
 		}
 
-		if (chan == null) {
+		if ((chan == null) || (channels.get(chan).IS_STATUS)) {
 			// error about not being on a channel here
 			return;
 		}
+		
+		
 
 		// PRIVMSG <target> :<message>
 		try {

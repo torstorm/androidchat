@@ -161,14 +161,10 @@ public class ActivityChatChannel extends Activity {
         menu.add(0, 0, "Channels Map"); // todo: these should pull from a resource
         menu.add(0, 1, "Open Windows");
         menu.get(0).setIcon(R.drawable.map);
-        menu.get(1).setIcon(R.drawable.channels);
-
+        menu.get(1).setIcon(R.drawable.channels);       
+        menu.add(0, 2, "User Map");
+        menu.get(2).setIcon(R.drawable.dude);
         
-        if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))      	
-        {
-        	menu.add(0, 2, "User Map");
-        	menu.get(2).setIcon(R.drawable.dude);
-        }
         return true;
     }
 
@@ -189,9 +185,12 @@ public class ActivityChatChannel extends Activity {
     			startActivity(p);
             return true;
         case 2:
+        	if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))
+        	{
         	Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
         	startActivity(u);
             return true;
+        	} else return false;
         }
         return false;
     }
