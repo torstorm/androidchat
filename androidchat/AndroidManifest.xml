@@ -17,7 +17,7 @@
 
         <activity android:name=".ActivityChatChannel"></activity>      
         <activity android:name=".AndroidChatMap"></activity>
-        
+        <activity android:name=".ActivityUserMap"></activity>
         <activity android:name=".ChannelGrid"></activity>
         <activity android:name=".ActivityOptions"></activity>
         
