@@ -45,6 +45,9 @@ public class ActivityChatChannel extends Activity {
         }
     };
 
+    public String getCurWindow() {
+    	return CurWindow;
+    }
     
     private void updateView(String Window)
     {
@@ -131,6 +134,7 @@ public class ActivityChatChannel extends Activity {
         // title
         menu.add(0, 0, "Channels Map"); // todo: these should pull from a resource
         menu.add(0, 1, "Open Windows");
+        menu.add(0,2, "User Map");
         
         menu.get(0).setIcon(R.drawable.map);
         menu.get(1).setIcon(R.drawable.channels);
@@ -159,6 +163,9 @@ public class ActivityChatChannel extends Activity {
            // showAlert("Menu Item Clicked", "Settings", "ok", null, false, null);
             return true;
         case 2:
+        	Intent u = new Intent(ActivityChatChannel.this, ActivityUserMap.class);
+        	u.putExtra("name", CurWindow);
+        	startActivity(u);
            // showAlert("Menu Item Clicked", "Other", "ok", null, false, null);
             return true;
         }
