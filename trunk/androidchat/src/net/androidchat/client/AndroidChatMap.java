@@ -43,23 +43,40 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     	Set<String> chanNames = channel_list.keySet();
         
         setContentView(R.layout.map);
-        
+		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		Location loc = lm.getCurrentLocation("gps");
     	ImageButton button = (ImageButton) findViewById(R.id.join_chatbut);
 		button.setOnClickListener(mJoinListener);
        s1 = (Spinner) findViewById(R.id.chanspinner);
        
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.addObject("Current Location");
-        for(int i = 0; i < chanNames.size(); i++) {
-            adapter.addObject((String)chanNames.toArray()[i]);
-            Log.v("Object test", (String)chanNames.toArray()[i]);
+        for(String s : chanNames) {
+        	
+           
+            Location l = new Location();
+        	l.setLatitude((float)channel_list.get(s).loc_lat);
+        	l.setLongitude((float)channel_list.get(s).loc_lng);
+        	
+        	// 1 609.344 meters in a mile
+        	// 1 000 meters in a km (duh)
+        	
+            float distance = loc.distanceTo(l);
+            
+            String fin = new String();
+            // no user count here, should be represented by pin on map...
+            fin = String.format("(%.1f mi) %s - %s", (distance/1609.344), s, channel_list.get(s).chantopic);           
+           
+            adapter.addObject(fin);
+            
+            
+            Log.v("Object test", s);
         }
 
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s1.setAdapter(adapter);
         s1.setOnItemSelectedListener(this);
 
-		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         mapView = (MapView)findViewById(R.id.mapv); 
         mc = mapView.getController(); 
@@ -68,7 +85,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         AndroidChatOverlay locOverlay = new AndroidChatOverlay();
         oc.add(locOverlay, true);
         
-        Location loc = lm.getCurrentLocation("gps");
+        
 	    int lat = (int) (loc.getLatitude() * 1000000);
         int lng = (int) (loc.getLongitude() * 1000000); 
         Point p = new Point(lat,lng);
