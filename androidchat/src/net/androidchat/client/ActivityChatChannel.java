@@ -129,7 +129,7 @@ public class ActivityChatChannel extends Activity {
         // group -- Not used here.
         // id -- Used only when you want to handle and identify the click yourself.
         // title
-        menu.add(0, 0, "Channel Map"); // todo: these should pull from a resource
+        menu.add(0, 0, "Channels Map"); // todo: these should pull from a resource
         menu.add(0, 1, "Open Windows");
         
         menu.get(0).setIcon(R.drawable.map);

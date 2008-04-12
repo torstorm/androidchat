@@ -107,7 +107,8 @@ public class ServiceIRCService
 		} else if (command.equals("322")) // list numeric
 		{ // 0 1 2 3 4 args
 			// :servername 322 yournick <channel> <#_visible> :<topic>
-			
+			//:irc.androidchat.com 322 AndroidChat #hi 3 :[+nt] SVN update for MASSIVE UI DAMAGE. Like, it's actually approaching usable now. I changed a LOT of behavior. I need you to create an options activity, and then I think we're nearly done as far as the client is concerned.
+
 			if (is_first_list)
 			{
 				channel_list.clear();
@@ -122,7 +123,7 @@ public class ServiceIRCService
 			 */
 			ClassChannelDescriptor t = new ClassChannelDescriptor();
 			t.channame = toks[3];
-			t.chantopic = args;
+			t.chantopic = args.substring(args.indexOf("]")+ 1).trim();
 			t.chatters = Integer.parseInt(toks[4]);
 			channel_list.put(toks[3], t);
 			
