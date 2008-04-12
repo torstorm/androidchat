@@ -6,6 +6,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.OverlayController;
 import com.google.android.maps.Point;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -67,6 +68,24 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
         mc = mapView.getController(); 
         oc = mapView.createOverlayController();
 
+
+		ServiceIRCService.temp_user_locs.clear();
+		for(String s : userList)
+			ServiceIRCService.RequestUserLocation(s);
+
+		ProgressDialog pg = ProgressDialog.show(ServiceIRCService.context, ServiceIRCService.context.getText(R.string.app_name), ServiceIRCService.context.getText(R.string.ui_progress));
+		
+		while (ServiceIRCService.temp_user_locs.size() != userList.size())
+		{
+			pg.setProgress((int)(((float)(ServiceIRCService.temp_user_locs.size()) / (float)userList.size()) * 10000));
+			try {
+			Thread.sleep(100);
+			} catch (InterruptedException IE)
+			{	
+			}
+		}
+		pg.dismiss();
+        
         userMapOverlay locOverlay = new userMapOverlay(chanName);
         oc.add(locOverlay, true);
         

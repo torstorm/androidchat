@@ -3,7 +3,7 @@ package net.androidchat.client;
 import java.util.Set;
 import java.util.ArrayList;
 
-
+import android.app.ProgressDialog;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.location.Address;
@@ -21,26 +21,13 @@ public class userMapOverlay extends Overlay {
 	
 	userMapOverlay(String chan) {
 		chanName = chan;
-		userList = ServiceIRCService.channels.get(chanName).chanusers;
+		userList = ServiceIRCService.channels.get(chanName).chanusers;	
 	}
 
 	public void draw(Canvas canvas, PixelCalculator pixelCalculator, boolean b) {
 		super.draw(canvas, pixelCalculator, b);
         int[] screenCoords = new int[2];
-
-
-		ServiceIRCService.temp_user_locs.clear();
-		for(String s : userList)
-			ServiceIRCService.RequestUserLocation(s);
-
-		while (ServiceIRCService.temp_user_locs.size() != userList.size())
-		{// progress bar
-//			An activity can display a progress bar to notify the user that something is happening. To display a progress bar in a screen, call Activity.requestWindowFeature(Window.FEATURE_PROGRESS). To set the value of the progress bar, call Activity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level). Progress bar values are from 0 to 9,999, or set the value to 10,000 to make the progress bar invisible. 
-//			<Kuja> You can also use the ProgressDialog class, which enables a dialog box with an embedded progress bar to send a "I'm working on it" notification to the user.
-		}
-
-
-		
+	
 		for(String s : userList) {
 			Location loc = ServiceIRCService.temp_user_locs.get(s.toLowerCase());
 			if (loc != null)
