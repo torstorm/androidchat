@@ -25,7 +25,8 @@ import java.util.Set;
 import java.lang.Thread;
 import android.widget.Spinner;
 import net.androidchat.client.AndroidChatOverlay;
-
+import net.androidchat.client.ActivityChatChannel;
+import android.view.Window;
 
 public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSelectedListener{
 	private String chanName;
@@ -40,7 +41,7 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 	@Override 
     public void onCreate(Bundle icicle) { 
         super.onCreate(icicle); 
-        
+        requestWindowFeature(Window.FEATURE_PROGRESS);
 		// this is wrong chanName = icicle.getString("name");
 
         chanName = ServiceIRCService.curwindow;
@@ -73,18 +74,20 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 		for(String s : userList)
 			ServiceIRCService.RequestUserLocation(s);
 
-		ProgressDialog pg = ProgressDialog.show(ServiceIRCService.context, ServiceIRCService.context.getText(R.string.app_name), ServiceIRCService.context.getText(R.string.ui_progress));
+		//ProgressDialog pg = ProgressDialog.show(ActivityChatChannel.this, ServiceIRCService.context.getText(R.string.app_name), ServiceIRCService.context.getText(R.string.ui_progress));
 		
+		setProgressBarVisibility(true);
 		while (ServiceIRCService.temp_user_locs.size() != userList.size())
 		{
-			pg.setProgress((int)(((float)(ServiceIRCService.temp_user_locs.size()) / (float)userList.size()) * 10000));
-			try {
-			Thread.sleep(100);
-			} catch (InterruptedException IE)
-			{	
-			}
+			setProgress((int)(((float)(ServiceIRCService.temp_user_locs.size()) / (float)userList.size()) * 10000));
+//			try {
+//			Thread.sleep(100);
+//			} catch (InterruptedException IE)
+//			{	
+//			}
 		}
-		pg.dismiss();
+		setProgressBarVisibility(false);
+//		pg.dismiss();
         
         userMapOverlay locOverlay = new userMapOverlay(chanName);
         oc.add(locOverlay, true);
