@@ -10,10 +10,6 @@ import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.Button;
 
-
-import net.androidchat.client.ActivityChatChannel;
-import net.androidchat.client.ServiceIRCService;
-
 public class ActivityOptions extends Activity {
 	public static final String PREFS_NAME = "androidChatPrefs";
 	private EditText nickText;
@@ -49,8 +45,6 @@ public class ActivityOptions extends Activity {
         nickText.setText(settings.getString("defNick", "AndroidChat"));
         ajText.setText(settings.getString("autoJoin", ""));
         //settings.getBoolean("sendLoc", true);
-        
-
 
 	}
 	
