@@ -29,7 +29,10 @@ public class ActivityOptions extends Activity {
 
 	    Button saveButton = (Button) findViewById(R.id.optSave);   
 	    saveButton.setOnClickListener(mSaveListener);
-	       
+	    
+	    Button cancButton = (Button) findViewById(R.id.optCancel);   
+	    cancButton.setOnClickListener(mCancListener);
+	    
         nickText = (EditText) findViewById(R.id.optNick);
         ajText = (EditText) findViewById(R.id.optAutoJoin);
 	    
@@ -47,6 +50,12 @@ public class ActivityOptions extends Activity {
         //settings.getBoolean("sendLoc", true);
 
 	}
+	
+	private OnClickListener mCancListener = new OnClickListener() {
+		public void onClick(View v) {
+			finish();
+		}
+	};
 	
 	private OnClickListener mSaveListener = new OnClickListener() {
 		public void onClick(View v) {

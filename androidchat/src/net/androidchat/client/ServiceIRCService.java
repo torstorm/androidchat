@@ -29,7 +29,7 @@ public class ServiceIRCService extends Service {
 	public static BufferedReader reader;
 	public static int state;
 	private static String server = "38.100.42.254";
-	private static String nick = "AndroidChat";
+	public static String nick = "AndroidChat";
 
 	public static final int MSG_UPDATECHAN = 0;
 	public static final int MSG_UPDATEPM = 1;
@@ -48,7 +48,19 @@ public class ServiceIRCService extends Service {
 	public static Handler ChannelViewHandler;
 
 	public static String lastwindow = "~status";
+	public static String curwindow = "~status";
 
+	
+	public static void SetViewHandler(Handler what)
+	{
+		ChannelViewHandler = what;
+		Message.obtain(ServiceIRCService.ChannelViewHandler,
+				ServiceIRCService.MSG_CHANGEWINDOW, ServiceIRCService.curwindow)
+				.sendToTarget();
+		Message.obtain(ServiceIRCService.ChannelViewHandler,
+				ServiceIRCService.MSG_UPDATECHAN, ServiceIRCService.curwindow).sendToTarget();
+	}
+	
 	// this is epic irc parsing.
 	public static void GetLine(String line) {
 		// rfc 2812
@@ -620,6 +632,7 @@ public class ServiceIRCService extends Service {
 		ClassChannelContainer debug = new ClassChannelContainer();
 		debug.channame = "Status/Debug Window";
 		debug.addLine("AndroidChat v" + AC_VERSION + " started.");
+		debug.IS_STATUS = true;
 		channels.put("~status", debug);
 
 		if (ChannelViewHandler != null) {
