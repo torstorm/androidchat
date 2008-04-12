@@ -40,8 +40,10 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
     public void onCreate(Bundle icicle) { 
         super.onCreate(icicle); 
         
-		chanName = icicle.getString("name");
+		// this is wrong chanName = icicle.getString("name");
 
+        chanName = ServiceIRCService.curwindow;
+        
         setContentView(R.layout.usermap);
         
 		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
