@@ -359,6 +359,7 @@ public class ServiceIRCService extends Service {
 					temp.addLine("*** Now talking with " + who + "...");
 					temp.IS_PM = true;
 					channels.put(who.toLowerCase(), temp);
+					if(context.getSharedPreferences("androidChatPrefs", 0).getBoolean("pmAlert", true))
 					if (ChannelViewHandler != null)
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW,
@@ -640,9 +641,11 @@ public class ServiceIRCService extends Service {
 		connection = new Thread(new ThreadConnThread(server, nick, socket));
 		connection.start();
 
-		updates = new Thread(new ThreadUpdateLocThread(context));
-		updates.start();
-
+		if(getSharedPreferences("androidChatPrefs", 0).getBoolean("sendLoc", true))
+		{
+			updates = new Thread(new ThreadUpdateLocThread(context));
+			updates.start();
+		}
 		mNM.notify(R.string.irc_started, new Notification(context,
 				R.drawable.mini_icon, getText(R.string.irc_connected), System
 						.currentTimeMillis(), "AndroidChat - Notification",

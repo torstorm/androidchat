@@ -8,33 +8,33 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class ThreadConnThread implements Runnable
-{
+import android.content.Intent;
+import android.content.SharedPreferences;
+
+public class ThreadConnThread implements Runnable {
+
+	public Socket socket;
+	private String server;
+	private String nick;
+	private final String PREFS_NAME = "androidChatPrefs";
+	SharedPreferences settings; 
 	
-	private String	defchan	= "#hi";
-	
-	public Socket	socket;
-	private String	server;
-	private String	nick;
-	
-	public ThreadConnThread(String serv, String ni, Socket s)
-	{
+	public ThreadConnThread(String serv, String ni, Socket s) {
 		socket = s;
 		server = serv;
-		nick = ni;
+		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, 0);
+		nick = settings.getString("defNick", "AndroidChat");
 	}
-	
+
 	public void disconnect() {
-		try
-		{
+		try {
 			socket.close();
-		} catch (IOException ioe)
-		{	
+		} catch (IOException ioe) {
 
 		}
-		
+
 	}
-	
+
 	public void run() {
 		try
 		{
@@ -106,19 +106,37 @@ public class ThreadConnThread implements Runnable
 		ServiceIRCService.state = 3;// autojoin
 		try
 		{
+			String defchan = settings.getString("autoJoin", "");
 			String[] autojoin = defchan.split(" ");
 			for (String s : autojoin)
 				ServiceIRCService.writer.write("JOIN " + s + "\n");
 			ServiceIRCService.writer.flush();
-			ServiceIRCService.writer.write("LIST\r\n"); // get list while we're at
-																		// it
-			ServiceIRCService.writer.flush();
+
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		try
+		{
+		ServiceIRCService.writer.write("LIST\r\n"); // get list while we're at
+		// it
+ServiceIRCService.writer.flush();
+
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 		
 		ServiceIRCService.state = 10; // connected and handling
+		
+		if(settings.getBoolean("showList", false))
+		{
+			Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
+            //	i.putExtra("channel_list", ServiceIRCService.channel_list);
+    			ServiceIRCService.context.startActivity(i);
+		}
+		
+		
 		try
 		{
 			while ((line = ServiceIRCService.reader.readLine()) != null)
@@ -138,5 +156,4 @@ public class ThreadConnThread implements Runnable
 			e.printStackTrace();
 		} 
 	}
-	
 }
