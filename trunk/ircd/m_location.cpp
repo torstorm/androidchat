@@ -42,7 +42,8 @@ void updateChanLocation(Channel* channel) {
 	signed int size = 0;
 	std::string* lat;
 	std::string* lng;
-
+	std::vector<float> lats;
+	std::vector<float> lngs;
 	if (channel->IsModeSet('L')) {
 		// don't uh do anything. I don't think
 		mlocservinst->Logs->Log("M_LOCATION", DEBUG, "-Mode +L was set!!!");
@@ -53,8 +54,7 @@ void updateChanLocation(Channel* channel) {
 		mlocservinst->Logs->Log("M_LOCATION", DEBUG,
 				"-Recalculating channel location");
 				
-		std::vector<float> lats;
-		std::vector<float> lngs;
+
 		
 		for (CUListIter i = ulist->begin(); i != ulist->end(); i++) {
 			User* what = i->first;
@@ -78,7 +78,7 @@ void updateChanLocation(Channel* channel) {
 				if((flat != -0.0f) && (flng != -0.0f))
 				{
 					lats.push_back(flat);
-					lngs.push_back(lngs);
+					lngs.push_back(flng);
 				}
 			} 
 		}
