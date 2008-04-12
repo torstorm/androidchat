@@ -31,24 +31,29 @@ public class userMapOverlay extends Overlay {
 
 		ServiceIRCService.temp_user_locs.clear();
 		for(String s : userList)
-		{
-		ServiceIRCService.RequestUserLocation(s);
-		}
+			ServiceIRCService.RequestUserLocation(s);
 
 		while (ServiceIRCService.temp_user_locs.size() != userList.size())
-		{
+		{// progress bar
+//			An activity can display a progress bar to notify the user that something is happening. To display a progress bar in a screen, call Activity.requestWindowFeature(Window.FEATURE_PROGRESS). To set the value of the progress bar, call Activity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level). Progress bar values are from 0 to 9,999, or set the value to 10,000 to make the progress bar invisible. 
+//			<Kuja> You can also use the ProgressDialog class, which enables a dialog box with an embedded progress bar to send a "I'm working on it" notification to the user.
 		}
 
 
 		
-		for(int i = 0; i < userList.size(); i++) {
-			Location loc = ServiceIRCService.temp_user_locs.get(userList.get(i));
+		for(String s : userList) {
+			Location loc = ServiceIRCService.temp_user_locs.get(s.toLowerCase());
+			if (loc != null)
+			{
 	        int lat = (int) (loc.getLatitude() * 1000000);
 	        int lng = (int) (loc.getLongitude() * 1000000); 
 	        Point point = new Point(lat,lng);
 			
 		     pixelCalculator.getPointXY(point, screenCoords);
+//		     canvas.drawPicture(R.drawable.dude);
+
 		     canvas.drawCircle(screenCoords[0], screenCoords[1], 9, paint1);
+			}
 		}
 
        			
