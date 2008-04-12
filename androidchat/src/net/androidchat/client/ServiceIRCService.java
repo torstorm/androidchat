@@ -29,7 +29,7 @@ public class ServiceIRCService
 	public static BufferedReader									reader;
 	public static int													state;
 	private static String											server				= "38.100.42.254";
-	private static String											nick					= "AndroidChat2";
+	private static String											nick					= "AndroidChat";
 	
 	public static final int											MSG_UPDATECHAN		= 0;
 	public static final int											MSG_UPDATEPM		= 1;
@@ -37,7 +37,7 @@ public class ServiceIRCService
 	public static final int											MSG_DISCONNECT		= 3;
 	public static final int											MSG_CHANGEWINDOW	= 4;
 	
-	public static final String										AC_VERSION			= "0.02A";
+	public static final String										AC_VERSION			= "0.03A";
 	
 	private static boolean											is_first_list;
 	
@@ -45,6 +45,8 @@ public class ServiceIRCService
 	public static HashMap<String, ClassChannelDescriptor>	channel_list;
 	
 	public static Handler											ChannelViewHandler;
+	
+	public static String lastwindow = "~status";
 	
 	// this is epic irc parsing.
 	public static void GetLine(String line) {
@@ -494,6 +496,41 @@ public class ServiceIRCService
 				return;
 			}
 			
+			if (what.equals("/close")) // special case...
+			{
+				
+				if(channels.get(chan).IS_PM)
+				{
+					if (ChannelViewHandler != null)
+					{
+						Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, lastwindow).sendToTarget();
+						Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, lastwindow).sendToTarget();
+					}
+					
+					channels.remove(chan); 
+					
+				} else if (channels.get(chan).IS_STATUS) {
+					// do nothing
+				} else {
+				   // send part
+					try
+					{
+						String temp = "PART " + chan + " :User closed window\n";
+						writer.write(temp);
+						writer.flush();
+						if (ChannelViewHandler != null)
+							Message.obtain(ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();				
+					} catch (IOException e)
+					{
+						e.printStackTrace();
+					} catch (NullPointerException npe)
+					{
+						npe.printStackTrace();
+					}
+				}
+					
+				return;
+			}
 			if (what.startsWith("/msg ")) // special case...
 			{
 				try

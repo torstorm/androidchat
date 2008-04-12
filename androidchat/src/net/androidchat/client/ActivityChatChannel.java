@@ -36,10 +36,11 @@ public class ActivityChatChannel extends Activity {
                     break;
                     
                 case ServiceIRCService.MSG_CHANGEWINDOW:
-               	 CurWindow = (String) msg.obj; 
+               	 ServiceIRCService.lastwindow = CurWindow;
+                	CurWindow = (String) msg.obj; 
                	 break;
                	 
-                    
+  
             }
         }
     };
@@ -57,6 +58,7 @@ public class ActivityChatChannel extends Activity {
       	  }
         if(!Window.equals(CurWindow)) {
       	  
+        	if(!Window.equals("~status"))
       	  ServiceIRCService.mNM.notify(R.string.irc_started, new Notification(ServiceIRCService.context, R.drawable.mini_icon, ServiceIRCService.context.getText(R.string.ui_newmsg) + " " + Window, System
 						.currentTimeMillis(), "AndroidChat - Notification", ServiceIRCService.context.getText(R.string.ui_newmsg) + " " + Window, null, R.drawable.mini_icon,
 						"Android Chat", null));

@@ -17,6 +17,9 @@ import net.androidchat.client.ServiceIRCService;
 public class ActivityOptions extends Activity {
 	public static final String PREFS_NAME = "androidChatPrefs";
 	private EditText nickText;
+	private EditText ajText;
+	
+	private CheckBox listBox;
 	private CheckBox locBox;
 	private CheckBox pmBox;
 
@@ -32,13 +35,19 @@ public class ActivityOptions extends Activity {
 	    saveButton.setOnClickListener(mSaveListener);
 	       
         nickText = (EditText) findViewById(R.id.optNick);
-	    locBox = (CheckBox) findViewById(R.id.optSend);
+        ajText = (EditText) findViewById(R.id.optAutoJoin);
+	    
+        locBox = (CheckBox) findViewById(R.id.optSend);
 	    pmBox = (CheckBox) findViewById(R.id.optPMAlert);
+	    listBox = (CheckBox) findViewById(R.id.optList);
 
         this.setTitle("AndroidChat Options");
+        
+        listBox.setChecked(settings.getBoolean("showList", true));
         locBox.setChecked(settings.getBoolean("sendLoc", true));
         pmBox.setChecked(settings.getBoolean("pmAlert", true));
         nickText.setText(settings.getString("defNick", "AndroidChat"));
+        ajText.setText(settings.getString("autoJoin", ""));
         //settings.getBoolean("sendLoc", true);
         
 
@@ -52,8 +61,11 @@ public class ActivityOptions extends Activity {
 			
 			editor.putBoolean("sendLoc", locBox.isChecked());
 			editor.putBoolean("pmAlert", pmBox.isChecked());
-
+			editor.putBoolean("showList", listBox.isChecked());
+			
 			editor.putString("defNick", nickText.getText().toString());
+			editor.putString("autoJoin", ajText.getText().toString());
+			
 			editor.commit();
 			finish();
 		//	startActivity(new Intent(ActivityAndroidChatMain.this, ActivityOptions.class));
