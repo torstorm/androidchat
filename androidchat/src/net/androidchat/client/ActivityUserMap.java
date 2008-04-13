@@ -59,11 +59,7 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
         userList = ServiceIRCService.channels.get(chanName).chanusers;
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.addObject("Current Location");
-     
-        for(String s : userList) {
-        	adapter.addObject(s);
-        }
-        
+
         s1.setAdapter(adapter);
         s1.setOnItemSelectedListener(this);
         
@@ -91,9 +87,8 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 
         for(String s : userList) {
         	String fin = new String();
-        	Location loca = ServiceIRCService.temp_user_locs.get(s);
-        	String log = String.format("%f", ServiceIRCService.temp_user_locs.get(s).getLatitude());
-        	Log.v("NULL test", log);
+        	Location loca = ServiceIRCService.temp_user_locs.get(s.toLowerCase());
+
             fin = String.format("%s - (%f, %f)", s, loca.getLatitude(), loca.getLongitude());           
            
             adapter.addObject(fin);

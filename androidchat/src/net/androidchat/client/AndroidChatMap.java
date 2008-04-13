@@ -56,12 +56,26 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
        
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.addObject("Current Location");
+    	setProgressBarVisibility(true);
+		while (ServiceIRCService.channel_list.size() != chanNames.size())
+		{
+			setProgress((int)(((float)(ServiceIRCService.channel_list.size()) / (float)chanNames.size()) * 10000));
+			try {
+			Thread.sleep(100);
+			} catch (InterruptedException IE)
+			{	
+			}
+		}
+		setProgressBarVisibility(false);
+        
         for(String s : chanNames) {
         	
            
             Location l = new Location();
-        	l.setLatitude((float)channel_list.get(s).loc_lat);
-        	l.setLongitude((float)channel_list.get(s).loc_lng);
+        	l.setLatitude((float)ServiceIRCService.channel_list.get(s.toLowerCase()).loc_lat);
+        	l.setLongitude((float)ServiceIRCService.channel_list.get(s.toString()).loc_lng);
+        	String temp = String.format("%f, %f", l.getLatitude(), l.getLongitude());
+        	Log.v("Channel loc at", temp);
         	if(l.getLatitude() != -0 && l.getLongitude() != -0) {
         	// 1 609.344 meters in a mile
         	// 1 000 meters in a km (duh)
@@ -70,13 +84,13 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
             
             String fin = new String();
             // no user count here, should be represented by pin on map...
-            fin = String.format("(%.1f mi) %s - %s", (distance/1609.344), s, channel_list.get(s).chantopic);           
+            fin = String.format("(%.1f mi) %s - %s", (distance/1609.344), s, ServiceIRCService.channel_list.get(s).chantopic);           
            
             adapter.addObject(fin);
         	} else {
         		String fin = new String();
                 // no user count here, should be represented by pin on map...
-                fin = String.format("%s - %s", s, channel_list.get(s).chantopic);           
+                fin = String.format("%s - %s", s, ServiceIRCService.channel_list.get(s).chantopic);           
                
                 adapter.addObject(fin);
         	}
@@ -110,6 +124,8 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     } 
 	
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
+        channel_list = ServiceIRCService.channel_list;
+
     	Set<String> chanNames = channel_list.keySet();
 
     	
@@ -122,13 +138,15 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
 		} else {
+		
 			ClassChannelDescriptor tChan = channel_list.get((String)chanNames.toArray()[position-1]);
+			if(tChan.loc_lat != -0 && tChan.loc_lng != 0) {
 			int lat = (int) (tChan.loc_lat * 1000000);
 			int lng = (int) (tChan.loc_lng * 1000000);
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
             Log.v("Selected", (String)chanNames.toArray()[position-1]);
-
+			}
 		}
 	}
 	
@@ -138,6 +156,8 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     private OnClickListener mJoinListener = new OnClickListener() {
         public void onClick(View v)
         {
+            channel_list = ServiceIRCService.channel_list;
+
         	Set<String> chanNames = channel_list.keySet();
         	String chan = (String)chanNames.toArray()[s1.getSelectedItemPosition()-1];
         	//String chan = (String) s1.getSelectedItem();
