@@ -39,6 +39,7 @@ public class userMapOverlay extends Overlay {
 			Location loc = ServiceIRCService.temp_user_locs.get(s.toLowerCase());
 			if (loc != null)
 			{
+				if(loc.getLatitude() != 0 && loc.getLongitude() != 0 ) {
 	        int lat = (int) (loc.getLatitude() * 1000000);
 	        int lng = (int) (loc.getLongitude() * 1000000); 
 	        Point point = new Point(lat,lng);
@@ -49,6 +50,7 @@ public class userMapOverlay extends Overlay {
                      screenCoords[0] + w / 2, screenCoords[1]); 
              //mapIcon.setAlpha(70); 
              mapIcon.draw(canvas); 
+				}
 			}
 		}
 

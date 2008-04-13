@@ -386,10 +386,15 @@ public class ServiceIRCService extends Service {
 					temp.IS_PM = true;
 					channels.put(who.toLowerCase(), temp);
 					if(context.getSharedPreferences("androidChatPrefs", 0).getBoolean("pmAlert", true))
-					if (ChannelViewHandler != null)
+					if (ChannelViewHandler != null)  {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW,
 								who.toLowerCase()).sendToTarget();
+						
+						Message.obtain(ChannelViewHandler,
+								ServiceIRCService.MSG_UPDATECHAN,
+								who.toLowerCase()).sendToTarget();
+					}
 				}
 				temp.addLine("<" + who + "> " + args);
 				mNM.notify(R.string.irc_started, new Notification(context,
@@ -502,6 +507,39 @@ public class ServiceIRCService extends Service {
 			npe.printStackTrace();
 		}
 
+	}
+	
+	public static void OpenPMWindow(String who) {
+		ClassChannelContainer temp;
+
+	
+		if (channels.containsKey(who.toLowerCase())) // existing pm
+		{
+			if (ChannelViewHandler != null)  {
+				Message.obtain(ChannelViewHandler,
+						ServiceIRCService.MSG_CHANGEWINDOW,
+						who.toLowerCase()).sendToTarget();
+				
+				Message.obtain(ChannelViewHandler,
+						ServiceIRCService.MSG_UPDATECHAN,
+						who.toLowerCase()).sendToTarget();
+			}
+		} else {
+			temp = new ClassChannelContainer();
+			temp.channame = who;
+			temp.addLine("*** Now talking with " + who + "...");
+			temp.IS_PM = true;
+			channels.put(who.toLowerCase(), temp);
+			if (ChannelViewHandler != null)  {
+				Message.obtain(ChannelViewHandler,
+						ServiceIRCService.MSG_CHANGEWINDOW,
+						who.toLowerCase()).sendToTarget();
+				
+				Message.obtain(ChannelViewHandler,
+						ServiceIRCService.MSG_UPDATECHAN,
+						who.toLowerCase()).sendToTarget();
+			}
+		}
 	}
 
 	public static void SendToChan(String chan, String what) {

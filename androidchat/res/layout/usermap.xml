@@ -16,9 +16,16 @@ android:layout_height="fill_parent"/>
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:drawSelectorOnTop="true"
-        android:layout_weight="1"
-        
-    />
+        android:layout_weight="1" />
+        	<ImageButton android:id="@+id/msg_user"
+ 	 android:src="@drawable/usermsg"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true" 
+  
+  android:layout_weight="0"
+  />
+
     
     	
 </LinearLayout>

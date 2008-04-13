@@ -54,6 +54,8 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 		Location loc = lm.getCurrentLocation("gps");
     //	ImageButton button = (ImageButton) findViewById(R.id.msg_userbut);
 		//button.setOnClickListener(mMsgListener);
+		ImageButton button = (ImageButton) findViewById(R.id.msg_user);
+		button.setOnClickListener(mPMListener);
         s1 = (Spinner) findViewById(R.id.userspinner);
 
         userList = ServiceIRCService.channels.get(chanName).chanusers;
@@ -88,9 +90,12 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
         for(String s : userList) {
         	String fin = new String();
         	Location loca = ServiceIRCService.temp_user_locs.get(s.toLowerCase());
-
-            fin = String.format("%s - (%f, %f)", s, loca.getLatitude(), loca.getLongitude());           
-           
+            float distance = loca.distanceTo(loc);
+            if(loca.getLatitude() != 0 && loca.getLatitude() != 0) {
+            fin = String.format("(%.1f mi) %s",(distance/1609.344), s);           
+            } else {
+            	fin = String.format("%s", s);
+            }
             adapter.addObject(fin);
         }
 
@@ -138,5 +143,18 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
     public void onNothingSelected(AdapterView parent) {
     }
     
-    
+    private OnClickListener mPMListener = new OnClickListener() {
+        public void onClick(View v)
+        {
+            userList = ServiceIRCService.channels.get(chanName).chanusers;
+
+        	String user = (String)userList.toArray()[s1.getSelectedItemPosition()-1];
+        	//String chan = (String) s1.getSelectedItem();
+        	if(!user.equals("Current Location")) {
+        		ServiceIRCService.OpenPMWindow(user);
+				
+        		finish();
+        	}
+        }
+    };
 }
