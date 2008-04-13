@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import android.app.ProgressDialog;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.util.Log;
 import android.location.Location;
@@ -18,10 +20,15 @@ public class userMapOverlay extends Overlay {
 	Paint paint1 = new Paint();
 	String chanName;
 	ArrayList<String> userList;
-	
-	userMapOverlay(String chan) {
+    BitmapDrawable mapIcon; 
+    static int w,h;
+    
+	userMapOverlay(String chan, Drawable icon) {
 		chanName = chan;
 		userList = ServiceIRCService.channels.get(chanName).chanusers;	
+        mapIcon = (BitmapDrawable) icon; 
+        w = mapIcon.getIntrinsicWidth();
+        h = mapIcon.getIntrinsicHeight();
 	}
 
 	public void draw(Canvas canvas, PixelCalculator pixelCalculator, boolean b) {
@@ -37,9 +44,11 @@ public class userMapOverlay extends Overlay {
 	        Point point = new Point(lat,lng);
 			
 		     pixelCalculator.getPointXY(point, screenCoords);
-//		     canvas.drawPicture(R.drawable.dude);
 
-		     canvas.drawCircle(screenCoords[0], screenCoords[1], 9, paint1);
+		     mapIcon.setBounds(screenCoords[0] - w / 2, screenCoords[1] - h, 
+                     screenCoords[0] + w / 2, screenCoords[1]); 
+             //mapIcon.setAlpha(70); 
+             mapIcon.draw(canvas); 
 			}
 		}
 

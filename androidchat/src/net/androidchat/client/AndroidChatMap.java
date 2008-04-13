@@ -11,6 +11,8 @@ import com.google.android.maps.Point;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -36,6 +38,8 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	
 	private LocationManager lm;
 	private Spinner s1;
+	private Drawable mapIcon;
+
 	private ArrayAdapter<String> adapter;
 	@Override 
     public void onCreate(Bundle icicle) { 
@@ -83,7 +87,8 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         mc = mapView.getController(); 
         oc = mapView.createOverlayController();
 
-        AndroidChatOverlay locOverlay = new AndroidChatOverlay();
+        mapIcon = this.getResources().getDrawable(R.drawable.bubble);
+        AndroidChatOverlay locOverlay = new AndroidChatOverlay(mapIcon);
         oc.add(locOverlay, true);
         
         

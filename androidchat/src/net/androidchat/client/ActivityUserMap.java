@@ -9,6 +9,7 @@ import com.google.android.maps.Point;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 	
 	private LocationManager lm;
 	private Spinner s1;
+	private Drawable icon;
 	
 	@Override 
     public void onCreate(Bundle icicle) { 
@@ -86,8 +88,8 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 		}
 		setProgressBarVisibility(false);
 
-        
-        userMapOverlay locOverlay = new userMapOverlay(chanName);
+        icon = this.getResources().getDrawable(R.drawable.dude);
+        userMapOverlay locOverlay = new userMapOverlay(chanName, icon);
         oc.add(locOverlay, true);
         
         int lat = (int) (loc.getLatitude() * 1000000);

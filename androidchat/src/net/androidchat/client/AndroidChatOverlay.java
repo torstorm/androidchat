@@ -5,6 +5,8 @@ import java.util.Set;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable; 
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import com.google.android.maps.Point;
 import com.google.android.maps.Overlay;
@@ -16,9 +18,14 @@ import android.util.Log;
 public class AndroidChatOverlay extends Overlay {
 	private static HashMap<String, ClassChannelDescriptor>	channel_list;
 	Paint paint1 = new Paint();
+    BitmapDrawable mapIcon; 
+    static int w,h;
 	
-	AndroidChatOverlay() {
+	AndroidChatOverlay(Drawable icon) {
 		channel_list = ServiceIRCService.channel_list;
+        mapIcon = (BitmapDrawable) icon; 
+        w = mapIcon.getIntrinsicWidth();
+        h = mapIcon.getIntrinsicHeight();
 	}
 
 	public void draw(Canvas canvas, PixelCalculator pixelCalculator, boolean b) {
@@ -42,7 +49,11 @@ public class AndroidChatOverlay extends Overlay {
 		     int lng = (int)(temp.loc_lng * 1000000); 
 		     Point point = new Point(lat,lng);
 		     pixelCalculator.getPointXY(point, screenCoords);
-		     canvas.drawCircle(screenCoords[0], screenCoords[1], 9, paint1);
+
+             mapIcon.setBounds(screenCoords[0] - w / 2, screenCoords[1] - h, 
+                     screenCoords[0] + w / 2, screenCoords[1]); 
+             //mapIcon.setAlpha(70); 
+             mapIcon.draw(canvas); 
 		}
 
        			
