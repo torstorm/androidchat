@@ -1,23 +1,22 @@
 package net.androidchat.client;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.Service;
-import android.content.Intent;
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import android.os.*;
-
-import android.location.*;
-
-import android.os.Binder;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.ArrayList;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.os.Binder;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Parcel;
 import android.util.Log;
 
 public class ServiceIRCService extends Service {
@@ -29,7 +28,7 @@ public class ServiceIRCService extends Service {
 	public static BufferedWriter writer;
 	public static BufferedReader reader;
 	public static int state;
-	private static String server = "38.100.42.254";
+	private static String server = "irc.androidchat.net"; //"38.100.42.254";
 	public static String nick = "AndroidChat";
 
 	public static final int MSG_UPDATECHAN = 0;
@@ -38,7 +37,7 @@ public class ServiceIRCService extends Service {
 	public static final int MSG_DISCONNECT = 3;
 	public static final int MSG_CHANGEWINDOW = 4;
 
-	public static final String AC_VERSION = "0.03A";
+	public static final String AC_VERSION = "1.00b";
 
 	private static boolean is_first_list;
 
@@ -155,11 +154,17 @@ public class ServiceIRCService extends Service {
 			 * RequestChannelLocation(toks[2]); } else {
 			 */
 			ClassChannelDescriptor t = new ClassChannelDescriptor();
+			try {
+			
 			t.channame = toks[3];
 			t.chantopic = args.substring(args.indexOf("]") + 1).trim();
 			t.chatters = Integer.parseInt(toks[4]);
+		
+			} catch (ArrayIndexOutOfBoundsException aioobe)
+			{
+				
+			} 
 			channel_list.put(toks[3], t);
-
 			RequestChanLocation(toks[3]);
 			// }
 		} else if (command.equals("TOPIC")) {
@@ -499,6 +504,7 @@ public class ServiceIRCService extends Service {
 			ServiceIRCService.state = -1;
 			ServiceIRCService.reader.close();
 			ServiceIRCService.connection.interrupt();
+			mNM.cancel(R.string.irc_started);
 			((Service)context).stopSelf();
 
 		} catch (IOException e) {
@@ -730,7 +736,6 @@ public class ServiceIRCService extends Service {
 	protected void onDestroy() {
 		// Cancel the persistent notification.
 		QuitServer();
-		mNM.cancel(R.string.irc_started);
 		state = 0;
 		if (ChannelViewHandler != null) {
 			channels.get("~status").addLine("*** Disconnected");
@@ -747,6 +752,9 @@ public class ServiceIRCService extends Service {
 						.currentTimeMillis(), "AndroidChat - Notification",
 				getText(R.string.irc_stopped), null, R.drawable.mini_icon,
 				"Android Chat", null));
+		
+		mNM.cancel(R.string.irc_started);
+		
 	}
 
 	public IBinder onBind(Intent intent) {
