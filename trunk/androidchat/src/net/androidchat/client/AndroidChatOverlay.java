@@ -45,6 +45,7 @@ public class AndroidChatOverlay extends Overlay {
 			Log.v("Test lat", test.toString());
 			Log.v("Test lng", test2.toString());
 
+			if(temp.loc_lat != 0 && temp.loc_lng != 0) {
 			 int lat = (int) (temp.loc_lat * 1000000); 
 		     int lng = (int)(temp.loc_lng * 1000000); 
 		     Point point = new Point(lat,lng);
@@ -54,6 +55,7 @@ public class AndroidChatOverlay extends Overlay {
                      screenCoords[0] + w / 2, screenCoords[1]); 
              //mapIcon.setAlpha(70); 
              mapIcon.draw(canvas); 
+			}
 		}
 
        			
