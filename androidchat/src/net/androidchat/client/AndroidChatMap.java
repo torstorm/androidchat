@@ -62,7 +62,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
             Location l = new Location();
         	l.setLatitude((float)channel_list.get(s).loc_lat);
         	l.setLongitude((float)channel_list.get(s).loc_lng);
-        	
+        	if(l.getLatitude() != -0 && l.getLongitude() != -0) {
         	// 1 609.344 meters in a mile
         	// 1 000 meters in a km (duh)
         	
@@ -73,7 +73,13 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
             fin = String.format("(%.1f mi) %s - %s", (distance/1609.344), s, channel_list.get(s).chantopic);           
            
             adapter.addObject(fin);
-            
+        	} else {
+        		String fin = new String();
+                // no user count here, should be represented by pin on map...
+                fin = String.format("%s - %s", s, channel_list.get(s).chantopic);           
+               
+                adapter.addObject(fin);
+        	}
             
             Log.v("Object test", s);
         }
@@ -95,10 +101,12 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	    int lat = (int) (loc.getLatitude() * 1000000);
         int lng = (int) (loc.getLongitude() * 1000000); 
         Point p = new Point(lat,lng);
+        if(lat != 0 && lng != 0 ) {
         //Point origin = new Point(0,0);
         //mc.animateTo(origin);
         mc.animateTo(p); 
         mc.zoomTo(9); 
+        }
     } 
 	
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
