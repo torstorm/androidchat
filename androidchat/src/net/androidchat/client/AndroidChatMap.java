@@ -36,7 +36,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	
 	private LocationManager lm;
 	private Spinner s1;
-
+	private ArrayAdapter<String> adapter;
 	@Override 
     public void onCreate(Bundle icicle) { 
         super.onCreate(icicle); 
@@ -50,7 +50,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 		button.setOnClickListener(mJoinListener);
        s1 = (Spinner) findViewById(R.id.chanspinner);
        
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.addObject("Current Location");
         for(String s : chanNames) {
         	
@@ -125,7 +125,9 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     private OnClickListener mJoinListener = new OnClickListener() {
         public void onClick(View v)
         {
-        	String chan = (String) s1.getSelectedItem();
+        	Set<String> chanNames = channel_list.keySet();
+        	String chan = (String)chanNames.toArray()[s1.getSelectedItemPosition()-1];
+        	//String chan = (String) s1.getSelectedItem();
         	if(!chan.equals("Current Location")) {
         		ServiceIRCService.JoinChan(chan);
 				
