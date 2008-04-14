@@ -314,15 +314,15 @@ public class ServiceIRCService extends Service {
 								ServiceIRCService.MSG_UPDATECHAN,
 								temp.channame.toLowerCase()).sendToTarget();
 						
-						
-						
+					
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW, lastwindow)
 								.sendToTarget();
 						Message.obtain(ChannelViewHandler,
-								ServiceIRCService.MSG_UPDATECHAN, lastwindow)
+								ServiceIRCService.MSG_UPDATECHAN, curwindow)
 								.sendToTarget();
 					}
+					
 					channels.remove(temp.channame.toLowerCase()); // it will now
 					
 				}
