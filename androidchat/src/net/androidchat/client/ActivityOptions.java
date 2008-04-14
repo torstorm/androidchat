@@ -49,7 +49,7 @@ public class ActivityOptions extends Activity {
         ajText.setText(settings.getString("autoJoin", ""));
         //settings.getBoolean("sendLoc", true);
 
-	}
+	} 
 	
 	private OnClickListener mCancListener = new OnClickListener() {
 		public void onClick(View v) {
