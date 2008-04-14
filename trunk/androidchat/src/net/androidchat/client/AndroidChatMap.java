@@ -56,18 +56,21 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
        
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.addObject("Current Location");
+        /*
     	setProgressBarVisibility(true);
-		while (ServiceIRCService.channel_list.size() != chanNames.size())
+    	int x = 1;
+		while (x != 100)
 		{
-			setProgress((int)(((float)(ServiceIRCService.channel_list.size()) / (float)chanNames.size()) * 10000));
+			setProgress(x * 10000);
 			try {
+				x++;
 			Thread.sleep(100);
 			} catch (InterruptedException IE)
 			{	
 			}
 		}
 		setProgressBarVisibility(false);
-        
+        */
         for(String s : chanNames) {
         	
            

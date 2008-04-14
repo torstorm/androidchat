@@ -7,11 +7,14 @@ import com.google.android.maps.Point;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
@@ -67,11 +70,14 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
 		
 		
         public View getView(int position, View convertView, ViewGroup parent) {
+            chanNames = ServiceIRCService.channels.keySet();
 
       	  
       	  TextView i = new TextView(ChannelGrid.this);
 
             i.setText((String)chanNames.toArray()[position]);
+            
+  
             i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
             Random rand = new Random();
@@ -79,6 +85,9 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
            int green = rand.nextInt(127+1) + 128;
            int blue = rand.nextInt(127+1) + 128;
 
+           if(ServiceIRCService.curwindow.equals((String)chanNames.toArray()[position])) {
+        	   i.setTypeface(Typeface.DEFAULT_BOLD_ITALIC);
+           }
             i.setTextColor(Color.rgb(red,green,blue));
             i.setBackgroundColor(0x33FFFFFF);
             i.setPadding(3, 3, 3, 3);
@@ -105,5 +114,36 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
         }
 
 	}
+	
+	 @Override
+	    public boolean onCreateOptionsMenu(Menu menu) {
+	        super.onCreateOptionsMenu(menu);
+	        
+	        // Parameters for menu.add are:
+	        // group -- Not used here.
+	        // id -- Used only when you want to handle and identify the click yourself.
+	        // title
+	        menu.add(0, 0, "Close Current Window"); 
+
+	        
+	        return true;
+	    }
+
+	    // Activity callback that lets your handle the selection in the class.
+	    // Return true to indicate that you've got it, false to indicate
+	    // that it should be handled by a declared handler object for that
+	    // item (handler objects are discouraged for reasons of efficiency).
+	    @Override
+	    public boolean onOptionsItemSelected(Menu.Item item){
+	        switch (item.getId()) {
+	        case 0:
+	        	//ServiceIRCService.curwindow
+	        	ServiceIRCService.SendToChan(ServiceIRCService.curwindow, "/close");
+	        	finish();
+	            return true;
+	        }
+	        return false;
+	    }
+
 	
 }
