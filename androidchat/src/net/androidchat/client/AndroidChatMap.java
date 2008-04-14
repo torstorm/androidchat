@@ -201,7 +201,8 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         {
             channel_list = ServiceIRCService.channel_list;
 
-        	Set<String> chanNames = channel_list.keySet();
+            chanNames.clear();
+            chanNames.addAll(channel_list.keySet());
         	String chan = (String)chanNames.toArray()[s1.getSelectedItemPosition()-1];
         	//String chan = (String) s1.getSelectedItem();
         	if(!chan.equals("Current Location")) {
