@@ -1,36 +1,28 @@
 package net.androidchat.client;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Collection;
-
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MapController;
-import com.google.android.maps.OverlayController;
-import com.google.android.maps.Point;
 import java.util.Comparator;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import java.util.HashMap;
+import java.util.TreeSet;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-
-import android.widget.ImageButton;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
-import android.widget.Button;
-
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
-import net.androidchat.client.AndroidChatOverlay;
 
-import android.util.Log;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.OverlayController;
+import com.google.android.maps.Point;
 
 
 
@@ -206,13 +198,18 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     private OnClickListener mJoinListener = new OnClickListener() {
         public void onClick(View v)
         {
+      	  if(s1.getSelectedItemPosition() == 0)
+      	  {
+      		  finish();
+      		  return;
+      	  }
             
         	String chan = (String)chanNames.toArray()[s1.getSelectedItemPosition()-1];
         	//String chan = (String) s1.getSelectedItem();
         	if(!chan.equals("Current Location")) {
         		if(ServiceIRCService.channels.containsKey(chan.toLowerCase()))
         			{ 
-        			
+        			 
 					Message.obtain(ServiceIRCService.ChannelViewHandler,
 							ServiceIRCService.MSG_CHANGEWINDOW,
 							chan.toLowerCase()).sendToTarget();

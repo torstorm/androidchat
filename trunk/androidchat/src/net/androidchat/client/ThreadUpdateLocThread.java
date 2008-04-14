@@ -1,7 +1,9 @@
 package net.androidchat.client;
 
-import android.location.*;
 import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 
 public class ThreadUpdateLocThread implements Runnable
 {
@@ -19,7 +21,7 @@ public class ThreadUpdateLocThread implements Runnable
 	}
 
 	public void run()
-	{
+	{ 
 		try
 		{
 			for (;;)

@@ -23,7 +23,7 @@ public class ServiceIRCService extends Service {
 	public static Context context;
 	private static Thread connection;
 	private static Thread updates;
-
+ 
 	private static Socket socket;
 	public static BufferedWriter writer;
 	public static BufferedReader reader;

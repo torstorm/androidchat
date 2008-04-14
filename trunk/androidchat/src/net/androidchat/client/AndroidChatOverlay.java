@@ -5,14 +5,12 @@ import java.util.Set;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable; 
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import com.google.android.maps.Point;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.Overlay.PixelCalculator;
-
 import android.util.Log;
+
+import com.google.android.maps.Overlay;
+import com.google.android.maps.Point;
 
 
 public class AndroidChatOverlay extends Overlay {
@@ -27,7 +25,7 @@ public class AndroidChatOverlay extends Overlay {
         w = mapIcon.getIntrinsicWidth();
         h = mapIcon.getIntrinsicHeight();
 	}
-
+ 
 	public void draw(Canvas canvas, PixelCalculator pixelCalculator, boolean b) {
 		super.draw(canvas, pixelCalculator, b);
         int[] screenCoords = new int[2];

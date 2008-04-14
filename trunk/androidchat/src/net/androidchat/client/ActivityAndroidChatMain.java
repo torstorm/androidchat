@@ -1,18 +1,14 @@
 package net.androidchat.client;
 
 import android.app.Activity;
-import android.view.Display;
-import android.content.Intent;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.content.Context;
-
-import net.androidchat.client.ActivityChatChannel;
 
 public class ActivityAndroidChatMain extends Activity {
 
@@ -29,7 +25,7 @@ public class ActivityAndroidChatMain extends Activity {
 				.getSystemService(Context.WINDOW_SERVICE);
 		if (wm.getDefaultDisplay().getHeight() < 300) // quick hack so we're
 														// never off the screen
-			setContentView(R.layout.main_alt); // fix
+			setContentView(R.layout.main_alt); // fix 
 		else
 			setContentView(R.layout.main);
 
@@ -59,6 +55,7 @@ public class ActivityAndroidChatMain extends Activity {
 						ActivityOptions.class));
 			else
 					{
+				
 					startActivity(new Intent(ActivityAndroidChatMain.this,
 							ActivityChatChannel.class));
 					}

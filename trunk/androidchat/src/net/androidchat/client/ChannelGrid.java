@@ -1,28 +1,24 @@
 package net.androidchat.client;
 
-import java.util.Set;
 import java.util.Random;
-
-import com.google.android.maps.Point;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Gallery;
-import android.widget.Gallery.LayoutParams;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.BaseAdapter;
+import android.widget.Gallery;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Gallery.LayoutParams;
 
 
 public class ChannelGrid extends Activity implements AdapterView.OnItemClickListener{
@@ -66,7 +62,7 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
 			mContext = context;
 		}
 		
-		
+		 
         public View getView(int position, View convertView, ViewGroup parent) {
             chanNames = ServiceIRCService.channels.keySet();
 
