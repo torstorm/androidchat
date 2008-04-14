@@ -351,10 +351,16 @@ public class ServiceIRCService extends Service {
 					temp.addLine("*** Now talking on " + args + "...");
 					channels.put(args.toLowerCase(), temp);
 					if (ChannelViewHandler != null)
+					{
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW,
 								args.toLowerCase()).sendToTarget();
 
+						Message.obtain(ChannelViewHandler,
+								ServiceIRCService.MSG_UPDATECHAN,
+								args.toLowerCase()).sendToTarget();
+
+					}
 				}
 			} else {
 				if (args.equals("")) {
