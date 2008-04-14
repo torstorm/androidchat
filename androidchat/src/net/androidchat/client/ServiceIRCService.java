@@ -37,7 +37,7 @@ public class ServiceIRCService extends Service {
 	public static final int MSG_DISCONNECT = 3;
 	public static final int MSG_CHANGEWINDOW = 4;
 
-	public static final String AC_VERSION = "1.00b";
+	public static final String AC_VERSION = "1.02b";
 
 	private static boolean is_first_list;
 
@@ -413,6 +413,10 @@ public class ServiceIRCService extends Service {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW,
 								who.toLowerCase()).sendToTarget();
+						if (ChannelViewHandler != null) 
+							Message.obtain(ChannelViewHandler,
+									ServiceIRCService.MSG_UPDATECHAN,
+									who.toLowerCase()).sendToTarget();
 						
 					} } else 
 						if (ChannelViewHandler != null) 
@@ -428,6 +432,7 @@ public class ServiceIRCService extends Service {
 						"AndroidChat - Notification", context
 								.getText(R.string.ui_newpm), null,
 						R.drawable.mini_icon, "Android Chat", null));
+				
 				flagupdate = true;
 				updatechan = who.toLowerCase();
 			}
