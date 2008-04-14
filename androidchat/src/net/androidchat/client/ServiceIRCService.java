@@ -324,7 +324,7 @@ public class ServiceIRCService extends Service {
 					}
 					
 					channels.remove(temp.channame.toLowerCase()); // it will now
-					flagupdate = false;
+					flagupdate = true;
 					updatechan = curwindow;
 				}
 			} else {
