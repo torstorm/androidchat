@@ -124,6 +124,7 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
 	        // id -- Used only when you want to handle and identify the click yourself.
 	        // title
 	        menu.add(0, 0, "Close Current Window"); 
+	        menu.get(0).setIcon(R.drawable.stop);
 
 	        
 	        return true;
