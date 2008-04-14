@@ -26,6 +26,7 @@ public class ActivityChatChannel extends Activity {
     private EditText te;
     private ScrollView sv;
     private String CurWindow;
+    private ProgressDialog pd;
 
 	private final String PREFS_NAME = "androidChatPrefs";
 	SharedPreferences settings; 
@@ -34,15 +35,20 @@ public class ActivityChatChannel extends Activity {
         public void handleMessage(Message msg)
         {
             switch (msg.what) {
-            
+               
+            	
+            	case ServiceIRCService.MSG_CHANGEWINDOW:
+               		ServiceIRCService.lastwindow = CurWindow;
+               		CurWindow = (String) msg.obj; 
+               		ServiceIRCService.curwindow = CurWindow;
+            	 
                 case ServiceIRCService.MSG_UPDATECHAN:
                     updateView((String) msg.obj);
                     break;
                     
-                case ServiceIRCService.MSG_CHANGEWINDOW:
-               	 	ServiceIRCService.lastwindow = CurWindow;
-                	CurWindow = (String) msg.obj; 
-                	ServiceIRCService.curwindow = CurWindow;
+                case ServiceIRCService.MSG_CLEARPROGRESS:
+               	 if (pd != null)
+               		 pd.dismiss();
                	 break;
                	 
   
@@ -56,7 +62,7 @@ public class ActivityChatChannel extends Activity {
     
     private void updateView(String Window)
     {
-    	
+
     	if(ServiceIRCService.state == 10) {
     		if(!ServiceIRCService.shownChanListConnect) {
     	    	
@@ -66,6 +72,10 @@ public class ActivityChatChannel extends Activity {
                 	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
         			startActivity(i);    		
         		}
+    			
+    			if(pd != null)
+    				pd.dismiss();
+    			
     			ServiceIRCService.shownChanListConnect = true;
 
     		}
@@ -125,7 +135,6 @@ public class ActivityChatChannel extends Activity {
     protected void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
-        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.chat);
 
 		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, 0);
@@ -148,6 +157,8 @@ public class ActivityChatChannel extends Activity {
 
 
        ServiceIRCService.SetViewHandler(mHandler);
+       pd = ProgressDialog.show(this, "Working..", "Establishing Network Connection", true,
+             false);
        CurWindow = "~status";    		
        
     }
@@ -179,13 +190,11 @@ public class ActivityChatChannel extends Activity {
     public boolean onOptionsItemSelected(Menu.Item item){
         switch (item.getId()) {
         case 0:
-        	setProgressBarIndeterminate(true);
-        	setProgress(5000);
-        	setProgressBarVisibility(true);
+      	  pd = ProgressDialog.show(this, "Working..", "Updating Channel List", true,
+                 false);
         	ServiceIRCService.AskForChannelList(); // update channel list
         	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
     			startActivity(i);
-    			setProgressBarVisibility(false);
             return true;
         case 1:
         	Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
@@ -194,13 +203,12 @@ public class ActivityChatChannel extends Activity {
         case 2:
         	if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))
         	{
-        		setProgress(5000);
-        		setProgressBarIndeterminate(true);
-        		setProgressBarVisibility(true);
-        	
+        	 pd = ProgressDialog.show(this, "Working..", "Updating Users List", true,
+                false);
+
         	Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
         	startActivity(u);
-        	setProgressBarVisibility(false);
+
             return true;
         	} else return false;
         }

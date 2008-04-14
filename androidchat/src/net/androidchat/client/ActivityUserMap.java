@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -115,6 +116,9 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
         //mc.animateTo(origin);
         mc.animateTo(p); 
         mc.zoomTo(9); 
+        Message.obtain(ServiceIRCService.ChannelViewHandler,
+					ServiceIRCService.MSG_CLEARPROGRESS,
+					null).sendToTarget();
 	}
 
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
