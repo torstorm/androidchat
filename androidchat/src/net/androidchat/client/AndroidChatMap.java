@@ -49,7 +49,11 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	private ArrayAdapter<String> adapter;
 	@Override 
     public void onCreate(Bundle icicle) { 
-        super.onCreate(icicle); 
+        super.onCreate(icicle);
+        String titleStr = new String();
+        titleStr = String.format("AndroidChat - Channels Map");
+        this.setTitle(titleStr);
+        
 		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		loc = lm.getCurrentLocation("gps");
         channel_list = ServiceIRCService.channel_list;
@@ -138,9 +142,9 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     } 
 	
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
-        channel_list = ServiceIRCService.channel_list;
-        chanNames.clear();
-        chanNames.addAll(channel_list.keySet());
+        //channel_list = ServiceIRCService.channel_list;
+       // chanNames.clear();
+        //chanNames.addAll(channel_list.keySet());
 
     	
 
@@ -199,10 +203,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     private OnClickListener mJoinListener = new OnClickListener() {
         public void onClick(View v)
         {
-            channel_list = ServiceIRCService.channel_list;
-
-            chanNames.clear();
-            chanNames.addAll(channel_list.keySet());
+            
         	String chan = (String)chanNames.toArray()[s1.getSelectedItemPosition()-1];
         	//String chan = (String) s1.getSelectedItem();
         	if(!chan.equals("Current Location")) {

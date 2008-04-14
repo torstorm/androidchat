@@ -62,21 +62,7 @@ public class ActivityChatChannel extends Activity {
     	    	
     			if(settings.getBoolean("showList", false))
     			{
-    				setProgressBarVisibility(true);
-
-        			int x = 1;
-        			while (x != 35)
-        			{
-        				setProgress(x * 10000);
-        				try {
-        					x++;
-        				Thread.sleep(100);
-        				} catch (InterruptedException IE)
-        				{	
-        				}
-        			}
-        			setProgressBarVisibility(false);
-
+    			
                 	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
         			startActivity(i);    		
         		}
@@ -141,6 +127,7 @@ public class ActivityChatChannel extends Activity {
         super.onCreate(icicle);
         requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.chat);
+
 		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, 0);
 
         // Watch for button clicks.
