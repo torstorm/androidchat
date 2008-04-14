@@ -18,7 +18,8 @@ public final class R {
         public static final int join_channel=0x7f020004;
         public static final int map=0x7f020005;
         public static final int mini_icon=0x7f020006;
-        public static final int usermsg=0x7f020007;
+        public static final int stop=0x7f020007;
+        public static final int usermsg=0x7f020008;
     }
     public static final class id {
         public static final int androidchat=0x7f040000;

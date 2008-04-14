@@ -2,13 +2,15 @@ package net.androidchat.client;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.Collection;
 
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MapController;
 import com.google.android.maps.OverlayController;
 import com.google.android.maps.Point;
-
+import java.util.Comparator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -30,6 +32,8 @@ import net.androidchat.client.AndroidChatOverlay;
 
 import android.util.Log;
 
+
+
 public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSelectedListener{
 	private static HashMap<String, ClassChannelDescriptor>	channel_list;
 	private MapView mapView;
@@ -39,17 +43,22 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	private LocationManager lm;
 	private Spinner s1;
 	private Drawable mapIcon;
+	private Location loc;
 
 	private ArrayAdapter<String> adapter;
 	@Override 
     public void onCreate(Bundle icicle) { 
         super.onCreate(icicle); 
-        channel_list = ServiceIRCService.channel_list;
-    	Set<String> chanNames = channel_list.keySet();
-        
-        setContentView(R.layout.map);
 		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		Location loc = lm.getCurrentLocation("gps");
+		loc = lm.getCurrentLocation("gps");
+        channel_list = ServiceIRCService.channel_list;
+        DistanceComparator comp = new DistanceComparator();
+    	TreeSet<String> chanNames = new TreeSet<String>(comp);
+    	
+    	//Set<String> tempSet = channel_list.keySet();   // 	= (TreeSet<String>)channel_list.keySet();
+        chanNames.addAll(channel_list.keySet());
+        setContentView(R.layout.map);
+
     	ImageButton button = (ImageButton) findViewById(R.id.join_chatbut);
 		button.setOnClickListener(mJoinListener);
        s1 = (Spinner) findViewById(R.id.chanspinner);
@@ -71,12 +80,13 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 		}
 		setProgressBarVisibility(false);
         */
+        
         for(String s : chanNames) {
         	
            
             Location l = new Location();
         	l.setLatitude((float)ServiceIRCService.channel_list.get(s.toLowerCase()).loc_lat);
-        	l.setLongitude((float)ServiceIRCService.channel_list.get(s.toString()).loc_lng);
+        	l.setLongitude((float)ServiceIRCService.channel_list.get(s.toLowerCase()).loc_lng);
         	String temp = String.format("%f, %f", l.getLatitude(), l.getLongitude());
         	Log.v("Channel loc at", temp);
         	if(l.getLatitude() != -0 && l.getLongitude() != -0) {
@@ -135,9 +145,9 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 
 		if(position == 0) {
         	 
-            Location loc = lm.getCurrentLocation("gps");
-    	    int lat = (int) (loc.getLatitude() * 1000000);
-            int lng = (int) (loc.getLongitude() * 1000000); 
+            Location loc1 = lm.getCurrentLocation("gps");
+    	    int lat = (int) (loc1.getLatitude() * 1000000);
+            int lng = (int) (loc1.getLongitude() * 1000000); 
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
 		} else {
@@ -156,6 +166,35 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
     public void onNothingSelected(AdapterView parent) {
     }
     
+    public class DistanceComparator implements Comparator<String> {
+     public int compare(String o1, String o2) {
+    	 String loc1 = o1.toString();
+    	 String loc2 = o2.toString();
+    	 Location l1 = new Location();
+     	l1.setLatitude((float)ServiceIRCService.channel_list.get(loc1.toLowerCase()).loc_lat);
+     	l1.setLongitude((float)ServiceIRCService.channel_list.get(loc1.toLowerCase()).loc_lng);
+     	
+   	 Location l2 = new Location();
+  	l2.setLatitude((float)ServiceIRCService.channel_list.get(loc2.toLowerCase()).loc_lat);
+  	l2.setLongitude((float)ServiceIRCService.channel_list.get(loc2.toLowerCase()).loc_lng);
+    float distance1 = loc.distanceTo(l1);
+    float distance2 = loc.distanceTo(l2);
+
+	if(l1.getLatitude() == -0 && l1.getLongitude() == -0) {
+    	return -1;
+     }
+	if(l2.getLatitude() == -0 && l2.getLongitude() == -0){
+		return 1;
+	}
+	
+	if(distance1 > distance2) {
+		return 1;
+	} else {
+		return -1;
+	}
+	
+   }
+    }
     private OnClickListener mJoinListener = new OnClickListener() {
         public void onClick(View v)
         {
@@ -171,4 +210,6 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         	}
         }
     };
+    
+  
 }
