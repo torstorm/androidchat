@@ -1,20 +1,15 @@
 package net.androidchat.client;
 
-import java.util.Set;
 import java.util.ArrayList;
 
-import android.app.ProgressDialog;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 
-import com.google.android.maps.Point;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.Overlay.PixelCalculator;
+import com.google.android.maps.Point;
 
 public class userMapOverlay extends Overlay { 
 	Paint paint1 = new Paint();
@@ -22,7 +17,7 @@ public class userMapOverlay extends Overlay {
 	ArrayList<String> userList;
     BitmapDrawable mapIcon; 
     static int w,h;
-    
+     
 	userMapOverlay(String chan, Drawable icon) {
 		chanName = chan;
 		userList = ServiceIRCService.channels.get(chanName).chanusers;	

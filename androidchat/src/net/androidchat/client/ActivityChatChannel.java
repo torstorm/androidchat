@@ -9,16 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.ScrollView;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnKeyListener;
+import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 public class ActivityChatChannel extends Activity {
 
@@ -71,11 +67,11 @@ public class ActivityChatChannel extends Activity {
     			
                 	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
         			startActivity(i);    		
-        		}
+        		} else {
     			
     			if(pd != null)
     				pd.dismiss();
-    			
+        		}
     			ServiceIRCService.shownChanListConnect = true;
 
     		}
@@ -154,11 +150,13 @@ public class ActivityChatChannel extends Activity {
         tv = (TextView) findViewById(R.id.ircdisp);
         
         sv.fullScroll(ScrollView.FOCUS_DOWN);
-
-
+         
        ServiceIRCService.SetViewHandler(mHandler);
+       if(!ServiceIRCService.shownChanListConnect)
+       {
        pd = ProgressDialog.show(this, "Working..", "Establishing Network Connection", true,
              false);
+       }
        CurWindow = "~status";    		
        
     }

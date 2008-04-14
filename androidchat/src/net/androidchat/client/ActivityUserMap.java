@@ -1,34 +1,26 @@
 package net.androidchat.client;
 
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MapController;
-import com.google.android.maps.OverlayController;
-import com.google.android.maps.Point;
+import java.util.ArrayList;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-
-import android.widget.ImageButton;
-import android.widget.ArrayAdapter;
-import android.widget.AdapterView;
-import android.widget.Button;
-import java.util.ArrayList;
-import java.util.Set;
-import java.lang.Thread;
-import android.widget.Spinner;
-import net.androidchat.client.AndroidChatOverlay;
-import net.androidchat.client.ActivityChatChannel;
 import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.Spinner;
+
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.OverlayController;
+import com.google.android.maps.Point;
 
 public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSelectedListener{
 	private String chanName;
@@ -148,7 +140,7 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 			if(lat != 0 && lng != 0 ) {
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
-			}
+			} 
 			}
 		}
 	}
@@ -160,7 +152,12 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
         public void onClick(View v)
         {
             //userList = ServiceIRCService.channels.get(chanName).chanusers;
-
+      	  
+      	  if(s1.getSelectedItemPosition() == 0)
+      	  {
+      		  finish();
+      		  return;
+      	  }
         	String user = (String)userList.toArray()[s1.getSelectedItemPosition()-1];
         	//String chan = (String) s1.getSelectedItem();
         	if(!user.equals("Current Location")) {

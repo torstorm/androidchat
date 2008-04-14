@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Message;
 
@@ -117,7 +116,7 @@ public class ThreadConnThread implements Runnable {
 				{
 					ServiceIRCService.writer.write("PONG " + line.substring(5) + "\r\n");
 					ServiceIRCService.writer.flush();
-				}
+				} 
 			}
 		} catch (IOException e)
 		{

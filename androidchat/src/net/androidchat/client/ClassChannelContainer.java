@@ -23,7 +23,7 @@ public class ClassChannelContainer {
         IS_STATUS = false;
         IS_PM = false;
         chantopic = "No topic.";
-    }
+    } 
 
     public void addLine(String line)
     {
