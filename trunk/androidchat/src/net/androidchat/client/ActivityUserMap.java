@@ -44,9 +44,14 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
     public void onCreate(Bundle icicle) { 
         super.onCreate(icicle); 
         requestWindowFeature(Window.FEATURE_PROGRESS);
+        
+        chanName = ServiceIRCService.curwindow;
+
+        String titleStr = new String();
+        titleStr = String.format("AndroidChat - Users on %s", chanName);
+        this.setTitle(titleStr);
 		// this is wrong chanName = icicle.getString("name");
 
-        chanName = ServiceIRCService.curwindow;
         
         setContentView(R.layout.usermap);
         
@@ -150,7 +155,7 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
     private OnClickListener mPMListener = new OnClickListener() {
         public void onClick(View v)
         {
-            userList = ServiceIRCService.channels.get(chanName).chanusers;
+            //userList = ServiceIRCService.channels.get(chanName).chanusers;
 
         	String user = (String)userList.toArray()[s1.getSelectedItemPosition()-1];
         	//String chan = (String) s1.getSelectedItem();
