@@ -307,14 +307,14 @@ public class ServiceIRCService extends Service {
 				{
 					
 					temp = channels.get(toks[2].toLowerCase());
-					//temp.addLine("*** You have left this channel.");
+					temp.addLine("*** You have left this channel.");
 
 					if (ChannelViewHandler != null) {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_UPDATECHAN,
 								temp.channame.toLowerCase()).sendToTarget();
 						
-						lastwindow = "~status";
+						
 						
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW, lastwindow)
@@ -323,7 +323,7 @@ public class ServiceIRCService extends Service {
 								ServiceIRCService.MSG_UPDATECHAN, lastwindow)
 								.sendToTarget();
 					}
-					channels.remove(temp); // will this work?
+					channels.remove(temp.channame.toLowerCase()); // it will now
 					
 				}
 			} else {
