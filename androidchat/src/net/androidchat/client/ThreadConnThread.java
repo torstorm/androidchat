@@ -65,6 +65,14 @@ public class ThreadConnThread implements Runnable {
 		} catch (IOException e)
 		{
 			e.printStackTrace();
+		} catch (NullPointerException npe)
+		{
+			ServiceIRCService.channels.get("~status").addLine("*** Unable to connect (null socket)");
+			if(ServiceIRCService.ChannelViewHandler != null)
+				Message.obtain(ServiceIRCService.ChannelViewHandler,ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+
+			npe.printStackTrace();
+			
 		}
 		
 		ServiceIRCService.state = 1; // logging in
