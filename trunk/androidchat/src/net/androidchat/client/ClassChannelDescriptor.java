@@ -7,5 +7,5 @@ public class ClassChannelDescriptor {
     public int chatters;
     public double loc_lat;
     public double loc_lng;
-  
+    
 }
