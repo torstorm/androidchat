@@ -128,14 +128,18 @@ public class ActivityUserMap extends MapActivity implements AdapterView.OnItemSe
 //			while(!ServiceIRCService.temp_user_locs.containsKey((String)parent.obtainItem(position-1))) {
 //				//Thread.sleep(100);
 //			}
-			if (ServiceIRCService.temp_user_locs.containsKey((String)parent.obtainItem(position-1)))
+			//userList
+			String key = userList.get(position-1);
+			if (ServiceIRCService.temp_user_locs.containsKey(key.toLowerCase()))
 			{
-				Location tUser = ServiceIRCService.temp_user_locs.get((String)parent.obtainItem(position-1));
+				Location tUser = ServiceIRCService.temp_user_locs.get(key.toLowerCase());
 			
 			int lat = (int) (tUser.getLatitude() * 1000000);
 			int lng = (int) (tUser.getLongitude() * 1000000);
+			if(lat != 0 && lng != 0 ) {
             Point p = new Point(lat,lng);
             mc.animateTo(p); 
+			}
 			}
 		}
 	}

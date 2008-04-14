@@ -57,8 +57,24 @@ public class ActivityChatChannel extends Activity {
     	
     	if(ServiceIRCService.state == 10) {
     		if(!ServiceIRCService.shownChanListConnect) {
+    	    	
     			if(settings.getBoolean("showList", false))
     			{
+    				setProgressBarVisibility(true);
+
+        			int x = 1;
+        			while (x != 35)
+        			{
+        				setProgress(x * 10000);
+        				try {
+        					x++;
+        				Thread.sleep(100);
+        				} catch (InterruptedException IE)
+        				{	
+        				}
+        			}
+        			setProgressBarVisibility(false);
+
                 	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
         			startActivity(i);    		
         		}

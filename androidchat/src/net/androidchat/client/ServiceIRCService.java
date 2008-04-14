@@ -305,13 +305,26 @@ public class ServiceIRCService extends Service {
 				if (channels.containsKey(toks[2].toLowerCase())) // existing
 				// channel?
 				{
+					
 					temp = channels.get(toks[2].toLowerCase());
-					temp.addLine("*** You have left this channel.");
-					if (ChannelViewHandler != null)
+					//temp.addLine("*** You have left this channel.");
+
+					if (ChannelViewHandler != null) {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_UPDATECHAN,
 								temp.channame.toLowerCase()).sendToTarget();
+						
+						lastwindow = "~status";
+						
+						Message.obtain(ChannelViewHandler,
+								ServiceIRCService.MSG_CHANGEWINDOW, lastwindow)
+								.sendToTarget();
+						Message.obtain(ChannelViewHandler,
+								ServiceIRCService.MSG_UPDATECHAN, lastwindow)
+								.sendToTarget();
+					}
 					channels.remove(temp); // will this work?
+					
 				}
 			} else {
 				temp = channels.get(toks[2].toLowerCase());
@@ -601,10 +614,19 @@ public class ServiceIRCService extends Service {
 						String temp = "PART " + chan + " :User closed window\n";
 						writer.write(temp);
 						writer.flush();
-						if (ChannelViewHandler != null)
+						if (ChannelViewHandler != null) {
+							curwindow = "~status";
+							lastwindow = "~status";
+							
 							Message.obtain(ChannelViewHandler,
-									ServiceIRCService.MSG_UPDATECHAN, chan)
+									ServiceIRCService.MSG_CHANGEWINDOW, lastwindow)
 									.sendToTarget();
+							Message.obtain(ChannelViewHandler,
+									ServiceIRCService.MSG_UPDATECHAN, lastwindow)
+									.sendToTarget();
+						}
+						channels.remove(chan);
+
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (NullPointerException npe) {
