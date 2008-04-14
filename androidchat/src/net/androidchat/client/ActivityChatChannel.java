@@ -179,10 +179,10 @@ public class ActivityChatChannel extends Activity {
     public boolean onOptionsItemSelected(Menu.Item item){
         switch (item.getId()) {
         case 0:
-        	setProgressBarVisibility(true);
-        	//setProgressBarIndeterminate(true);
+        	setProgressBarIndeterminate(true);
         	setProgress(5000);
-          	ServiceIRCService.AskForChannelList(); // update channel list
+        	setProgressBarVisibility(true);
+        	ServiceIRCService.AskForChannelList(); // update channel list
         	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
     			startActivity(i);
     			setProgressBarVisibility(false);
@@ -194,9 +194,10 @@ public class ActivityChatChannel extends Activity {
         case 2:
         	if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))
         	{
-        		setProgressBarVisibility(true);
         		setProgress(5000);
-        		//setProgressBarIndeterminate(true);
+        		setProgressBarIndeterminate(true);
+        		setProgressBarVisibility(true);
+        	
         	Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
         	startActivity(u);
         	setProgressBarVisibility(false);
@@ -205,14 +206,7 @@ public class ActivityChatChannel extends Activity {
         }
         return false;
     }
-    private OnClickListener mSendListener = new OnClickListener() {
-        public void onClick(View v)
-        {
-            // do the same as the below function
-           ServiceIRCService.SendToChan(CurWindow, te.getText().toString());
-            te.setText("");
-        }
-    };
+   
 
     private OnKeyListener mKeyListener = new OnKeyListener() {
         public boolean onKey(View v, int i, KeyEvent k)
@@ -228,25 +222,6 @@ public class ActivityChatChannel extends Activity {
 
     };
     
-    private OnClickListener mBackListener = new OnClickListener() {
-        public void onClick(View v)
-        {
-            // do the same as the below function
-       //     ServiceIRCService.SendToChan(chan, te.getText().toString());
-            finish();
-        }
-    };
-    
-    private OnClickListener mMapListener = new OnClickListener() {
-        public void onClick(View v)
-        {
-        	Intent i = new Intent(ActivityChatChannel.this, AndroidChatMap.class);
-        //	i.putExtra("channel_list", ServiceIRCService.channel_list);
-			startActivity(i);
-
-            // do the same as the below function
-       //     ServiceIRCService.SendToChan(chan, te.getText().toString());
-        }
-    };
+   
     
    }
