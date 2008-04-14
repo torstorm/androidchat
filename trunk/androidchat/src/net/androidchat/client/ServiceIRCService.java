@@ -324,15 +324,17 @@ public class ServiceIRCService extends Service {
 					}
 					
 					channels.remove(temp.channame.toLowerCase()); // it will now
-					
+					flagupdate = false;
+					updatechan = curwindow;
 				}
 			} else {
 				temp = channels.get(toks[2].toLowerCase());
 				temp.chanusers.remove(who);
 				temp.addLine("*** " + who + " has left the channel.");
+				flagupdate = true;
+				updatechan = toks[2].toLowerCase();
 			}
-			flagupdate = true;
-			updatechan = toks[2].toLowerCase();
+			
 		} else if (command.equals("JOIN"))
 		// User must have joined a channel
 		{
