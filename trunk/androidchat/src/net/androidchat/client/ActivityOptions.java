@@ -1,6 +1,7 @@
 package net.androidchat.client;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,6 +63,8 @@ public class ActivityOptions extends Activity {
 			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 			SharedPreferences.Editor editor = settings.edit();
 			
+			if(nickText.getText().toString().matches("[A-Za-z][0-9a-zA-Z\\[\\]\\\\^\\-_`{|}]{0,29}"))
+			{
 			editor.putBoolean("sendLoc", locBox.isChecked());
 			editor.putBoolean("pmAlert", pmBox.isChecked());
 			editor.putBoolean("showList", listBox.isChecked());
@@ -71,6 +74,11 @@ public class ActivityOptions extends Activity {
 			
 			editor.commit();
 			finish();
+			} else 
+			{
+				//static 	AlertDialog 	show(Context context, CharSequence title, int iconId, CharSequence message, CharSequence buttonText, boolean cancelable)
+				 AlertDialog.show(ActivityOptions.this, "Invalid Nickname", R.drawable.stop, "Your nickname contains invalid characters or is too long.", "Okay", true);
+			}
 		//	startActivity(new Intent(ActivityAndroidChatMain.this, ActivityOptions.class));
 
 		}

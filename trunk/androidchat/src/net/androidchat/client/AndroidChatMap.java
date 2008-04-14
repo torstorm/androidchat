@@ -138,6 +138,9 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         //mc.animateTo(origin);
         mc.animateTo(p); 
         mc.zoomTo(9); 
+        Message.obtain(ServiceIRCService.ChannelViewHandler,
+					ServiceIRCService.MSG_CLEARPROGRESS,
+					null).sendToTarget();
         }
     } 
 	
@@ -212,9 +215,6 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
         			
 					Message.obtain(ServiceIRCService.ChannelViewHandler,
 							ServiceIRCService.MSG_CHANGEWINDOW,
-							chan.toLowerCase()).sendToTarget();
-					Message.obtain(ServiceIRCService.ChannelViewHandler,
-							ServiceIRCService.MSG_UPDATECHAN,
 							chan.toLowerCase()).sendToTarget();
         			finish();
         			

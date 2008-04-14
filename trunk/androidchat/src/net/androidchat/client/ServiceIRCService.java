@@ -28,11 +28,11 @@ public class ServiceIRCService extends Service {
 	public static BufferedWriter writer;
 	public static BufferedReader reader;
 	public static int state;
-	private static String server = "irc.androidchat.net"; //"38.100.42.254";
+	private static String server = "irc.androidchat.net";// "38.100.42.254"; //
 	public static String nick = "AndroidChat";
 
 	public static final int MSG_UPDATECHAN = 0;
-	public static final int MSG_UPDATEPM = 1;
+	public static final int MSG_CLEARPROGRESS = 1;
 	public static final int MSG_CHANGECHAN = 2;
 	public static final int MSG_DISCONNECT = 3;
 	public static final int MSG_CHANGEWINDOW = 4;
@@ -60,8 +60,7 @@ public class ServiceIRCService extends Service {
 		Message.obtain(ServiceIRCService.ChannelViewHandler,
 				ServiceIRCService.MSG_CHANGEWINDOW, ServiceIRCService.curwindow)
 				.sendToTarget();
-		Message.obtain(ServiceIRCService.ChannelViewHandler,
-				ServiceIRCService.MSG_UPDATECHAN, ServiceIRCService.curwindow).sendToTarget();
+		
 	}
 	
 	// this is epic irc parsing.
@@ -318,14 +317,13 @@ public class ServiceIRCService extends Service {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW, lastwindow)
 								.sendToTarget();
-						Message.obtain(ChannelViewHandler,
-								ServiceIRCService.MSG_UPDATECHAN, curwindow)
-								.sendToTarget();
+	
+						lastwindow = "~status";
 					}
 					
 					channels.remove(temp.channame.toLowerCase()); // it will now
-					flagupdate = true;
-					updatechan = curwindow;
+					flagupdate = false;
+					updatechan = "~status";
 				}
 			} else {
 				temp = channels.get(toks[2].toLowerCase());
@@ -357,11 +355,10 @@ public class ServiceIRCService extends Service {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW,
 								args.toLowerCase()).sendToTarget();
-
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_UPDATECHAN,
 								args.toLowerCase()).sendToTarget();
-
+				
 					}
 				}
 			} else {
@@ -416,9 +413,7 @@ public class ServiceIRCService extends Service {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW,
 								who.toLowerCase()).sendToTarget();
-						Message.obtain(ChannelViewHandler,
-								ServiceIRCService.MSG_UPDATECHAN,
-								who.toLowerCase()).sendToTarget();
+						
 					} } else 
 						if (ChannelViewHandler != null) 
 						Message.obtain(ChannelViewHandler,
@@ -550,9 +545,7 @@ public class ServiceIRCService extends Service {
 						ServiceIRCService.MSG_CHANGEWINDOW,
 						who.toLowerCase()).sendToTarget();
 				
-				Message.obtain(ChannelViewHandler,
-						ServiceIRCService.MSG_UPDATECHAN,
-						who.toLowerCase()).sendToTarget();
+				
 			}
 		} else {
 			temp = new ClassChannelContainer();
@@ -565,9 +558,7 @@ public class ServiceIRCService extends Service {
 						ServiceIRCService.MSG_CHANGEWINDOW,
 						who.toLowerCase()).sendToTarget();
 				
-				Message.obtain(ChannelViewHandler,
-						ServiceIRCService.MSG_UPDATECHAN,
-						who.toLowerCase()).sendToTarget();
+			
 			}
 		}
 	}
@@ -610,9 +601,8 @@ public class ServiceIRCService extends Service {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW, lastwindow)
 								.sendToTarget();
-						Message.obtain(ChannelViewHandler,
-								ServiceIRCService.MSG_UPDATECHAN, lastwindow)
-								.sendToTarget();
+						lastwindow = "~status";
+
 					}
 
 					channels.remove(chan);
@@ -626,15 +616,13 @@ public class ServiceIRCService extends Service {
 						writer.write(temp);
 						writer.flush();
 						if (ChannelViewHandler != null) {
-							curwindow = "~status";
-							lastwindow = "~status";
 							
 							Message.obtain(ChannelViewHandler,
 									ServiceIRCService.MSG_CHANGEWINDOW, lastwindow)
 									.sendToTarget();
-							Message.obtain(ChannelViewHandler,
-									ServiceIRCService.MSG_UPDATECHAN, lastwindow)
-									.sendToTarget();
+
+							lastwindow = "~status";
+
 						}
 						channels.remove(chan);
 
@@ -737,8 +725,7 @@ public class ServiceIRCService extends Service {
 			Message.obtain(ChannelViewHandler,
 					ServiceIRCService.MSG_CHANGEWINDOW, "~status")
 					.sendToTarget();
-			Message.obtain(ChannelViewHandler,
-					ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+			
 		}
 
 		// Display a notification about us starting. We use both a transient
@@ -775,8 +762,7 @@ public class ServiceIRCService extends Service {
 			Message.obtain(ChannelViewHandler,
 					ServiceIRCService.MSG_CHANGEWINDOW, "~status")
 					.sendToTarget();
-			Message.obtain(ChannelViewHandler,
-					ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
+			
 		}
 
 		// Tell the user we stopped.

@@ -51,10 +51,8 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
 	
 	public void onItemClick(AdapterView parent, View v, int position, long id) {
     	String chan = (String)chanGrid.obtainItem(position);
-    	//ServiceIRCService.MSG_CHANGEWINDOW
     	Log.v("View change", chan);
     	Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, chan).sendToTarget();
-    	Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_UPDATECHAN, chan).sendToTarget();
     	finish();
     	
 	}
