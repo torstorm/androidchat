@@ -2,6 +2,7 @@ package net.androidchat.client;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
@@ -137,6 +139,7 @@ public class ActivityChatChannel extends Activity {
     protected void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.chat);
 		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, 0);
 
@@ -158,10 +161,7 @@ public class ActivityChatChannel extends Activity {
 
 
        ServiceIRCService.SetViewHandler(mHandler);
-       CurWindow = "~status";    
-
-
-		
+       CurWindow = "~status";    		
        
     }
 
@@ -192,9 +192,13 @@ public class ActivityChatChannel extends Activity {
     public boolean onOptionsItemSelected(Menu.Item item){
         switch (item.getId()) {
         case 0:
+        	setProgressBarVisibility(true);
+        	//setProgressBarIndeterminate(true);
+        	setProgress(5000);
           	ServiceIRCService.AskForChannelList(); // update channel list
         	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
     			startActivity(i);
+    			setProgressBarVisibility(false);
             return true;
         case 1:
         	Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
@@ -203,8 +207,12 @@ public class ActivityChatChannel extends Activity {
         case 2:
         	if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))
         	{
+        		setProgressBarVisibility(true);
+        		setProgress(5000);
+        		//setProgressBarIndeterminate(true);
         	Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
         	startActivity(u);
+        	setProgressBarVisibility(false);
             return true;
         	} else return false;
         }
