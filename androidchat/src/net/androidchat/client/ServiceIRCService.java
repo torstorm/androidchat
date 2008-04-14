@@ -410,15 +410,18 @@ public class ServiceIRCService extends Service {
 					temp.IS_PM = true;
 					channels.put(who.toLowerCase(), temp);
 					if(context.getSharedPreferences("androidChatPrefs", 0).getBoolean("pmAlert", true))
-					if (ChannelViewHandler != null)  {
+					{ if (ChannelViewHandler != null)  {
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_CHANGEWINDOW,
 								who.toLowerCase()).sendToTarget();
-						
 						Message.obtain(ChannelViewHandler,
 								ServiceIRCService.MSG_UPDATECHAN,
 								who.toLowerCase()).sendToTarget();
-					}
+					} } else 
+						if (ChannelViewHandler != null) 
+						Message.obtain(ChannelViewHandler,
+								ServiceIRCService.MSG_UPDATECHAN,
+								who.toLowerCase()).sendToTarget();
 				}
 				temp.addLine("<" + who + "> " + args);
 				mNM.notify(R.string.irc_started, new Notification(context,
