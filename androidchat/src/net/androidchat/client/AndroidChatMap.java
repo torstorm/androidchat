@@ -44,6 +44,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	private Spinner s1;
 	private Drawable mapIcon;
 	private Location loc;
+	private TreeSet<String> chanNames;
 
 	private ArrayAdapter<String> adapter;
 	@Override 
@@ -53,7 +54,7 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 		loc = lm.getCurrentLocation("gps");
         channel_list = ServiceIRCService.channel_list;
         DistanceComparator comp = new DistanceComparator();
-    	TreeSet<String> chanNames = new TreeSet<String>(comp);
+    	chanNames = new TreeSet<String>(comp);
     	
     	//Set<String> tempSet = channel_list.keySet();   // 	= (TreeSet<String>)channel_list.keySet();
         chanNames.addAll(channel_list.keySet());
@@ -138,8 +139,8 @@ public class AndroidChatMap extends MapActivity implements AdapterView.OnItemSel
 	
 	public void onItemSelected(AdapterView parent, View v, int position, long id) {
         channel_list = ServiceIRCService.channel_list;
-
-    	Set<String> chanNames = channel_list.keySet();
+        chanNames.clear();
+        chanNames.addAll(channel_list.keySet());
 
     	
 
