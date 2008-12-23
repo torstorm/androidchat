@@ -93,7 +93,7 @@ public class ActivityChatChannel extends Activity {
         public boolean onKey(View v, int i, KeyEvent k)
         {
             // listen for enter, clear box, send etc
-            if (k.getKeyCode() == KeyEvent.KEYCODE_NEWLINE) {
+            if (k.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
             //    ServiceIRCService.SendToChan(chan, te.getText().toString());
                 te.setText("");
                 return true;
