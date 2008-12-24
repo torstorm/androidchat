@@ -35,4 +35,7 @@
     <string name="opt_cancel">Cancel</string>
     <string name="opt_save">Save Preferences</string>
     
+    <!-- Preferences strings -->
+    <string name="irc_nickname">Nickname</string>
+    
 </resources>
