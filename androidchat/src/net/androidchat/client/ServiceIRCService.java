@@ -117,17 +117,17 @@ public class ServiceIRCService extends Service {
 		{	
 			//>> :irc.androidchat.com 640 Kuja poffy -0 -0
 			
-			Location l = new Location();
-			l.setLatitude(Float.parseFloat(toks[4]));
-			l.setLongitude(Float.parseFloat(toks[5]));
+			//Location l = new Location();
+			//l.setLatitude(Float.parseFloat(toks[4]));
+			//l.setLongitude(Float.parseFloat(toks[5]));
 			
 			if(temp_user_locs.containsKey(toks[3].toLowerCase()))
 			{
-				temp_user_locs.get(toks[3].toLowerCase()).setLatitude(l.getLatitude());
-				temp_user_locs.get(toks[3].toLowerCase()).setLongitude(l.getLongitude());
+				//temp_user_locs.get(toks[3].toLowerCase()).setLatitude(l.getLatitude());
+				//temp_user_locs.get(toks[3].toLowerCase()).setLongitude(l.getLongitude());
 			}			
-			else
-				temp_user_locs.put(toks[3].toLowerCase(), l);			
+			//else
+				//temp_user_locs.put(toks[3].toLowerCase(), l);			
 			
 		} else if (command.equals("323")) // list end numeric
 		{
@@ -425,13 +425,13 @@ public class ServiceIRCService extends Service {
 								who.toLowerCase()).sendToTarget();
 				}
 				temp.addLine("<" + who + "> " + args);
-				mNM.notify(R.string.irc_started, new Notification(context,
+				/*mNM.notify(R.string.irc_started, new Notification(context,
 						R.drawable.mini_icon, context
 								.getText(R.string.ui_newpm), System
 								.currentTimeMillis(),
 						"AndroidChat - Notification", context
 								.getText(R.string.ui_newpm), null,
-						R.drawable.mini_icon, "Android Chat", null));
+						R.drawable.mini_icon, "Android Chat", null));*/
 				
 				flagupdate = true;
 				updatechan = who.toLowerCase();
@@ -703,7 +703,7 @@ public class ServiceIRCService extends Service {
 	}
 
 	@Override
-	protected void onCreate() {
+	public void onCreate() {
 		mNM = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
 
 		// This is who should be launched if the user selects our persistent
@@ -735,11 +735,11 @@ public class ServiceIRCService extends Service {
 
 		// Display a notification about us starting. We use both a transient
 		// notification and a persistent notification in the status bar.
-		mNM.notify(R.string.irc_started, new Notification(context,
+		/*mNM.notify(R.string.irc_started, new Notification(context,
 				R.drawable.mini_icon, getText(R.string.irc_started), System
 						.currentTimeMillis(), "AndroidChat - Notification",
 				getText(R.string.irc_started), intent, R.drawable.mini_icon,
-				"Android Chat", intent));
+				"Android Chat", intent));*/
 
 		connection = new Thread(new ThreadConnThread(server, nick, socket));
 		connection.start();
@@ -749,16 +749,16 @@ public class ServiceIRCService extends Service {
 			updates = new Thread(new ThreadUpdateLocThread(context));
 			updates.start();
 		}
-		mNM.notify(R.string.irc_started, new Notification(context,
+		/*mNM.notify(R.string.irc_started, new Notification(context,
 				R.drawable.mini_icon, getText(R.string.irc_connected), System
 						.currentTimeMillis(), "AndroidChat - Notification",
 				getText(R.string.irc_connected), null, R.drawable.mini_icon,
-				"Android Chat", null));
+				"Android Chat", null));*/
 
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		// Cancel the persistent notification.
 		QuitServer();
 		state = 0;
@@ -771,11 +771,11 @@ public class ServiceIRCService extends Service {
 		}
 
 		// Tell the user we stopped.
-		mNM.notify(R.string.irc_started, new Notification(context,
+		/*mNM.notify(R.string.irc_started, new Notification(context,
 				R.drawable.mini_icon, getText(R.string.irc_stopped), System
 						.currentTimeMillis(), "AndroidChat - Notification",
 				getText(R.string.irc_stopped), null, R.drawable.mini_icon,
-				"Android Chat", null));
+				"Android Chat", null));*/
 		
 		mNM.cancel(R.string.irc_started);
 		
@@ -796,7 +796,11 @@ public class ServiceIRCService extends Service {
 		@Override
 		protected boolean onTransact(int code, Parcel data, Parcel reply,
 				int flags) {
+			try {
 			return super.onTransact(code, data, reply, flags);
+			} catch (Exception e) {
+				return false;
+			}
 		}
 	};
 

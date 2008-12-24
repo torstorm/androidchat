@@ -76,7 +76,8 @@ public class ActivityOptions extends Activity {
 			} else 
 			{
 				//static 	AlertDialog 	show(Context context, CharSequence title, int iconId, CharSequence message, CharSequence buttonText, boolean cancelable)
-				 AlertDialog.show(ActivityOptions.this, "Invalid Nickname", R.drawable.stop, "Your nickname contains invalid characters or is too long.", "Okay", true);
+				//TODO: fix the alert dialog here, this is low priority right now. 
+				//AlertDialog.show(ActivityOptions.this, "Invalid Nickname", R.drawable.stop, "Your nickname contains invalid characters or is too long.", "Okay", true);
 			}
 		//	startActivity(new Intent(ActivityAndroidChatMain.this, ActivityOptions.class));
 
