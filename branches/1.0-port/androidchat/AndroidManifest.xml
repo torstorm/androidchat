@@ -3,7 +3,7 @@
     package="net.androidchat.client">
     <uses-permission android:name="android.permission.INTERNET" /> 
 
-    <application android:icon="@drawable/icon">
+    <application android:icon="@drawable/icon" android:label="AndroidChat">
 
         <activity android:name=".ActivityAndroidChatMain" android:label="@string/app_name">
             <intent-filter>
