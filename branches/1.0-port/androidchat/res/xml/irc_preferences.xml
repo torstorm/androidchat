@@ -36,4 +36,9 @@
             /> 
             
 	</PreferenceCategory>
+	
+	<PreferenceCategory
+		android:title="@string/pref_notification_category">
+		
+	</PreferenceCategory>
 </PreferenceScreen>
