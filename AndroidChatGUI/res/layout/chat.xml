@@ -1,56 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:padding="3dip"
-                android:orientation="vertical"
-        >
-        <ImageButton android:id="@+id/ircback"
-            android:layout_width="32px" android:layout_height="32px"
-			android:text="B"            
-            android:layout_toRight="@+id/ircsend"
-            
-            
-            >
-            </ImageButton>
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="3dip"
+    android:orientation="vertical">
+    
+	<ImageButton android:id="@+id/ircback"
+		android:layout_width="32px" android:layout_height="32px"
+		android:text="B"            
+		android:layout_toRightOf="@+id/ircsend"/>
 
     <Button android:id="@+id/ircchannel"
-            android:layout_width="32px" android:layout_height="32px"
-            android:text="C"
-            android:layout_below="@+id/ircback"
-            android:layout_alignLeft="@+id/ircback" 
-            
-            
-            >
-    </Button>
+		android:layout_width="32px" 
+		android:layout_height="32px"
+		android:text="C"
+		android:layout_below="@+id/ircback"
+		android:layout_alignLeft="@+id/ircback"/>
+		
     <Button android:id="@+id/ircsend"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text=">"
-            android:layout_toRight="@+id/ircback"
-            
-            >
-    </Button>
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text=">"
+		android:layout_toRightOf="@+id/ircback"/>
 
     <EditText android:id="@+id/ircedit"
-              android:layout_height="wrap_content"
-              android:layout_width="fill_parent"
-              android:layout_toRight="@+id/ircsend"
-
-              android:text="">
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_toRightOf="@+id/ircsend"
+		android:text="">
         <requestFocus/>
-
     </EditText>
 
-
     <TextView android:id="@+id/ircdisp"
-              android:layout_below="@+id/ircedit"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:text="Channel Text Here"
-              android:scrollbars="vertical"
-              android:autoLink="web"
-              android:gravity="bottom"
-
-            />
+		android:layout_below="@+id/ircedit"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:text="Channel Text Here"
+		android:scrollbars="vertical"
+		android:autoLink="web"
+		android:gravity="bottom" />
 
 </RelativeLayout>
