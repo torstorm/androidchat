@@ -48,4 +48,12 @@
     <string name="irc_password">Password</string>
     <string name="irc_password_summary">Your IRC registered password</string>
     
+    <string name="irc_username">Username</string>
+    <string name="irc_username_summary">Your IRC client username</string>
+    
+    <string name="irc_nickalert_title">Nickname Alert</string>
+    <string name="irc_nickalert_summary">Alerts when someone says your Nick</string>
+    
+    <string name="irc_pmalert_title">Private Message Alert</string>
+    <string name="irc_pmalert_summary">Alerts when you receive a private message</string>
 </resources>
