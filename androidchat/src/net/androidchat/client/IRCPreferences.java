@@ -1,7 +1,6 @@
 package net.androidchat.client;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.preference.PreferenceActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class ActivityOptions extends Activity {
+public class IRCPreferences extends PreferenceActivity {
 	public static final String PREFS_NAME = "androidChatPrefs";
 	private EditText nickText;
 	private EditText ajText;
