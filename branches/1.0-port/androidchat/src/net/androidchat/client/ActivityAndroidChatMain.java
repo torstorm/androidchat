@@ -52,7 +52,7 @@ public class ActivityAndroidChatMain extends Activity {
 			if (ServiceIRCService.state <= 0)
 
 				startActivity(new Intent(ActivityAndroidChatMain.this,
-						ActivityOptions.class));
+						IRCPreferences.class));
 			else
 					{
 				
