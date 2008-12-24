@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
@@ -65,8 +66,8 @@ public class ActivityChatChannel extends Activity {
     			if(settings.getBoolean("showList", false))
     			{
     			
-                	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
-        			startActivity(i);    		
+                	//Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
+        			//startActivity(i);    		
         		} else {
     			
     			if(pd != null)
@@ -91,9 +92,7 @@ public class ActivityChatChannel extends Activity {
         if(!Window.equals(CurWindow)) {
       	  
         	if(!Window.equals("~status"))
-      	  ServiceIRCService.mNM.notify(R.string.irc_started, new Notification(ServiceIRCService.context, R.drawable.mini_icon, ServiceIRCService.context.getText(R.string.ui_newmsg) + " " + Window, System
-						.currentTimeMillis(), "AndroidChat - Notification", ServiceIRCService.context.getText(R.string.ui_newmsg) + " " + Window, null, R.drawable.mini_icon,
-						"Android Chat", null));
+        	ServiceIRCService.mNM.notify(R.string.irc_started, new Notification(R.drawable.mini_icon, "AndroidChat - Notification", System.currentTimeMillis()));
       	  return;
         }
 
@@ -170,12 +169,12 @@ public class ActivityChatChannel extends Activity {
         // group -- Not used here.
         // id -- Used only when you want to handle and identify the click yourself.
         // title
-        menu.add(0, 0, "Channels Map"); // todo: these should pull from a resource
-        menu.add(0, 1, "Open Windows");
-        menu.get(0).setIcon(R.drawable.map);
-        menu.get(1).setIcon(R.drawable.channels);       
-        menu.add(0, 2, "User Map");
-        menu.get(2).setIcon(R.drawable.dude);
+        menu.add(0, 0, 0, "Channels Map"); // todo: these should pull from a resource
+        menu.add(0, 1, 1, "Open Windows");
+        //menu.get(0).setIcon(R.drawable.map);
+        //menu.get(1).setIcon(R.drawable.channels);       
+        menu.add(0, 2, 2, "User Map");
+        //menu.get(2).setIcon(R.drawable.dude);
         
         return true;
     }
@@ -185,14 +184,14 @@ public class ActivityChatChannel extends Activity {
     // that it should be handled by a declared handler object for that
     // item (handler objects are discouraged for reasons of efficiency).
     @Override
-    public boolean onOptionsItemSelected(Menu.Item item){
-        switch (item.getId()) {
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
         case 0:
       	  pd = ProgressDialog.show(this, "Working..", "Updating Channel List", true,
                  false);
         	ServiceIRCService.AskForChannelList(); // update channel list
-        	Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
-    			startActivity(i);
+        	//Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
+    			//startActivity(i);
             return true;
         case 1:
         	Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
@@ -204,8 +203,8 @@ public class ActivityChatChannel extends Activity {
         	 pd = ProgressDialog.show(this, "Working..", "Updating Users List", true,
                 false);
 
-        	Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
-        	startActivity(u);
+        	//Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
+        	//startActivity(u);
 
             return true;
         	} else return false;
@@ -218,7 +217,7 @@ public class ActivityChatChannel extends Activity {
         public boolean onKey(View v, int i, KeyEvent k)
         {
             // listen for enter, clear box, send etc
-            if (k.getKeyCode() == KeyEvent.KEYCODE_NEWLINE) {
+            if (k.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 ServiceIRCService.SendToChan(CurWindow, te.getText().toString());
                 te.setText("");
                 return true;

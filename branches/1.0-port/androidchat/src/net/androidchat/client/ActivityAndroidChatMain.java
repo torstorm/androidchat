@@ -69,8 +69,7 @@ public class ActivityAndroidChatMain extends Activity {
 				// if not started
 				myConnectivtyIntent = new Intent(ActivityAndroidChatMain.this,
 						ServiceIRCService.class);
-				ComponentName myConnectivtyService = startService(
-						myConnectivtyIntent, null);
+				ComponentName myConnectivtyService = startService(myConnectivtyIntent);
 				assert (myConnectivtyService != null);
 				Button button = (Button) findViewById(R.id.btn_Connect);
 				button.setText(R.string.btn_disconnect);
