@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AndroidChat</string>
+    <string name="app_name">IRC</string>
 
     <string name="btn_connect">Start Chatting!</string>
     <string name="btn_disconnect">Disconnect</string>
