@@ -38,6 +38,7 @@
     <!-- Preferences strings -->
     <string name="pref_general_category">General Settings</string>
     <string name="pref_account_category">Account Settings</string>
+    <string name="pref_notification_category">Notification Settings</string>
     
     <string name="irc_autosignin_title">Automatically sign in</string>
     
