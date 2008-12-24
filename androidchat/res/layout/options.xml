@@ -1,77 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
+	android:orientation="vertical" 
+	android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
+	
 	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:orientation="horizontal"
+		android:layout_height="wrap_content" 
+		android:orientation="horizontal"
 		android:layout_gravity="center_horizontal">
+		
 		<Button android:id="@+id/optCancel"
-			android:text="@string/opt_cancel" android:layout_width="wrap_content"
-			android:layout_height="37sp" android:layout_gravity="center"
+			android:text="@string/opt_cancel" 
+			android:layout_width="wrap_content"
+			android:layout_height="37sp" 	
+			android:layout_gravity="center"
 			android:layout_weight="0" />
 
 		<Button android:id="@+id/optSave"
-			android:text="@string/opt_save" android:layout_width="wrap_content"
-			android:layout_height="37sp" android:layout_gravity="center"
+			android:text="@string/opt_save" 
+			android:layout_width="wrap_content"
+			android:layout_height="37sp" 
+			android:layout_gravity="center"
 			android:layout_weight="1" />
+	
 	</LinearLayout>
 
 	<ScrollView android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
+		
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical">
 
 			<EditText android:id="@+id/optNick"
 				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:padding="5sp" android:paddingTop="15sp"/>
+				android:layout_height="wrap_content" 
+				android:padding="5sp" 
+				android:paddingTop="15sp"/>
+			
 			<TextView android:id="@+id/label1"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/opt_hint1" android:paddingLeft="30sp" android:paddingBottom="10sp" />
-
-
+				android:text="@string/opt_hint1" 
+				android:paddingLeft="30sp" 
+				android:paddingBottom="10sp" />
 
 			<EditText android:id="@+id/optAutoJoin"
 				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:textSize="14sp" android:padding="5sp" />
+				android:layout_height="wrap_content" 
+				android:textSize="14sp" 
+				android:padding="5sp" />
+			
 			<TextView android:id="@+id/label2"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/opt_hint2" android:paddingLeft="30sp" android:paddingBottom="10sp" />
-
+				android:text="@string/opt_hint2" 
+				android:paddingLeft="30sp" 
+				android:paddingBottom="10sp" />
 
 			<CheckBox android:id="@+id/optList"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/opt_opt3" />
+				
 			<TextView android:id="@+id/label3"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/opt_hint3" android:paddingLeft="30sp" android:paddingBottom="10sp" />
-
+				android:text="@string/opt_hint3" 
+				android:paddingLeft="30sp" 
+				android:paddingBottom="10sp" />
 
 			<CheckBox android:id="@+id/optSend"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/opt_opt4" />
+				
 			<TextView android:id="@+id/label4"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/opt_hint4" android:paddingLeft="30sp" android:paddingBottom="10sp"/>
-
-
+				android:text="@string/opt_hint4" 
+				android:paddingLeft="30sp" 
+				android:paddingBottom="10sp"/>
 
 			<CheckBox android:id="@+id/optPMAlert"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/opt_opt5" />
+
 			<TextView android:id="@+id/label5"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/opt_hint5" android:paddingLeft="30sp" android:paddingBottom="10sp" />
+				android:text="@string/opt_hint5" 
+				android:paddingLeft="30sp" 
+				android:paddingBottom="10sp" />
 
 		</LinearLayout>
+
 	</ScrollView>
 
 </LinearLayout>

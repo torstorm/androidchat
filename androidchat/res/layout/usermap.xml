@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"
-        >
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
         
-        <view class="com.google.android.maps.MapView" 
-        android:id="@+id/umapv"
-android:layout_width="fill_parent" 
-android:layout_height="fill_parent"/> 
-    <LinearLayout
-    android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <Spinner android:id="@+id/userspinner"
-        android:layout_width="0px"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:layout_weight="1" />
-        	<ImageButton android:id="@+id/msg_user"
- 	 android:src="@drawable/usermsg"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-              android:layout_alignParentLeft="true" 
-  
-  android:layout_weight="0"
-  />
-
+	<view class="com.google.android.maps.MapView" 
+		android:id="@+id/umapv"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"/> 
     
-    	
-</LinearLayout>
+    <LinearLayout
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+        <Spinner android:id="@+id/userspinner"
+        	android:layout_width="0px"
+        	android:layout_height="wrap_content"
+        	android:drawSelectorOnTop="true"
+        	android:layout_weight="1" />
+        	
+        <ImageButton android:id="@+id/msg_user"
+ 	 		android:src="@drawable/usermsg"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true" 
+			android:layout_weight="0" />
+			
+	</LinearLayout>
 </RelativeLayout>
