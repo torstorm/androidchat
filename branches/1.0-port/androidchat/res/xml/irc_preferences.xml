@@ -5,4 +5,35 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	
+	<PreferenceCategory
+		android:title="@string/pref_general_category">
+	
+		<CheckBoxPreference
+			android:key="pref_autosignin_key"
+			android:title="@string/irc_autosignin_title"
+			android:defaultValue="false"/>
+				
+	</PreferenceCategory>
+	
+	<PreferenceCategory
+		android:title="@string/pref_account_category">
+		
+		<EditTextPreference
+            android:key="irc_nickname_key"
+            android:title="@string/irc_nickname"
+            android:summary="@string/irc_nickname_summary"
+            android:persistent="false"
+            android:singleLine="true"
+            /> 
+            
+       <EditTextPreference
+            android:key="irc_password_key"
+            android:title="@string/irc_password"
+            android:summary="@string/irc_password_summary"
+            android:persistent="false"
+            android:singleLine="true"
+            android:password="true"
+            /> 
+            
+	</PreferenceCategory>
 </PreferenceScreen>
