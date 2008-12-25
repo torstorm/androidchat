@@ -76,7 +76,6 @@ public class ActivityAndroidChatMain extends Activity {
 				assert (myConnectivtyService != null);
 				Button button = (Button) findViewById(R.id.btn_Connect);
 				button.setText(R.string.btn_disconnect);
-				opButton.setText(R.string.btn_showwind);
 			
 				startActivity(new Intent(ActivityAndroidChatMain.this,
 						ActivityChatChannel.class));

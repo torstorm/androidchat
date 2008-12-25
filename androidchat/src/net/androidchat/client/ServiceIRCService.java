@@ -28,7 +28,7 @@ public class ServiceIRCService extends Service {
 	public static BufferedWriter writer;
 	public static BufferedReader reader;
 	public static int state;
-	private static String server = "irc.androidchat.net";// "38.100.42.254"; //
+	private static String server = "irc.freenode.net";// "38.100.42.254"; //
 	public static String nick = "AndroidChat";
 
 	public static final int MSG_UPDATECHAN = 0;
