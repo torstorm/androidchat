@@ -164,7 +164,7 @@ public class ServiceIRCService extends Service {
 				
 			} 
 			channel_list.put(toks[3], t);
-			RequestChanLocation(toks[3]);
+			//RequestChanLocation(toks[3]);
 			// }
 		} else if (command.equals("TOPIC")) {
 			//> :Kuja!Kuja@AFCBE3.FDA6AD.34D090.09AED6 TOPIC #hi :Welcome to AndroidChat!!!
@@ -459,7 +459,7 @@ public class ServiceIRCService extends Service {
 		}
 	}
 
-	public static void AskForChannelList() {
+	/*public static void AskForChannelList() {
 
 		try {
 			String temp = "LIST\n";
@@ -470,55 +470,7 @@ public class ServiceIRCService extends Service {
 		} catch (NullPointerException npe) {
 			npe.printStackTrace();
 		}
-	}
-
-	// ask server to send channel location
-	public static void RequestUserLocation(String user) {
-		try {
-			String temp = "gloc " + user + "\n";
-			writer.write(temp);
-			writer.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException npe) {
-			npe.printStackTrace();
-		}
-	}
-
-	// ask server to send channel location
-	public static void RequestChanLocation(String chan) {
-		try {
-			String temp = "gcloc " + chan + "\n";
-			writer.write(temp);
-			writer.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException npe) {
-			npe.printStackTrace();
-		}
-	}
-
-	// send a location to the server.
-	public static void UpdateLocation(double lat, double lng) {
-		// SLOC lat lng
-		try {
-			String temp = "sloc " + lat + " " + lng + "\n";
-			writer.write(temp);
-			writer.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException npe) {
-			npe.printStackTrace();
-		}
-		if (ChannelViewHandler != null) {
-			channels.get("~status").addLine("*** Sent updated location");
-			Message.obtain(ChannelViewHandler,
-					ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
-		}
-	}
+	}*/
 
 	public static void QuitServer() {
 		try {

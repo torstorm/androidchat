@@ -22,7 +22,6 @@
             android:key="irc_nickname_key"
             android:title="@string/irc_nickname"
             android:summary="@string/irc_nickname_summary"
-            android:persistent="false"
             android:singleLine="true"
             /> 
             
