@@ -21,7 +21,7 @@ public class ActivityChatChannel extends Activity {
 
     private TextView tv;
     private EditText te;
-    private ScrollView sv;
+    //private ScrollView sv;
     private String CurWindow;
     private ProgressDialog pd;
 
@@ -103,8 +103,8 @@ public class ActivityChatChannel extends Activity {
         tv.setGravity(0x50);
         tv.setText("\n\n\n" + temp.toString().trim());
         te.setHint(new String(""));
-        sv.fullScroll(ScrollView.FOCUS_DOWN);
-        sv.smoothScrollBy(0, tv.getLineHeight());
+        //sv.fullScroll(ScrollView.FOCUS_DOWN);
+        //sv.smoothScrollBy(0, tv.getLineHeight());
         this.setTitle(R.string.app_name);
         if (ctemp.IS_PM)
         {
@@ -142,13 +142,13 @@ public class ActivityChatChannel extends Activity {
         
         //Button button3 = (Button) findViewById(R.id.ircchannel);
         //button3.setOnClickListener(mMapListener);
-        sv = (ScrollView) findViewById(R.id.ircscroll);
+        //sv = (ScrollView) findViewById(R.id.ircscroll);
         te = (EditText) findViewById(R.id.ircedit);
         te.setOnKeyListener(mKeyListener);
         te.setSingleLine();
         tv = (TextView) findViewById(R.id.ircdisp);
         
-        sv.fullScroll(ScrollView.FOCUS_DOWN);
+        //sv.fullScroll(ScrollView.FOCUS_DOWN);
          
        ServiceIRCService.SetViewHandler(mHandler);
        if(!ServiceIRCService.shownChanListConnect)
@@ -169,11 +169,11 @@ public class ActivityChatChannel extends Activity {
         // group -- Not used here.
         // id -- Used only when you want to handle and identify the click yourself.
         // title
-        menu.add(0, 0, 0, "Channels Map"); // todo: these should pull from a resource
+        //menu.add(0, 0, 0, "Channels Map"); // todo: these should pull from a resource
         menu.add(0, 1, 1, "Open Windows");
         //menu.get(0).setIcon(R.drawable.map);
         //menu.get(1).setIcon(R.drawable.channels);       
-        menu.add(0, 2, 2, "User Map");
+        //menu.add(0, 2, 2, "User Map");
         //menu.get(2).setIcon(R.drawable.dude);
         
         return true;

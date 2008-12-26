@@ -73,7 +73,7 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
             i.setText((String)chanNames.toArray()[position]);
             
   
-            i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            //i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
             Random rand = new Random();
            int red = rand.nextInt(127+1) + 128;
