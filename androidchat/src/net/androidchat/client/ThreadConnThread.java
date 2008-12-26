@@ -123,7 +123,6 @@ public class ThreadConnThread implements Runnable {
 		{
 			e.printStackTrace();
 		}
-		ServiceIRCService.nick = nick;
 		ServiceIRCService.state = 3;// autojoin
 		try
 		{

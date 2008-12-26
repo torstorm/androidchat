@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.Vector;
@@ -23,8 +25,12 @@ public class ActivityAndroidChatMain extends ListActivity {
 
 	public Intent myConnectivtyIntent;
 
-	private static final int SETTINGS_ID = Menu.FIRST;
+	private static final int NEW_SERVER = Menu.FIRST;
+	private static final int SETTINGS_ID = Menu.FIRST + 2;
 	private static final int ACTIVE_CHATS = Menu.FIRST + 1;
+	
+	private ServerListAdapter mAdapter;
+	private Vector<String> connections = new Vector<String>();
 	
 	/**
 	 * Called when the activity is first created.
@@ -33,8 +39,10 @@ public class ActivityAndroidChatMain extends ListActivity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		
-		ServerListAdapter adapter = new ServerListAdapter(this);
-		setListAdapter(adapter);
+		mAdapter = new ServerListAdapter(this);
+		mAdapter.loadData();
+		
+		setListAdapter(mAdapter);
 		
 		setContentView(R.layout.main);
 
@@ -45,6 +53,7 @@ public class ActivityAndroidChatMain extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		
 		//if (ServiceIRCService.state > 0) menu.add(0, ACTIVE_CHATS, 0, "Active Sessions");
+		menu.add(0, NEW_SERVER, 0, "Add New Server").setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, SETTINGS_ID, 0, "Settings").setIcon(android.R.drawable.ic_menu_preferences);
 		return true;
 	}
@@ -59,14 +68,40 @@ public class ActivityAndroidChatMain extends ListActivity {
 			case ACTIVE_CHATS:
 				Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
     			startActivity(p);
-    			return true;
+    			break;
+			case NEW_SERVER:
+				startActivity(new Intent(this, NewServerItem.class));
 			default:
 				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		
+			Intent newConn = new Intent(ActivityAndroidChatMain.this,
+					ServiceIRCService.class);
+			
+			newConn.putExtra("server", (String)mAdapter.getItem(position));
+			
+			SharedPreferences settings = getSharedPreferences("androidChatPrefs", Context.MODE_WORLD_READABLE);
+			String nick = settings.getString("irc_nickname_key", "AndroidChat");
+			
+			newConn.putExtra("nick", nick);
+			
+			ComponentName myConnectivtyService = startService(newConn);
+			assert (myConnectivtyService != null);
+		
+			connections.add((String)mAdapter.getItem(position));
+			
+			startActivity(new Intent(ActivityAndroidChatMain.this,
+					ActivityChatChannel.class));
+			
+	}
+	
 	private OnClickListener mConnectListener = new OnClickListener() {
 		public void onClick(View v) {
 			Button opButton = (Button) findViewById(R.id.btn_ShowOpts);
@@ -103,15 +138,6 @@ public class ActivityAndroidChatMain extends ListActivity {
 		
 		public ServerListAdapter(Context c) {
 			mContext = c;
-			mTitles = new Vector<String>();
-			mAddresses = new Vector<String>();
-			
-			mTitles.add("Add New Server");
-			mAddresses.add("");
-			
-			mTitles.add("Freenode");
-			mAddresses.add("irc.freenode.net");
-
 		}
 		
 		public int getCount() {
@@ -138,6 +164,14 @@ public class ActivityAndroidChatMain extends ListActivity {
 			address.setText(mAddresses.elementAt(position));
 			
 			return view;
+		}
+		
+		public void loadData() {
+			ACDatabaseAdapter db = new ACDatabaseAdapter(ActivityAndroidChatMain.this);
+			mTitles = db.getTitles();
+			mAddresses = db.getAddresses();
+			
+			db.close();
 		}
 	}
 }

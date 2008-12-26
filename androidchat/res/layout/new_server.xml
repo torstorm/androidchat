@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:padding="5px"
+	android:orientation="vertical">
+	
+	<TextView
+		android:textSize="16sp" 
+		android:textColor="#ffe0d090"
+		android:textStyle="bold"
+		android:text="Title:"
+        android:paddingLeft="4dip"
+        android:paddingRight="5dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+        
+	<EditText android:id="@+id/new_title" 
+		android:textSize="14sp" 
+		android:hint="Server Title"
+        android:paddingLeft="4dip"
+        android:paddingRight="5dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true" />
+        
+    <TextView
+		android:textSize="16sp" 
+		android:textColor="#ffe0d090"
+		android:textStyle="bold"
+		android:text="Server Address:"
+		android:paddingTop="7px"
+        android:paddingLeft="4dip"
+        android:paddingRight="5dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+        
+	<EditText android:id="@+id/new_address" 
+		android:textSize="14sp" 
+		android:hint="Server Address (ex. irc.freenode.net)"
+        android:paddingLeft="4dip"
+        android:paddingRight="5dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true" />
+        
+	<Button android:id="@+id/new_confirm"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:text="Add"
+		android:padding="7px" />
+        
+</LinearLayout>
