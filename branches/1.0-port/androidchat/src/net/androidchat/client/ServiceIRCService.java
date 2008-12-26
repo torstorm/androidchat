@@ -11,6 +11,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Binder;
 import android.os.Handler;
@@ -338,6 +339,7 @@ public class ServiceIRCService extends Service {
 		{
 			String who = toks[0].substring(1, toks[0].indexOf("!"));
 			ClassChannelContainer temp;
+			Log.d("IRC - Debug", "******* Nick is " + nick + " *************");
 			if (who.equals(nick)) // if we joined a channel
 			{
 
@@ -664,6 +666,12 @@ public class ServiceIRCService extends Service {
 		Intent intent = new Intent();
 		intent.setClass(this, ActivityAndroidChatMain.class);
 
+		if (intent.hasExtra("server")) server = intent.getExtras().getString("server");
+		if (intent.hasExtra("nick")) nick = intent.getExtras().getString("nick");
+		
+		SharedPreferences settings = ServiceIRCService.context.getSharedPreferences("androidChatPrefs", Context.MODE_WORLD_READABLE);
+		nick = settings.getString("irc_nickname_key", "AndroidChat");
+		
 		channels = new HashMap<String, ClassChannelContainer>();
 		channel_list = new HashMap<String, ClassChannelDescriptor>();
 		temp_user_locs = new HashMap<String, Location>();
