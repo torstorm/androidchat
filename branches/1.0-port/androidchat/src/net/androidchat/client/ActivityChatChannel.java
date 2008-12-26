@@ -189,7 +189,7 @@ public class ActivityChatChannel extends Activity {
         case 0:
       	  pd = ProgressDialog.show(this, "Working..", "Updating Channel List", true,
                  false);
-        	ServiceIRCService.AskForChannelList(); // update channel list
+        	//ServiceIRCService.AskForChannelList(); // update channel list
         	//Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
     			//startActivity(i);
             return true;

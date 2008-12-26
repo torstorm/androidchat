@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Message;
 
@@ -22,8 +23,8 @@ public class ThreadConnThread implements Runnable {
 	public ThreadConnThread(String serv, String ni, Socket s) {
 		socket = s;
 		server = serv;
-		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, 0);
-		nick = settings.getString("defNick", "AndroidChat");
+		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_READABLE);
+		nick = settings.getString("irc_nickname_key", "AndroidChat");
 	}
 
 	public void disconnect() {
@@ -136,16 +137,7 @@ public class ThreadConnThread implements Runnable {
 		{
 			e.printStackTrace();
 		}
-		try
-		{
-		ServiceIRCService.writer.write("LIST\r\n"); // get list while we're at
-		// it
-ServiceIRCService.writer.flush();
-
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		
 		
 		ServiceIRCService.state = 10; // connected and handling
 		
