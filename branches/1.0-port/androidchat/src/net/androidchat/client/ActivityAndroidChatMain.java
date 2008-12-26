@@ -17,6 +17,7 @@ public class ActivityAndroidChatMain extends Activity {
 	public Intent myConnectivtyIntent;
 
 	private static final int SETTINGS_ID = Menu.FIRST;
+	private static final int ACTIVE_CHATS = Menu.FIRST + 1;
 	
 	/**
 	 * Called when the activity is first created.
@@ -47,6 +48,7 @@ public class ActivityAndroidChatMain extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
+		//menu.add(0, ACTIVE_CHATS, 0, "Active Sessions");
 		menu.add(0, SETTINGS_ID, 0, "Settings").setIcon(android.R.drawable.ic_menu_preferences);
 		return true;
 	}
@@ -58,6 +60,10 @@ public class ActivityAndroidChatMain extends Activity {
 			case SETTINGS_ID:
 				startActivity(new Intent(this, IRCPreferences.class));
 				break;
+			case ACTIVE_CHATS:
+				Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
+    			startActivity(p);
+    			return true;
 			default:
 				break;
 		}
