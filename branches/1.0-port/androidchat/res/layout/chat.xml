@@ -2,29 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent"
-	android:padding="3dip" android:orientation="vertical"
-	android:baselineAligned="false">
-
+	android:padding="3dip" 
+	android:orientation="vertical">
+	
 	<EditText android:id="@+id/ircedit"
 		android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:text=""
+		android:layout_width="fill_parent" 
+		android:text=""
 		android:layout_weight="0"
 		android:textSize="14sp"
+		android:layout_alignParentBottom="true"
 		android:hint="@string/ui_getstarted">
 		<requestFocus />
 	</EditText>
 	
 	<ScrollView android:id="@+id/ircscroll"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:scrollbars="vertical" android:fadingEdgeLength="5dip" android:focusable="true">
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:scrollbars="vertical" 
+		android:fadingEdgeLength="5dip" 
+		android:focusable="false">
 	
 		<TextView android:id="@+id/ircdisp"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:text="@string/ui_waiting"
-			android:scrollbars="vertical" android:autoLink="web"
+			android:scrollbars="vertical" 
+			android:autoLink="web"
 			android:layout_weight="1" 
-			android:layout_gravity="bottom" />
+			android:gravity="bottom" />
 	
 	</ScrollView>
 
