@@ -1,18 +1,25 @@
 package net.androidchat.client;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class ActivityAndroidChatMain extends Activity {
+import java.util.Vector;
+
+public class ActivityAndroidChatMain extends ListActivity {
 
 	public Intent myConnectivtyIntent;
 
@@ -25,22 +32,11 @@ public class ActivityAndroidChatMain extends Activity {
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-
-		WindowManager wm = (WindowManager) this
-				.getSystemService(Context.WINDOW_SERVICE);
-		if (wm.getDefaultDisplay().getHeight() < 300) // quick hack so we're
-														// never off the screen
-			setContentView(R.layout.main_alt); // fix 
-		else
-			setContentView(R.layout.main);
-
-		// Watch for button clicks.
-		Button button = (Button) findViewById(R.id.btn_Connect);
-		button.setOnClickListener(mConnectListener);
-		if (ServiceIRCService.state <= 0)
-			button.setText(R.string.btn_connect);
-		else
-			button.setText(R.string.btn_disconnect);
+		
+		ServerListAdapter adapter = new ServerListAdapter(this);
+		setListAdapter(adapter);
+		
+		setContentView(R.layout.main);
 
 	}
 
@@ -48,7 +44,7 @@ public class ActivityAndroidChatMain extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		//menu.add(0, ACTIVE_CHATS, 0, "Active Sessions");
+		//if (ServiceIRCService.state > 0) menu.add(0, ACTIVE_CHATS, 0, "Active Sessions");
 		menu.add(0, SETTINGS_ID, 0, "Settings").setIcon(android.R.drawable.ic_menu_preferences);
 		return true;
 	}
@@ -98,4 +94,50 @@ public class ActivityAndroidChatMain extends Activity {
 			}
 		}
 	};
+	
+	public class ServerListAdapter extends BaseAdapter {
+		
+		private Context mContext;
+		private Vector<String> mTitles;
+		private Vector<String> mAddresses;
+		
+		public ServerListAdapter(Context c) {
+			mContext = c;
+			mTitles = new Vector<String>();
+			mAddresses = new Vector<String>();
+			
+			mTitles.add("Add New Server");
+			mAddresses.add("");
+			
+			mTitles.add("Freenode");
+			mAddresses.add("irc.freenode.net");
+
+		}
+		
+		public int getCount() {
+			return mTitles.size();
+		}
+		
+		public Object getItem(int position) {
+			return mAddresses.elementAt(position);
+		}
+		
+		public long getItemId(int position) {
+			return position;
+		}
+		
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflate = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View view = inflate.inflate(R.layout.channel_row, parent, false);
+			
+			TextView title = (TextView)view.findViewById(R.id.server_title);
+			TextView address = (TextView)view.findViewById(R.id.server_address);
+			ImageView defaultIcon = (ImageView)view.findViewById(R.id.default_icon);
+			
+			title.setText(mTitles.elementAt(position));
+			address.setText(mAddresses.elementAt(position));
+			
+			return view;
+		}
+	}
 }
