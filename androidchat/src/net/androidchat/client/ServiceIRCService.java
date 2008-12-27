@@ -482,7 +482,7 @@ public class ServiceIRCService extends Service {
 			ServiceIRCService.state = -1;
 			ServiceIRCService.reader.close();
 			ServiceIRCService.connection.interrupt();
-			mNM.cancel(R.string.irc_started);
+			//mNM.cancel(R.string.irc_started);
 			((Service)context).stopSelf();
 
 		} catch (IOException e) {
@@ -716,6 +716,10 @@ public class ServiceIRCService extends Service {
 				"Android Chat", null));*/
 
 	}
+	
+	public void disconnect() {
+		this.stopSelf();
+	}
 
 	@Override
 	public void onDestroy() {
@@ -737,7 +741,7 @@ public class ServiceIRCService extends Service {
 				getText(R.string.irc_stopped), null, R.drawable.mini_icon,
 				"Android Chat", null));*/
 		
-		mNM.cancel(R.string.irc_started);
+		//mNM.cancel(R.string.irc_started);
 		
 	}
 
