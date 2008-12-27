@@ -29,7 +29,6 @@
             android:key="irc_password_key"
             android:title="@string/irc_password"
             android:summary="@string/irc_password_summary"
-            android:persistent="false"
             android:singleLine="true"
             android:password="true"
             /> 
@@ -38,7 +37,6 @@
             android:key="irc_username_key"
             android:title="@string/irc_username"
             android:summary="@string/irc_username_summary"
-            android:persistent="false"
             android:singleLine="true"
             android:defaultValue="androidchat"
             /> 
