@@ -92,7 +92,7 @@ public class ActivityChatChannel extends Activity {
         if(!Window.equals(CurWindow)) {
       	  
         	if(!Window.equals("~status"))
-        	ServiceIRCService.mNM.notify(R.string.irc_started, new Notification(R.drawable.mini_icon, "AndroidChat - Notification", System.currentTimeMillis()));
+        	//ServiceIRCService.mNM.notify(R.string.irc_started, new Notification(R.drawable.mini_icon, "AndroidChat - Notification", System.currentTimeMillis()));
       	  return;
         }
 
@@ -103,8 +103,9 @@ public class ActivityChatChannel extends Activity {
         tv.setGravity(0x50);
         tv.setText("\n\n\n" + temp.toString().trim());
         te.setHint(new String(""));
-        sv.fullScroll(ScrollView.FOCUS_DOWN);
-        sv.smoothScrollBy(0, tv.getLineHeight());
+        //sv.fullScroll(ScrollView.FOCUS_DOWN);
+        sv.smoothScrollBy(0, tv.getBottom());
+        
         this.setTitle(R.string.app_name);
         if (ctemp.IS_PM)
         {
@@ -171,6 +172,7 @@ public class ActivityChatChannel extends Activity {
         // title
         //menu.add(0, 0, 0, "Channels Map"); // todo: these should pull from a resource
         menu.add(0, 1, 1, "Open Windows");
+        menu.add(0, 4, 1, "Disconnect").setIcon(android.R.drawable.ic_menu_close_clear_cancel);
         //menu.get(0).setIcon(R.drawable.map);
         //menu.get(1).setIcon(R.drawable.channels);       
         //menu.add(0, 2, 2, "User Map");
@@ -202,12 +204,12 @@ public class ActivityChatChannel extends Activity {
         	{
         	 pd = ProgressDialog.show(this, "Working..", "Updating Users List", true,
                 false);
-
-        	//Intent u = new Intent(ServiceIRCService.context, ActivityUserMap.class);
-        	//startActivity(u);
-
-            return true;
+        	 return true;
         	} else return false;
+        case 4:
+        	ServiceIRCService.QuitServer();
+        	finish();
+        	break;
         }
         return false;
     }
@@ -220,6 +222,7 @@ public class ActivityChatChannel extends Activity {
             if (k.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 ServiceIRCService.SendToChan(CurWindow, te.getText().toString());
                 te.setText("");
+                sv.scrollTo(0, tv.getBottom());
                 return true;
             }
             return false;
