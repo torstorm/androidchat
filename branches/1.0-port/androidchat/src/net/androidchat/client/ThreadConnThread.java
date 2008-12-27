@@ -126,6 +126,14 @@ public class ThreadConnThread implements Runnable {
 		ServiceIRCService.state = 3;// autojoin
 		try
 		{
+			//if the user has a password identify them.
+			String password = settings.getString("irc_password_key", "");
+			
+			if (!password.equals("")) {
+				ServiceIRCService.writer.write("PRIVMSG NickServ :identify " + password);
+				ServiceIRCService.writer.flush();
+			}
+			
 			String defchan = settings.getString("autoJoin", "");
 			String[] autojoin = defchan.split(" ");
 			for (String s : autojoin)
