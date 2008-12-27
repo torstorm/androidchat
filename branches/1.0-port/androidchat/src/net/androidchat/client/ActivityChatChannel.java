@@ -21,7 +21,7 @@ public class ActivityChatChannel extends Activity {
 
     private TextView tv;
     private EditText te;
-    //private ScrollView sv;
+    private ScrollView sv;
     private String CurWindow;
     private ProgressDialog pd;
 
@@ -103,8 +103,8 @@ public class ActivityChatChannel extends Activity {
         tv.setGravity(0x50);
         tv.setText("\n\n\n" + temp.toString().trim());
         te.setHint(new String(""));
-        //sv.fullScroll(ScrollView.FOCUS_DOWN);
-        //sv.smoothScrollBy(0, tv.getLineHeight());
+        sv.fullScroll(ScrollView.FOCUS_DOWN);
+        sv.smoothScrollBy(0, tv.getLineHeight());
         this.setTitle(R.string.app_name);
         if (ctemp.IS_PM)
         {
@@ -142,13 +142,13 @@ public class ActivityChatChannel extends Activity {
         
         //Button button3 = (Button) findViewById(R.id.ircchannel);
         //button3.setOnClickListener(mMapListener);
-        //sv = (ScrollView) findViewById(R.id.ircscroll);
+        sv = (ScrollView) findViewById(R.id.ircscroll);
         te = (EditText) findViewById(R.id.ircedit);
         te.setOnKeyListener(mKeyListener);
         te.setSingleLine();
         tv = (TextView) findViewById(R.id.ircdisp);
         
-        //sv.fullScroll(ScrollView.FOCUS_DOWN);
+       sv.fullScroll(ScrollView.FOCUS_DOWN);
          
        ServiceIRCService.SetViewHandler(mHandler);
        if(!ServiceIRCService.shownChanListConnect)
