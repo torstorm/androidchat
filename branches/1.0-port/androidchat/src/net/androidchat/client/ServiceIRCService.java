@@ -69,12 +69,12 @@ public class ServiceIRCService extends Service {
 		// rfc 2812
 		// [:prefix] command|numeric [arg1, arg2...] :extargs
 
-		Log.d("ServiceIRCService", "raw line: " + line);
+		//Log.d("ServiceIRCService", "raw line: " + line);
 
 		String args, prefix, command;
 		args = prefix = command = "";
 
-		System.out.println("debug: " + line);
+		//System.out.println("debug: " + line);
 
 		boolean flagupdate = false;
 		String updatechan = "";
@@ -385,15 +385,16 @@ public class ServiceIRCService extends Service {
 			{
 				temp = channels.get(chan);
 				if (args.trim().startsWith("ACTION")) {
-					temp.addLine("* "
+					/* temp.addLine("* "
 							+ toks[0].substring(1, toks[0].indexOf("!")) + " "
-							+ args.substring(7));
-
+							+ args.substring(7));*/
+					temp.addLine("***" + toks[0].substring(1, toks[0].indexOf("!")) + "~+" + args);
 				} else
-					temp.addLine("<"
+					/*temp.addLine("<"
 							+ toks[0].substring(1, toks[0].indexOf("!")) + "> "
-							+ args);
-
+							+ args);*/
+					temp.addLine(toks[0].substring(1, toks[0].indexOf("!")) + "~+" + args);
+				
 				flagupdate = true;
 				updatechan = chan;
 			} else if (chan.equals(nick.toLowerCase())) // crap, it's a private
@@ -668,7 +669,7 @@ public class ServiceIRCService extends Service {
 
 		if (intent.hasExtra("server")) server = intent.getExtras().getString("server");
 		if (intent.hasExtra("nick")) nick = intent.getExtras().getString("nick");
-		
+		 
 		SharedPreferences settings = ServiceIRCService.context.getSharedPreferences("androidChatPrefs", Context.MODE_WORLD_READABLE);
 		nick = settings.getString("irc_nickname_key", "AndroidChat");
 		
