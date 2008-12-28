@@ -49,6 +49,13 @@ public class ActivityAndroidChatMain extends ListActivity {
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		
+		mAdapter.loadData();
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
@@ -172,6 +179,8 @@ public class ActivityAndroidChatMain extends ListActivity {
 			mAddresses = db.getAddresses();
 			
 			db.close();
+			
+			notifyDataSetInvalidated();
 		}
 	}
 }

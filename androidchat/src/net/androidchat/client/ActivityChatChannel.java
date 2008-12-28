@@ -1,10 +1,13 @@
 package net.androidchat.client;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.app.Notification;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +15,18 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.view.View.OnKeyListener;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class ActivityChatChannel extends Activity {
+import java.util.Vector;
+
+public class ActivityChatChannel extends ListActivity {
 
     private TextView tv;
     private EditText te;
@@ -27,6 +36,8 @@ public class ActivityChatChannel extends Activity {
 
 	private final String PREFS_NAME = "androidChatPrefs";
 	SharedPreferences settings; 
+	
+	private ChatAdapter mAdapter;
 
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg)
@@ -78,7 +89,7 @@ public class ActivityChatChannel extends Activity {
     		}
     	}
     	
-        StringBuilder temp = new StringBuilder();
+        //StringBuilder temp = new StringBuilder();
         ClassChannelContainer ctemp = (ClassChannelContainer) ServiceIRCService.channels.get(Window);
         if(ServiceIRCService.state >= 10) {
         	
@@ -86,7 +97,7 @@ public class ActivityChatChannel extends Activity {
         
         if (ctemp == null)
       	  {
-      	  tv.setText("\n\n\n*** You are not in this channel");
+      	  //tv.setText("\n\n\n*** You are not in this channel");
       	  return;
       	  }
         if(!Window.equals(CurWindow)) {
@@ -95,16 +106,20 @@ public class ActivityChatChannel extends Activity {
         	//ServiceIRCService.mNM.notify(R.string.irc_started, new Notification(R.drawable.mini_icon, "AndroidChat - Notification", System.currentTimeMillis()));
       	  return;
         }
-
+        mAdapter.clear();
         for (int i = 0; i < ctemp.whatsinchan.size(); i++) {
-            temp.append(ctemp.whatsinchan.get(i) + "\n");
+        	mAdapter.loadData(ctemp.whatsinchan.get(i));
+            //temp.append(ctemp.whatsinchan.get(i) + "\n");
         }
+        mAdapter.refresh();
+        //mAdapter.loadData(ctemp.whatsinchan.get(ctemp.whatsinchan.size() - 1));
         
-        tv.setGravity(0x50);
-        tv.setText("\n\n\n" + temp.toString().trim());
-        te.setHint(new String(""));
+        //getListView().scrollTo(0, getListView().getBottom());
+        //tv.setGravity(0x50);
+        //tv.setText("\n\n\n" + temp.toString().trim());
+        //te.setHint(new String(""));
         //sv.fullScroll(ScrollView.FOCUS_DOWN);
-        sv.smoothScrollBy(0, tv.getBottom());
+        //sv.smoothScrollBy(0, tv.getBottom());
         
         this.setTitle(R.string.app_name);
         if (ctemp.IS_PM)
@@ -118,7 +133,7 @@ public class ActivityChatChannel extends Activity {
         } else {
            this.setTitle(this.getTitle() + " - (" + ctemp.chanusers.size() + ") " + Window + " - " + ctemp.chantopic);
         }
-        }
+    }
     
 
     @Override
@@ -131,10 +146,17 @@ public class ActivityChatChannel extends Activity {
     protected void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
+        
+        mAdapter = new ChatAdapter(this);
+        setListAdapter(mAdapter);
+        
         setContentView(R.layout.chat);
 
 		settings = ServiceIRCService.context.getSharedPreferences(PREFS_NAME, 0);
 
+		getListView().setStackFromBottom(true);
+		getListView().setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		
         // Watch for button clicks.
         //Button button = (Button) findViewById(R.id.ircsend);
         //button.setOnClickListener(mSendListener);
@@ -143,13 +165,13 @@ public class ActivityChatChannel extends Activity {
         
         //Button button3 = (Button) findViewById(R.id.ircchannel);
         //button3.setOnClickListener(mMapListener);
-        sv = (ScrollView) findViewById(R.id.ircscroll);
+        //sv = (ScrollView) findViewById(R.id.ircscroll);
         te = (EditText) findViewById(R.id.ircedit);
         te.setOnKeyListener(mKeyListener);
         te.setSingleLine();
-        tv = (TextView) findViewById(R.id.ircdisp);
+        //tv = (TextView) findViewById(R.id.ircdisp);
         
-       sv.fullScroll(ScrollView.FOCUS_DOWN);
+       //sv.fullScroll(ScrollView.FOCUS_DOWN);
          
        ServiceIRCService.SetViewHandler(mHandler);
        if(!ServiceIRCService.shownChanListConnect)
@@ -222,7 +244,7 @@ public class ActivityChatChannel extends Activity {
             if (k.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 ServiceIRCService.SendToChan(CurWindow, te.getText().toString());
                 te.setText("");
-                sv.scrollTo(0, tv.getBottom());
+                //sv.scrollTo(0, tv.getBottom());
                 return true;
             }
             return false;
@@ -231,5 +253,84 @@ public class ActivityChatChannel extends Activity {
     };
     
    
+    //chat list adapter.
+    public class ChatAdapter extends BaseAdapter {
+    	
+    	private Context mContext;
+    	private Vector<String> mSenders;
+    	private Vector<String> mMessages;
+    	
+    	public ChatAdapter(Context c) {
+    		mContext = c;
+    		
+    		mSenders = new Vector<String>();
+    		mMessages = new Vector<String>();
+    	}
+    	
+    	public int getCount() {
+    		return mSenders.size();
+    	}
+    	
+    	public Object getItem(int position) {
+    		return mMessages.elementAt(position);
+    	}
+    	
+    	public long getItemId(int position) {
+    		return position;
+    	}
+    	
+    	public View getView(int position, View convertView, ViewGroup parent) {
+    		
+    		LayoutInflater inflate = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    		View row = inflate.inflate(R.layout.chat_row, parent, false);
+    		
+    		//place the item in the row.
+    		TextView sender = (TextView)row.findViewById(R.id.message_sender);
+    		TextView message = (TextView)row.findViewById(R.id.message_body);
+    		
+    		sender.setTextColor(Color.BLUE);
+    		
+    		if (mSenders.elementAt(position).startsWith("*")) {
+    			sender.setTypeface(sender.getTypeface(), Typeface.BOLD_ITALIC);
+    			message.setTypeface(sender.getTypeface(), Typeface.BOLD_ITALIC);
+    		}
+    		
+    		if (mSenders.elementAt(position).equals(ServiceIRCService.nick)) 
+    			sender.setTextColor(Color.GRAY);
+    		
+    		sender.setText(mSenders.elementAt(position));
+    		
+    		message.setTextColor(Color.BLACK);
+    		message.setText(mMessages.elementAt(position));
+    		
+    		return row;
+    	}
+    	
+    	public void loadData(String raw) {
+    		if (raw.contains("~+")) {
+    			mSenders.add(raw.substring(0, raw.indexOf("~+")));
+    			
+    			if (raw.contains("ACTION"))
+    				mMessages.add(raw.substring(raw.indexOf("ACTION") + 6));
+    			else
+    				mMessages.add(raw.substring(raw.indexOf("~+") + 2));
+    		} else {
+    			mSenders.add(" ");
+    			mMessages.add(raw);
+    		}
+    		
+    		notifyDataSetChanged();
+    	}
+    	
+    	public void clear() {
+    		mSenders = new Vector<String>();
+    		mMessages = new Vector<String>();
+    	}
+    	
+    	public void refresh() {
+    		//notifyDataSetInvalidated();
+    	}
+
+    }
     
    }
