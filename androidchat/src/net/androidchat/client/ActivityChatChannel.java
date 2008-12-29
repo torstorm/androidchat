@@ -213,28 +213,18 @@ public class ActivityChatChannel extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
-        case 0:
-      	  pd = ProgressDialog.show(this, "Working..", "Updating Channel List", true,
-                 false);
-        	//ServiceIRCService.AskForChannelList(); // update channel list
-        	//Intent i = new Intent(ServiceIRCService.context, AndroidChatMap.class);
-    			//startActivity(i);
-            return true;
-        case 1:
-        	Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
+        	case OPEN_WINDOWS:
+        		Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
     			startActivity(p);
-            return true;
-        case 2:
-        	if((!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_PM) && (!ServiceIRCService.channels.get(ServiceIRCService.curwindow.toLowerCase()).IS_STATUS))
-        	{
-        	 pd = ProgressDialog.show(this, "Working..", "Updating Users List", true,
-                false);
-        	 return true;
-        	} else return false;
-        case 4:
-        	ServiceIRCService.QuitServer();
-        	finish();
-        	break;
+    			return true;
+        	case DISCONNECT:
+        		ServiceIRCService.QuitServer();
+        		finish();
+        		break;
+        	case CLOSE_WINDOW:
+        		String lastwindow = ServiceIRCService.lastwindow;
+        		ServiceIRCService.SendToChan(ServiceIRCService.curwindow, "/close");
+        		Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, lastwindow).sendToTarget();
         }
         return false;
     }
