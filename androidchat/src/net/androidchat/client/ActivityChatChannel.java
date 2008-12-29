@@ -28,6 +28,11 @@ import java.util.Vector;
 
 public class ActivityChatChannel extends ListActivity {
 
+	private static final int OPEN_WINDOWS = Menu.FIRST;
+	private static final int CLOSE_WINDOW = Menu.FIRST + 1;
+	private static final int DISCONNECT = Menu.FIRST + 2;
+	private static final int SHOW_USER_LIST = Menu.FIRST + 3;
+	
     private TextView tv;
     private EditText te;
     private ScrollView sv;
@@ -193,12 +198,10 @@ public class ActivityChatChannel extends ListActivity {
         // id -- Used only when you want to handle and identify the click yourself.
         // title
         //menu.add(0, 0, 0, "Channels Map"); // todo: these should pull from a resource
-        menu.add(0, 1, 1, "Open Windows");
-        menu.add(0, 4, 1, "Disconnect").setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-        //menu.get(0).setIcon(R.drawable.map);
-        //menu.get(1).setIcon(R.drawable.channels);       
-        //menu.add(0, 2, 2, "User Map");
-        //menu.get(2).setIcon(R.drawable.dude);
+        menu.add(0, OPEN_WINDOWS, 1, "Open Windows").setIcon(R.drawable.ic_menu_chat_dashboard);
+        menu.add(0, CLOSE_WINDOW, 2, "Close Window").setIcon(R.drawable.ic_menu_end_conversation);
+        menu.add(0, DISCONNECT, 3, "Disconnect").setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        menu.add(0, SHOW_USER_LIST, 4, "Show Users").setIcon(R.drawable.ic_menu_friend_list);
         
         return true;
     }
