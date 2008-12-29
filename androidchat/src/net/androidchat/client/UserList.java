@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -34,6 +35,7 @@ public class UserList extends ListActivity {
 		registerForContextMenu(getListView());
 	}
 	
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo info) {
 		menu.setHeaderTitle(mChannel.channame + " options");
 		
@@ -42,6 +44,18 @@ public class UserList extends ListActivity {
 		menu.add("Whois");
 		menu.add("Ping");
 		menu.add("Ignore");
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		if (item.getTitle().equals("Private Message"));
+			privateMessageUser();
+			
+		return false;
+	}
+	
+	public void privateMessageUser() {
+		//TODO: implement the private message method.
 	}
 	
 	public class UserListAdapter extends BaseAdapter {
