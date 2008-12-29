@@ -211,7 +211,7 @@ public class ActivityChatChannel extends ListActivity {
     // that it should be handled by a declared handler object for that
     // item (handler objects are discouraged for reasons of efficiency).
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         	case OPEN_WINDOWS:
         		Intent p = new Intent(ServiceIRCService.context, ChannelGrid.class);
@@ -225,6 +225,12 @@ public class ActivityChatChannel extends ListActivity {
         		String lastwindow = ServiceIRCService.lastwindow;
         		ServiceIRCService.SendToChan(ServiceIRCService.curwindow, "/close");
         		Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, lastwindow).sendToTarget();
+        		break;
+        	case SHOW_USER_LIST:
+        		//this will start a simple list view with the users from the specified chat room.
+        		Intent users = new Intent(ServiceIRCService.context, UserList.class);
+        		startActivity(users);
+        		break;
         }
         return false;
     }
@@ -300,6 +306,7 @@ public class ActivityChatChannel extends ListActivity {
     	}
     	
     	public void loadData(String raw) {
+    		raw = raw.replace("@", "");
     		if (raw.contains("~+")) {
     			mSenders.add(raw.substring(0, raw.indexOf("~+")));
     			

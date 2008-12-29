@@ -213,8 +213,7 @@ public class ServiceIRCService extends Service {
 				}
 
 				for (String s : incoming) {
-					c.chanusers.add(s.replace('@', ' ').replace('+', ' ')
-							.trim());
+					c.chanusers.add(s.trim());
 				}
 
 			}
