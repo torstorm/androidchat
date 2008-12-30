@@ -37,6 +37,7 @@ public class ActivityChatChannel extends ListActivity {
     private EditText te;
     private ScrollView sv;
     private String CurWindow;
+    private String lastWindow;
     private ProgressDialog pd;
 
 	private final String PREFS_NAME = "androidChatPrefs";
@@ -51,6 +52,7 @@ public class ActivityChatChannel extends ListActivity {
                
             	
             	case ServiceIRCService.MSG_CHANGEWINDOW:
+            		lastWindow = ServiceIRCService.lastwindow;
                		ServiceIRCService.lastwindow = CurWindow;
                		CurWindow = (String) msg.obj; 
                		ServiceIRCService.curwindow = CurWindow;
@@ -222,9 +224,9 @@ public class ActivityChatChannel extends ListActivity {
         		finish();
         		break;
         	case CLOSE_WINDOW:
-        		String lastwindow = ServiceIRCService.lastwindow;
+        		if (lastWindow == null) lastWindow = new String();
         		ServiceIRCService.SendToChan(ServiceIRCService.curwindow, "/close");
-        		Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, lastwindow).sendToTarget();
+        		Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, lastWindow).sendToTarget();
         		break;
         	case SHOW_USER_LIST:
         		//this will start a simple list view with the users from the specified chat room.

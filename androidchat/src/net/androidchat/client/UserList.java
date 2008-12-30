@@ -9,6 +9,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,14 +49,18 @@ public class UserList extends ListActivity {
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		if (item.getTitle().equals("Private Message"));
-			privateMessageUser();
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
+		
+		if (item.getTitle().equals("Private Message"))
+			privateMessageUser(mChannel.chanusers.get(info.position));
 			
 		return false;
 	}
 	
-	public void privateMessageUser() {
+	public void privateMessageUser(String nick) {
 		//TODO: implement the private message method.
+		ServiceIRCService.OpenPMWindow(nick);
+		finish();
 	}
 	
 	public class UserListAdapter extends BaseAdapter {
