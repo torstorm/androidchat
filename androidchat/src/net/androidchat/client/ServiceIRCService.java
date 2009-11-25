@@ -11,6 +11,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Binder;
 import android.os.Handler;
@@ -28,7 +29,7 @@ public class ServiceIRCService extends Service {
 	public static BufferedWriter writer;
 	public static BufferedReader reader;
 	public static int state;
-	private static String server = "irc.androidchat.net";// "38.100.42.254"; //
+	private static String server = "irc.freenode.net";// "38.100.42.254"; //
 	public static String nick = "AndroidChat";
 
 	public static final int MSG_UPDATECHAN = 0;
@@ -68,12 +69,12 @@ public class ServiceIRCService extends Service {
 		// rfc 2812
 		// [:prefix] command|numeric [arg1, arg2...] :extargs
 
-		Log.d("ServiceIRCService", "raw line: " + line);
+		//Log.d("ServiceIRCService", "raw line: " + line);
 
 		String args, prefix, command;
 		args = prefix = command = "";
 
-		System.out.println("debug: " + line);
+		//System.out.println("debug: " + line);
 
 		boolean flagupdate = false;
 		String updatechan = "";
@@ -117,17 +118,17 @@ public class ServiceIRCService extends Service {
 		{	
 			//>> :irc.androidchat.com 640 Kuja poffy -0 -0
 			
-			Location l = new Location();
-			l.setLatitude(Float.parseFloat(toks[4]));
-			l.setLongitude(Float.parseFloat(toks[5]));
+			//Location l = new Location();
+			//l.setLatitude(Float.parseFloat(toks[4]));
+			//l.setLongitude(Float.parseFloat(toks[5]));
 			
 			if(temp_user_locs.containsKey(toks[3].toLowerCase()))
 			{
-				temp_user_locs.get(toks[3].toLowerCase()).setLatitude(l.getLatitude());
-				temp_user_locs.get(toks[3].toLowerCase()).setLongitude(l.getLongitude());
+				//temp_user_locs.get(toks[3].toLowerCase()).setLatitude(l.getLatitude());
+				//temp_user_locs.get(toks[3].toLowerCase()).setLongitude(l.getLongitude());
 			}			
-			else
-				temp_user_locs.put(toks[3].toLowerCase(), l);			
+			//else
+				//temp_user_locs.put(toks[3].toLowerCase(), l);			
 			
 		} else if (command.equals("323")) // list end numeric
 		{
@@ -164,7 +165,7 @@ public class ServiceIRCService extends Service {
 				
 			} 
 			channel_list.put(toks[3], t);
-			RequestChanLocation(toks[3]);
+			//RequestChanLocation(toks[3]);
 			// }
 		} else if (command.equals("TOPIC")) {
 			//> :Kuja!Kuja@AFCBE3.FDA6AD.34D090.09AED6 TOPIC #hi :Welcome to AndroidChat!!!
@@ -212,8 +213,7 @@ public class ServiceIRCService extends Service {
 				}
 
 				for (String s : incoming) {
-					c.chanusers.add(s.replace('@', ' ').replace('+', ' ')
-							.trim());
+					c.chanusers.add(s.trim());
 				}
 
 			}
@@ -338,6 +338,7 @@ public class ServiceIRCService extends Service {
 		{
 			String who = toks[0].substring(1, toks[0].indexOf("!"));
 			ClassChannelContainer temp;
+			Log.d("IRC - Debug", "******* Nick is " + nick + " *************");
 			if (who.equals(nick)) // if we joined a channel
 			{
 
@@ -383,15 +384,16 @@ public class ServiceIRCService extends Service {
 			{
 				temp = channels.get(chan);
 				if (args.trim().startsWith("ACTION")) {
-					temp.addLine("* "
+					/* temp.addLine("* "
 							+ toks[0].substring(1, toks[0].indexOf("!")) + " "
-							+ args.substring(7));
-
+							+ args.substring(7));*/
+					temp.addLine("***" + toks[0].substring(1, toks[0].indexOf("!")) + "~+" + args);
 				} else
-					temp.addLine("<"
+					/*temp.addLine("<"
 							+ toks[0].substring(1, toks[0].indexOf("!")) + "> "
-							+ args);
-
+							+ args);*/
+					temp.addLine(toks[0].substring(1, toks[0].indexOf("!")) + "~+" + args);
+				
 				flagupdate = true;
 				updatechan = chan;
 			} else if (chan.equals(nick.toLowerCase())) // crap, it's a private
@@ -425,13 +427,13 @@ public class ServiceIRCService extends Service {
 								who.toLowerCase()).sendToTarget();
 				}
 				temp.addLine("<" + who + "> " + args);
-				mNM.notify(R.string.irc_started, new Notification(context,
+				/*mNM.notify(R.string.irc_started, new Notification(context,
 						R.drawable.mini_icon, context
 								.getText(R.string.ui_newpm), System
 								.currentTimeMillis(),
 						"AndroidChat - Notification", context
 								.getText(R.string.ui_newpm), null,
-						R.drawable.mini_icon, "Android Chat", null));
+						R.drawable.mini_icon, "Android Chat", null));*/
 				
 				flagupdate = true;
 				updatechan = who.toLowerCase();
@@ -459,7 +461,7 @@ public class ServiceIRCService extends Service {
 		}
 	}
 
-	public static void AskForChannelList() {
+	/*public static void AskForChannelList() {
 
 		try {
 			String temp = "LIST\n";
@@ -470,55 +472,7 @@ public class ServiceIRCService extends Service {
 		} catch (NullPointerException npe) {
 			npe.printStackTrace();
 		}
-	}
-
-	// ask server to send channel location
-	public static void RequestUserLocation(String user) {
-		try {
-			String temp = "gloc " + user + "\n";
-			writer.write(temp);
-			writer.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException npe) {
-			npe.printStackTrace();
-		}
-	}
-
-	// ask server to send channel location
-	public static void RequestChanLocation(String chan) {
-		try {
-			String temp = "gcloc " + chan + "\n";
-			writer.write(temp);
-			writer.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException npe) {
-			npe.printStackTrace();
-		}
-	}
-
-	// send a location to the server.
-	public static void UpdateLocation(double lat, double lng) {
-		// SLOC lat lng
-		try {
-			String temp = "sloc " + lat + " " + lng + "\n";
-			writer.write(temp);
-			writer.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException npe) {
-			npe.printStackTrace();
-		}
-		if (ChannelViewHandler != null) {
-			channels.get("~status").addLine("*** Sent updated location");
-			Message.obtain(ChannelViewHandler,
-					ServiceIRCService.MSG_UPDATECHAN, "~status").sendToTarget();
-		}
-	}
+	}*/
 
 	public static void QuitServer() {
 		try {
@@ -528,7 +482,7 @@ public class ServiceIRCService extends Service {
 			ServiceIRCService.state = -1;
 			ServiceIRCService.reader.close();
 			ServiceIRCService.connection.interrupt();
-			mNM.cancel(R.string.irc_started);
+			//mNM.cancel(R.string.irc_started);
 			((Service)context).stopSelf();
 
 		} catch (IOException e) {
@@ -703,7 +657,7 @@ public class ServiceIRCService extends Service {
 	}
 
 	@Override
-	protected void onCreate() {
+	public void onCreate() {
 		mNM = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
 
 		// This is who should be launched if the user selects our persistent
@@ -712,6 +666,12 @@ public class ServiceIRCService extends Service {
 		Intent intent = new Intent();
 		intent.setClass(this, ActivityAndroidChatMain.class);
 
+		if (intent.hasExtra("server")) server = intent.getExtras().getString("server");
+		if (intent.hasExtra("nick")) nick = intent.getExtras().getString("nick");
+		 
+		SharedPreferences settings = ServiceIRCService.context.getSharedPreferences("androidChatPrefs", Context.MODE_WORLD_READABLE);
+		nick = settings.getString("irc_nickname_key", "AndroidChat");
+		
 		channels = new HashMap<String, ClassChannelContainer>();
 		channel_list = new HashMap<String, ClassChannelDescriptor>();
 		temp_user_locs = new HashMap<String, Location>();
@@ -735,11 +695,11 @@ public class ServiceIRCService extends Service {
 
 		// Display a notification about us starting. We use both a transient
 		// notification and a persistent notification in the status bar.
-		mNM.notify(R.string.irc_started, new Notification(context,
+		/*mNM.notify(R.string.irc_started, new Notification(context,
 				R.drawable.mini_icon, getText(R.string.irc_started), System
 						.currentTimeMillis(), "AndroidChat - Notification",
 				getText(R.string.irc_started), intent, R.drawable.mini_icon,
-				"Android Chat", intent));
+				"Android Chat", intent));*/
 
 		connection = new Thread(new ThreadConnThread(server, nick, socket));
 		connection.start();
@@ -749,16 +709,20 @@ public class ServiceIRCService extends Service {
 			updates = new Thread(new ThreadUpdateLocThread(context));
 			updates.start();
 		}
-		mNM.notify(R.string.irc_started, new Notification(context,
+		/*mNM.notify(R.string.irc_started, new Notification(context,
 				R.drawable.mini_icon, getText(R.string.irc_connected), System
 						.currentTimeMillis(), "AndroidChat - Notification",
 				getText(R.string.irc_connected), null, R.drawable.mini_icon,
-				"Android Chat", null));
+				"Android Chat", null));*/
 
+	}
+	
+	public void disconnect() {
+		this.stopSelf();
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		// Cancel the persistent notification.
 		QuitServer();
 		state = 0;
@@ -771,13 +735,13 @@ public class ServiceIRCService extends Service {
 		}
 
 		// Tell the user we stopped.
-		mNM.notify(R.string.irc_started, new Notification(context,
+		/*mNM.notify(R.string.irc_started, new Notification(context,
 				R.drawable.mini_icon, getText(R.string.irc_stopped), System
 						.currentTimeMillis(), "AndroidChat - Notification",
 				getText(R.string.irc_stopped), null, R.drawable.mini_icon,
-				"Android Chat", null));
+				"Android Chat", null));*/
 		
-		mNM.cancel(R.string.irc_started);
+		//mNM.cancel(R.string.irc_started);
 		
 	}
 
@@ -796,7 +760,11 @@ public class ServiceIRCService extends Service {
 		@Override
 		protected boolean onTransact(int code, Parcel data, Parcel reply,
 				int flags) {
+			try {
 			return super.onTransact(code, data, reply, flags);
+			} catch (Exception e) {
+				return false;
+			}
 		}
 	};
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -46,7 +47,7 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
 	}
 	
 	public void onItemClick(AdapterView parent, View v, int position, long id) {
-    	String chan = (String)chanGrid.obtainItem(position);
+    	String chan = (String)chanGrid.getItemAtPosition(position);
     	Log.v("View change", chan);
     	Message.obtain(ServiceIRCService.ChannelViewHandler, ServiceIRCService.MSG_CHANGEWINDOW, chan).sendToTarget();
     	finish();
@@ -72,7 +73,7 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
             i.setText((String)chanNames.toArray()[position]);
             
   
-            i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            //i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             
             Random rand = new Random();
            int red = rand.nextInt(127+1) + 128;
@@ -80,7 +81,8 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
            int blue = rand.nextInt(127+1) + 128;
 
            if(ServiceIRCService.curwindow.equals((String)chanNames.toArray()[position])) {
-        	   i.setTypeface(Typeface.DEFAULT_BOLD_ITALIC);
+        	   //TODO: fix the display of the views.
+        	   //i.setTypeface(Typeface.BOLD_ITALIC);
            }
             i.setTextColor(Color.rgb(red,green,blue));
             i.setBackgroundColor(0x33FFFFFF);
@@ -117,8 +119,9 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
 	        // group -- Not used here.
 	        // id -- Used only when you want to handle and identify the click yourself.
 	        // title
-	        menu.add(0, 0, "Close Current Window"); 
-	        menu.get(0).setIcon(R.drawable.stop);
+	        menu.add(0, 0, 0, "Close Current Window"); 
+	        //TODO: fix the menu icons, make them look like 1.0 icons.
+	        //menu.get(0).setIcon(R.drawable.stop);
 
 	        
 	        return true;
@@ -129,8 +132,8 @@ public class ChannelGrid extends Activity implements AdapterView.OnItemClickList
 	    // that it should be handled by a declared handler object for that
 	    // item (handler objects are discouraged for reasons of efficiency).
 	    @Override
-	    public boolean onOptionsItemSelected(Menu.Item item){
-	        switch (item.getId()) {
+	    public boolean onOptionsItemSelected(MenuItem item){
+	        switch (item.getItemId()) {
 	        case 0:
 	        	//ServiceIRCService.curwindow
 	        	ServiceIRCService.SendToChan(ServiceIRCService.curwindow, "/close");

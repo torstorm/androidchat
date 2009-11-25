@@ -28,8 +28,8 @@ public class ThreadUpdateLocThread implements Runnable
 			{
 				if (ServiceIRCService.state == 10) // if we're connected
 				{					
-					Location l = lm.getCurrentLocation((lm.getBestProvider(crit)).getName());
-					ServiceIRCService.UpdateLocation(l.getLatitude(), l.getLongitude());
+					//Location l = lm.getCurrentLocation((lm.getBestProvider(crit)).getName());
+					//ServiceIRCService.UpdateLocation(l.getLatitude(), l.getLongitude());
 				}
 				Thread.sleep(1000 * 60 * 1); // once a minute, when connected
 			}

@@ -8,6 +8,9 @@ public class ClassChannelContainer {
     public String chantopic;
     public ArrayList<String> whatsinchan;
     public ArrayList<String> chanusers;
+    public ArrayList<String> chanops;
+    public ArrayList<String> senders;
+    public ArrayList<String> messages;
     public double loc_lat;
     public double loc_lng;
     

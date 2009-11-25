@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AndroidChat</string>
+    <string name="app_name">IRC</string>
 
     <string name="btn_connect">Start Chatting!</string>
     <string name="btn_disconnect">Disconnect</string>
@@ -35,4 +35,25 @@
     <string name="opt_cancel">Cancel</string>
     <string name="opt_save">Save Preferences</string>
     
+    <!-- Preferences strings -->
+    <string name="pref_general_category">General Settings</string>
+    <string name="pref_account_category">Account Settings</string>
+    <string name="pref_notification_category">Notification Settings</string>
+    
+    <string name="irc_autosignin_title">Automatically sign in</string>
+    
+    <string name="irc_nickname">Nickname</string>
+    <string name="irc_nickname_summary">Your IRC Nickname for this client</string>
+    
+    <string name="irc_password">Password</string>
+    <string name="irc_password_summary">Your IRC registered password</string>
+    
+    <string name="irc_username">Username</string>
+    <string name="irc_username_summary">Your IRC client username</string>
+    
+    <string name="irc_nickalert_title">Nickname Alert</string>
+    <string name="irc_nickalert_summary">Alerts when someone says your Nick</string>
+    
+    <string name="irc_pmalert_title">Private Message Alert</string>
+    <string name="irc_pmalert_summary">Alerts when you receive a private message</string>
 </resources>
